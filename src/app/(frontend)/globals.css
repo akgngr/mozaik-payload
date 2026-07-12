@@ -1,0 +1,114 @@
+@import 'tailwindcss';
+@plugin '@tailwindcss/typography';
+
+@theme {
+  --font-sans:
+    'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, sans-serif;
+
+  /* Blue -> green brand ramp */
+  --color-brand-50: #eefcf9;
+  --color-brand-100: #d3f6ef;
+  --color-brand-200: #a6ecdf;
+  --color-brand-300: #6fdcca;
+  --color-brand-400: #3ec4b3;
+  --color-brand-500: #17a89b;
+  --color-brand-600: #0f8a8f;
+  --color-brand-700: #0d6f82;
+  --color-brand-800: #0b5470;
+  --color-brand-900: #0a3f5c;
+
+  --color-ocean-50: #eef6ff;
+  --color-ocean-100: #d9ebff;
+  --color-ocean-200: #b3d6ff;
+  --color-ocean-300: #7fb8ff;
+  --color-ocean-400: #4f97f5;
+  --color-ocean-500: #2f78e0;
+  --color-ocean-600: #215fbd;
+  --color-ocean-700: #1c4c96;
+  --color-ocean-800: #163a72;
+  --color-ocean-900: #102850;
+
+  --shadow-glass: 0 8px 32px rgba(10, 63, 92, 0.12);
+  --shadow-glass-lg: 0 20px 60px rgba(10, 63, 92, 0.18);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  color: var(--color-ocean-900);
+  background:
+    radial-gradient(1200px 600px at 10% -10%, color-mix(in oklab, var(--color-brand-200) 55%, transparent), transparent),
+    radial-gradient(1000px 700px at 100% 0%, color-mix(in oklab, var(--color-ocean-200) 55%, transparent), transparent),
+    linear-gradient(180deg, #f4fbfa 0%, #eaf5f8 40%, #eef7f4 100%);
+  background-attachment: fixed;
+  min-height: 100vh;
+}
+
+/* Apple-style frosted glass surface */
+.glass {
+  background: color-mix(in oklab, white 55%, transparent);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid color-mix(in oklab, white 60%, transparent);
+  box-shadow: var(--shadow-glass);
+}
+
+.glass-strong {
+  background: color-mix(in oklab, white 72%, transparent);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  border: 1px solid color-mix(in oklab, white 70%, transparent);
+  box-shadow: var(--shadow-glass-lg);
+}
+
+.glass-dark {
+  background: color-mix(in oklab, var(--color-ocean-900) 55%, transparent);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid color-mix(in oklab, white 12%, transparent);
+  box-shadow: var(--shadow-glass-lg);
+}
+
+.text-gradient {
+  background: linear-gradient(120deg, var(--color-ocean-600), var(--color-brand-500));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.btn-glass {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 999px;
+  padding: 0.75rem 1.75rem;
+  font-weight: 600;
+  transition: all 300ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-primary {
+  background: linear-gradient(120deg, var(--color-ocean-500), var(--color-brand-500));
+  color: white;
+  box-shadow: 0 10px 30px color-mix(in oklab, var(--color-brand-500) 45%, transparent);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 36px color-mix(in oklab, var(--color-brand-500) 55%, transparent);
+}
+
+.btn-secondary {
+  background: color-mix(in oklab, white 60%, transparent);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid color-mix(in oklab, var(--color-ocean-500) 25%, transparent);
+  color: var(--color-ocean-800);
+}
+
+.btn-secondary:hover {
+  background: color-mix(in oklab, white 80%, transparent);
+  transform: translateY(-2px);
+}
