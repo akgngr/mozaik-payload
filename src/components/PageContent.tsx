@@ -1,7 +1,6 @@
 import { notFound } from 'next/navigation'
 import { getPayload } from '@/lib/payload'
 import { Container } from './Container'
-import { GlassCard } from './GlassCard'
 import { PageHero } from './PageHero'
 import { RichText } from './RichText'
 
@@ -19,11 +18,12 @@ export const PageContent = async ({ slug }: { slug: string }) => {
   return (
     <>
       <PageHero eyebrow={page.heroEyebrow} title={page.title} subtitle={page.heroSubtitle} />
-      <section className="px-4 py-16">
-        <Container className="max-w-3xl">
-          <GlassCard className="p-8 md:p-12">
+      <section className="section">
+        <Container>
+          <div className="mx-auto max-w-3xl">
+            <div className="mosaic-strip mb-10 h-1 w-24 rounded-full" aria-hidden />
             <RichText data={page.content} />
-          </GlassCard>
+          </div>
         </Container>
       </section>
     </>

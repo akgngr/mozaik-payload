@@ -6,4 +6,4 @@ export const Container = ({
 }: {
   children: ReactNode
   className?: string
-}) => <div className={`mx-auto w-11/12 max-w-6xl md:w-10/12 ${className}`}>{children}</div>
+}) => <div className={`mx-auto w-full max-w-7xl px-5 md:px-8 ${className}`}>{children}</div>

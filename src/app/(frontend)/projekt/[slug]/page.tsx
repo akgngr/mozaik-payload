@@ -2,7 +2,6 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { getPayload } from '@/lib/payload'
 import { Container } from '@/components/Container'
-import { GlassCard } from '@/components/GlassCard'
 import { PageHero } from '@/components/PageHero'
 import { RichText } from '@/components/RichText'
 
@@ -31,21 +30,63 @@ export default async function ProjectDetailPage({ params }: Args) {
   if (!project) notFound()
 
   const image = typeof project.coverImage === 'object' ? project.coverImage : null
+  const date =
+    typeof project.publishedDate === 'string'
+      ? new Date(project.publishedDate).toLocaleDateString('de-DE', {
+          day: 'numeric',
+          month: 'long',
+          year: 'numeric',
+        })
+      : null
+  const gallery = (project.gallery || [])
+    .map((item) => (typeof item.image === 'object' ? item.image : null))
+    .filter((img): img is NonNullable<typeof img> => img !== null && Boolean(img.url))
+    // dedupe by media id (the same image can appear twice in the CMS list)
+    .filter((img, i, all) => all.findIndex((other) => other.id === img.id) === i)
 
   return (
     <>
       <PageHero eyebrow={project.partner} title={project.title} subtitle={project.excerpt} />
-      <section className="px-4 py-16">
-        <Container className="max-w-3xl">
-          <GlassCard className="overflow-hidden p-0">
+      <section className="section">
+        <Container>
+          <div className="mx-auto max-w-3xl">
             {image?.url && (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={image.url} alt={image.alt || project.title} className="h-72 w-full object-cover" />
+              <img
+                src={image.url}
+                alt={image.alt || project.title}
+                className="mb-10 h-80 w-full rounded-3xl border-8 border-white object-cover shadow-[var(--shadow-card)]"
+              />
             )}
-            <div className="p-8 md:p-12">
-              <RichText data={project.content} />
-            </div>
-          </GlassCard>
+            {(date || project.partner) && (
+              <p className="mb-8 flex flex-wrap items-center gap-3 text-sm font-bold uppercase tracking-[0.14em] text-lav-500">
+                {date && <span>{date}</span>}
+              </p>
+            )}
+            <div className="mosaic-strip mb-10 h-1.5 w-24 rounded-full" aria-hidden />
+            <RichText data={project.content} />
+
+            {gallery.length > 0 && (
+              <div className="mt-14">
+                <h2 className="mb-6 font-display text-2xl text-ocean-900">Galerie</h2>
+                <div className="grid gap-5 sm:grid-cols-2">
+                  {gallery.map((img, i) => (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      key={`${img.id ?? 'img'}-${i}`}
+                      src={img.url || ''}
+                      alt={img.alt || `${project.title} – Bild ${i + 1}`}
+                      className={`w-full rounded-2xl object-cover shadow-[var(--shadow-card)] ${
+                        gallery.length % 3 === 1 && i === gallery.length - 1
+                          ? 'sm:col-span-2 aspect-[2/1]'
+                          : 'aspect-[4/3]'
+                      }`}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
         </Container>
       </section>
     </>

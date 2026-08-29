@@ -411,8 +411,10 @@ const run = async () => {
   process.exit(0)
 }
 
-run().catch((err) => {
+try {
+  await run()
+} catch (err) {
   // eslint-disable-next-line no-console
   console.error(err)
   process.exit(1)
-})
+}

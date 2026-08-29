@@ -125,3 +125,79 @@ export const iconMap: Record<string, (props: IconProps) => ReactElement> = {
   building: BuildingIcon,
   help: HelpIcon,
 }
+
+// ── Illustrative Werte icons ──────────────────────────────────────────────
+
+/** Begegnung — two hands reaching toward each other */
+export const HandshakeIllustIcon = ({ className }: IconProps) => (
+  <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
+    <circle cx="24" cy="24" r="20" fill="currentColor" fillOpacity="0.12" />
+    <path d="M14 28c0 0 2-6 5-6l5 2 5-2c3 0 5 6 5 6" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M19 22l-3-4a2 2 0 0 1 2.8-2.8l3 3" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+    <path d="M29 22l3-4a2 2 0 0 0-2.8-2.8l-3 3" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+    <circle cx="24" cy="16" r="3" stroke="currentColor" strokeWidth="2"/>
+    <path d="M17 36h14" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
+    <path d="M14 32h20" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+  </svg>
+)
+
+/** Vielfalt — globe with orbiting dots */
+export const GlobeIllustIcon = ({ className }: IconProps) => (
+  <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
+    <circle cx="24" cy="24" r="20" fill="currentColor" fillOpacity="0.12" />
+    <circle cx="24" cy="24" r="11" stroke="currentColor" strokeWidth="2.2"/>
+    <ellipse cx="24" cy="24" rx="5" ry="11" stroke="currentColor" strokeWidth="1.8"/>
+    <path d="M13 20h22M13 28h22" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
+    <circle cx="35" cy="16" r="2.5" fill="currentColor" fillOpacity="0.5" stroke="currentColor" strokeWidth="1.5"/>
+    <circle cx="13" cy="32" r="2" fill="currentColor" fillOpacity="0.4" stroke="currentColor" strokeWidth="1.5"/>
+    <circle cx="37" cy="30" r="1.5" fill="currentColor" fillOpacity="0.6"/>
+  </svg>
+)
+
+/** Dialog — two overlapping speech bubbles */
+export const DialogIllustIcon = ({ className }: IconProps) => (
+  <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
+    <circle cx="24" cy="24" r="20" fill="currentColor" fillOpacity="0.12" />
+    <rect x="10" y="12" width="19" height="13" rx="4" stroke="currentColor" strokeWidth="2.2"/>
+    <path d="M14 25v4l5-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M14 18h11M14 21h8" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/>
+    <rect x="19" y="23" width="19" height="12" rx="4" fill="currentColor" fillOpacity="0.12" stroke="currentColor" strokeWidth="1.8"/>
+    <path d="M34 35v3l-4-3" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M23 28h11M23 31h8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+  </svg>
+)
+
+/** Wachstum — sprouting plant */
+export const SproutIllustIcon = ({ className }: IconProps) => (
+  <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
+    <circle cx="24" cy="24" r="20" fill="currentColor" fillOpacity="0.12" />
+    <path d="M24 37V25" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round"/>
+    <path d="M24 29c0 0-1-7-9-8 0 7 5 9 9 8Z" fill="currentColor" fillOpacity="0.3" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/>
+    <path d="M24 25c0 0 1-6 8-7 0 7-5 8-8 7Z" fill="currentColor" fillOpacity="0.3" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/>
+    <circle cx="24" cy="19" r="3.5" stroke="currentColor" strokeWidth="2"/>
+    <path d="M17 37h14" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"/>
+  </svg>
+)
+
+/** Solidarität — heart embraced by arms */
+export const SolidarityIllustIcon = ({ className }: IconProps) => (
+  <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
+    <circle cx="24" cy="24" r="20" fill="currentColor" fillOpacity="0.12" />
+    <path d="M24 32s-10-5.5-10-12a6 6 0 0 1 10-4.4A6 6 0 0 1 34 20c0 6.5-10 12-10 12Z" fill="currentColor" fillOpacity="0.2" stroke="currentColor" strokeWidth="2.2" strokeLinejoin="round"/>
+    <path d="M12 33c-1.5 1-2.5 2.5-2.5 4h29c0-1.5-1-3-2.5-4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
+    <circle cx="18" cy="35" r="1.2" fill="currentColor" fillOpacity="0.5"/>
+    <circle cx="24" cy="36" r="1.2" fill="currentColor" fillOpacity="0.5"/>
+    <circle cx="30" cy="35" r="1.2" fill="currentColor" fillOpacity="0.5"/>
+  </svg>
+)
+
+/** Kreativität — starburst / spark */
+export const CreativityIllustIcon = ({ className }: IconProps) => (
+  <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
+    <circle cx="24" cy="24" r="20" fill="currentColor" fillOpacity="0.12" />
+    <path d="M24 11v5M24 32v5M11 24h5M32 24h5M15.5 15.5l3.5 3.5M29 29l3.5 3.5M32.5 15.5l-3.5 3.5M19 29l-3.5 3.5" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"/>
+    <circle cx="24" cy="24" r="6" fill="currentColor" fillOpacity="0.25" stroke="currentColor" strokeWidth="2"/>
+    <circle cx="24" cy="24" r="2.5" fill="currentColor"/>
+  </svg>
+)
+

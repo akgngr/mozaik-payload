@@ -2,34 +2,100 @@
 @plugin '@tailwindcss/typography';
 
 @theme {
-  --font-sans:
-    'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, sans-serif;
+  --font-sans: var(--font-source), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-display: var(--font-nunito), var(--font-source), sans-serif;
 
-  /* Blue -> green brand ramp */
-  --color-brand-50: #eefcf9;
-  --color-brand-100: #d3f6ef;
-  --color-brand-200: #a6ecdf;
-  --color-brand-300: #6fdcca;
-  --color-brand-400: #3ec4b3;
-  --color-brand-500: #17a89b;
-  --color-brand-600: #0f8a8f;
-  --color-brand-700: #0d6f82;
-  --color-brand-800: #0b5470;
-  --color-brand-900: #0a3f5c;
+  /* Mosaik brand palette — from the official brand guide */
+  /* Teal (primary) */
+  --color-brand-50: #eefaf9;
+  --color-brand-100: #d3f2f0;
+  --color-brand-200: #a8e5e2;
+  --color-brand-300: #74d4d0;
+  --color-brand-400: #40b6b3;
+  --color-brand-500: #2ba29f;
+  --color-brand-600: #228684;
+  --color-brand-700: #1e6b6a;
+  --color-brand-800: #1b5554;
+  --color-brand-900: #17403f;
 
-  --color-ocean-50: #eef6ff;
-  --color-ocean-100: #d9ebff;
-  --color-ocean-200: #b3d6ff;
-  --color-ocean-300: #7fb8ff;
-  --color-ocean-400: #4f97f5;
-  --color-ocean-500: #2f78e0;
-  --color-ocean-600: #215fbd;
-  --color-ocean-700: #1c4c96;
-  --color-ocean-800: #163a72;
-  --color-ocean-900: #102850;
+  /* Sky blue */
+  --color-aqua-50: #f0f8fe;
+  --color-aqua-100: #dceefd;
+  --color-aqua-200: #bcdffc;
+  --color-aqua-300: #9dcdf8;
+  --color-aqua-400: #7db7e8;
+  --color-aqua-500: #5a9bd4;
+  --color-aqua-600: #4780b6;
+  --color-aqua-700: #3a6792;
+  --color-aqua-800: #315274;
+  --color-aqua-900: #29435e;
 
-  --shadow-glass: 0 8px 32px rgba(10, 63, 92, 0.12);
-  --shadow-glass-lg: 0 20px 60px rgba(10, 63, 92, 0.18);
+  /* Lavender */
+  --color-lav-50: #f7f4fc;
+  --color-lav-100: #efe8f9;
+  --color-lav-200: #ded2f2;
+  --color-lav-300: #c8b3e9;
+  --color-lav-400: #b295d6;
+  --color-lav-500: #9a77c2;
+  --color-lav-600: #815fa8;
+  --color-lav-700: #684c87;
+  --color-lav-800: #523e6b;
+  --color-lav-900: #3f3053;
+
+  /* Salmon */
+  --color-salmon-50: #fef3f3;
+  --color-salmon-100: #fee5e6;
+  --color-salmon-200: #fdced0;
+  --color-salmon-300: #fbb6b9;
+  --color-salmon-400: #f59da1;
+  --color-salmon-500: #e97d82;
+  --color-salmon-600: #d05a61;
+  --color-salmon-700: #ad454c;
+  --color-salmon-800: #8b383e;
+  --color-salmon-900: #6c2d32;
+
+  /* Sun yellow */
+  --color-citrus-50: #fff9ec;
+  --color-citrus-100: #fff0cd;
+  --color-citrus-200: #ffe29f;
+  --color-citrus-300: #fedc85;
+  --color-citrus-400: #ffd37a;
+  --color-citrus-500: #f5bc4e;
+  --color-citrus-600: #e09d2f;
+  --color-citrus-700: #b87c24;
+  --color-citrus-800: #91621f;
+  --color-citrus-900: #714f1c;
+
+  /* Leaf green */
+  --color-leaf-50: #f4faf3;
+  --color-leaf-100: #e4f4e2;
+  --color-leaf-200: #c9e8c6;
+  --color-leaf-300: #bcdfb8;
+  --color-leaf-400: #a8d5a2;
+  --color-leaf-500: #86bd7f;
+  --color-leaf-600: #679e61;
+  --color-leaf-700: #4f7f4a;
+  --color-leaf-800: #40653d;
+  --color-leaf-900: #345032;
+
+  /* Navy (ink) */
+  --color-ocean-50: #f2f5f9;
+  --color-ocean-100: #e2e9f1;
+  --color-ocean-200: #c5d3e3;
+  --color-ocean-300: #9db4cf;
+  --color-ocean-400: #6f8fb4;
+  --color-ocean-500: #4c6f99;
+  --color-ocean-600: #35567c;
+  --color-ocean-700: #2a4663;
+  --color-ocean-800: #233a52;
+  --color-ocean-900: #1e3a5f;
+  --color-ocean-950: #152942;
+
+  --color-cream: #faf6ef;
+  --color-cream-dark: #f3ecdf;
+
+  --shadow-card: 0 2px 4px rgba(30, 58, 95, 0.04), 0 12px 32px rgba(30, 58, 95, 0.07);
+  --shadow-card-hover: 0 4px 8px rgba(30, 58, 95, 0.05), 0 24px 48px rgba(30, 58, 95, 0.13);
 }
 
 html {
@@ -38,77 +104,103 @@ html {
 
 body {
   color: var(--color-ocean-900);
-  background:
-    radial-gradient(1200px 600px at 10% -10%, color-mix(in oklab, var(--color-brand-200) 55%, transparent), transparent),
-    radial-gradient(1000px 700px at 100% 0%, color-mix(in oklab, var(--color-ocean-200) 55%, transparent), transparent),
-    linear-gradient(180deg, #f4fbfa 0%, #eaf5f8 40%, #eef7f4 100%);
-  background-attachment: fixed;
+  background: var(--color-cream);
   min-height: 100vh;
 }
 
-/* Apple-style frosted glass surface */
-.glass {
-  background: color-mix(in oklab, white 55%, transparent);
-  backdrop-filter: blur(20px) saturate(160%);
-  -webkit-backdrop-filter: blur(20px) saturate(160%);
-  border: 1px solid color-mix(in oklab, white 60%, transparent);
-  box-shadow: var(--shadow-glass);
+/* Six-color brand strip */
+.mosaic-strip {
+  background: linear-gradient(
+    90deg,
+    var(--color-brand-400) 0 16.66%,
+    var(--color-aqua-400) 16.66% 33.33%,
+    var(--color-lav-400) 33.33% 50%,
+    var(--color-salmon-400) 50% 66.66%,
+    var(--color-citrus-400) 66.66% 83.33%,
+    var(--color-leaf-400) 83.33% 100%
+  );
 }
 
-.glass-strong {
-  background: color-mix(in oklab, white 72%, transparent);
-  backdrop-filter: blur(28px) saturate(180%);
-  -webkit-backdrop-filter: blur(28px) saturate(180%);
-  border: 1px solid color-mix(in oklab, white 70%, transparent);
-  box-shadow: var(--shadow-glass-lg);
+.font-display {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -0.01em;
 }
 
-.glass-dark {
-  background: color-mix(in oklab, var(--color-ocean-900) 55%, transparent);
-  backdrop-filter: blur(20px) saturate(160%);
-  -webkit-backdrop-filter: blur(20px) saturate(160%);
-  border: 1px solid color-mix(in oklab, white 12%, transparent);
-  box-shadow: var(--shadow-glass-lg);
+/* Friendly rounded highlight behind key words */
+.text-marker {
+  position: relative;
+  display: inline-block;
+  z-index: 0;
+  white-space: nowrap;
+}
+.text-marker::after {
+  content: '';
+  position: absolute;
+  left: -0.1em;
+  right: -0.1em;
+  bottom: 0.05em;
+  height: 0.38em;
+  z-index: -1;
+  border-radius: 999px;
+  background: var(--color-citrus-300);
+}
+.text-marker-teal::after {
+  background: var(--color-brand-200);
+}
+.text-marker-lav::after {
+  background: var(--color-lav-200);
+}
+.text-marker-salmon::after {
+  background: var(--color-salmon-200);
 }
 
-.text-gradient {
-  background: linear-gradient(120deg, var(--color-ocean-600), var(--color-brand-500));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
+/* Buttons — friendly pills */
 .btn-glass {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
   border-radius: 999px;
-  padding: 0.75rem 1.75rem;
-  font-weight: 600;
-  transition: all 300ms cubic-bezier(0.16, 1, 0.3, 1);
+  padding: 0.8rem 1.9rem;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.95rem;
+  line-height: 1;
+  transition: all 250ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .btn-primary {
-  background: linear-gradient(120deg, var(--color-ocean-500), var(--color-brand-500));
+  background: var(--color-brand-400);
   color: white;
-  box-shadow: 0 10px 30px color-mix(in oklab, var(--color-brand-500) 45%, transparent);
+  box-shadow: 0 8px 24px rgba(64, 182, 179, 0.4);
 }
-
 .btn-primary:hover {
+  background: var(--color-brand-500);
   transform: translateY(-2px);
-  box-shadow: 0 16px 36px color-mix(in oklab, var(--color-brand-500) 55%, transparent);
+  box-shadow: 0 12px 32px rgba(64, 182, 179, 0.5);
 }
 
 .btn-secondary {
-  background: color-mix(in oklab, white 60%, transparent);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid color-mix(in oklab, var(--color-ocean-500) 25%, transparent);
+  background: white;
+  border: 2px solid var(--color-ocean-100);
   color: var(--color-ocean-800);
 }
-
 .btn-secondary:hover {
-  background: color-mix(in oklab, white 80%, transparent);
+  border-color: var(--color-brand-400);
+  color: var(--color-brand-600);
   transform: translateY(-2px);
 }
+
+/* Section rhythm: airy, full-width bands */
+.section {
+  padding-block: clamp(4.5rem, 9vw, 8rem);
+}
+
+/* Wordmark: per-letter brand colors, like the logo */
+.wordmark span:nth-child(1) { color: var(--color-brand-400); }
+.wordmark span:nth-child(2) { color: var(--color-aqua-400); }
+.wordmark span:nth-child(3) { color: var(--color-lav-400); }
+.wordmark span:nth-child(4) { color: var(--color-salmon-400); }
+.wordmark span:nth-child(5) { color: var(--color-citrus-500); }
+.wordmark span:nth-child(6) { color: var(--color-leaf-500); }

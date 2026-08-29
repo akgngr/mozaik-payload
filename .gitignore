@@ -34,3 +34,10 @@ pnpm-debug.log*
 # vercel / netlify
 .vercel/
 .netlify/
+
+# local temp / backups
+.zcode/
+media/
+mosaik-mobile-restore/
+mosaik-mobile-restore-draft/
+

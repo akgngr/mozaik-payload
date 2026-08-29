@@ -14,7 +14,9 @@ export const Slideshow = ({ slides }: { slides: Slide[] }) => {
     return () => clearInterval(id)
   }, [slides.length])
 
-  if (slides.length === 0) return null
+  if (slides.length === 0) {
+    return <div className="h-full w-full bg-cream-dark" />
+  }
 
   return (
     <div className="relative h-full w-full overflow-hidden">
@@ -25,22 +27,21 @@ export const Slideshow = ({ slides }: { slides: Slide[] }) => {
           alt={slide.alt}
           fill
           priority={i === 0}
-          sizes="100vw"
+          sizes="(max-width: 1024px) 100vw, 50vw"
           className={`absolute inset-0 object-cover transition-opacity duration-1000 ease-in-out ${
             i === index ? 'opacity-100' : 'opacity-0'
           }`}
         />
       ))}
-      <div className="absolute inset-0 bg-gradient-to-t from-ocean-900/70 via-ocean-900/10 to-transparent" />
       {slides.length > 1 && (
-        <div className="absolute bottom-6 left-1/2 flex -translate-x-1/2 gap-2">
+        <div className="absolute bottom-5 left-1/2 flex -translate-x-1/2 gap-2 rounded-full bg-white/80 px-3 py-2 backdrop-blur-sm">
           {slides.map((slide, i) => (
             <button
               key={slide.url}
               aria-label={`Bild ${i + 1}`}
               onClick={() => setIndex(i)}
               className={`h-2 rounded-full transition-all ${
-                i === index ? 'w-6 bg-white' : 'w-2 bg-white/50'
+                i === index ? 'w-6 bg-brand-500' : 'w-2 bg-ocean-900/25'
               }`}
             />
           ))}

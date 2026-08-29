@@ -37,6 +37,28 @@ export const Projects: CollectionConfig = {
       relationTo: 'media',
     },
     {
+      name: 'publishedDate',
+      type: 'date',
+      admin: {
+        date: { pickerAppearance: 'dayOnly' },
+        description: 'Veröffentlichungsdatum (für Sortierung)',
+      },
+    },
+    {
+      name: 'gallery',
+      type: 'array',
+      maxRows: 20,
+      admin: { description: 'Weitere Bilder für die Galerie' },
+      fields: [
+        {
+          name: 'image',
+          type: 'upload',
+          relationTo: 'media',
+          required: true,
+        },
+      ],
+    },
+    {
       name: 'content',
       type: 'richText',
       editor: lexicalEditor(),

@@ -1,89 +1,275 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import { getPayload } from '@/lib/payload'
 import { Container } from '@/components/Container'
-import { GlassCard } from '@/components/GlassCard'
+import { Card } from '@/components/Card'
 import { Button } from '@/components/Button'
 import { Slideshow } from '@/components/Slideshow'
-import { ArrowRightIcon, iconMap } from '@/components/icons'
-import type { Media } from '@/payload-types'
+import { MosaicPattern } from '@/components/MosaicPattern'
+import { Animated } from '@/components/Animated'
+import { HomeEventsSection } from '@/components/HomeEventsSection'
+import {
+  ArrowRightIcon,
+  iconMap,
+  HandshakeIllustIcon,
+  GlobeIllustIcon,
+  DialogIllustIcon,
+  SproutIllustIcon,
+  SolidarityIllustIcon,
+  CreativityIllustIcon,
+} from '@/components/icons'
+import type { Media, Event as EventType } from '@/payload-types'
+
+// Pastel accents cycling through the brand palette
+const accentColors = [
+  { icon: 'bg-brand-50 text-brand-600', bar: 'bg-brand-400', link: 'text-brand-600' },
+  { icon: 'bg-aqua-50 text-aqua-600', bar: 'bg-aqua-400', link: 'text-aqua-600' },
+  { icon: 'bg-lav-50 text-lav-600', bar: 'bg-lav-400', link: 'text-lav-600' },
+  { icon: 'bg-salmon-50 text-salmon-600', bar: 'bg-salmon-400', link: 'text-salmon-600' },
+  { icon: 'bg-citrus-50 text-citrus-600', bar: 'bg-citrus-400', link: 'text-citrus-600' },
+  { icon: 'bg-leaf-50 text-leaf-600', bar: 'bg-leaf-400', link: 'text-leaf-600' },
+]
+
+// Fallback demo events if CMS is empty
+const initialDemoEvents: Partial<EventType>[] = [
+  {
+    id: 1,
+    title: 'Interkulturelles Sprachcafé',
+    category: 'education',
+    eventDate: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000 + 4 * 60 * 60 * 1000).toISOString(),
+    location: 'Mosaik Begegnungszentrum, Bahnhofstr. 20, Rüsselsheim',
+    excerpt:
+      'Zwangloses Deutsch sprechen bei Kaffee, Tee und Gebäck. Für alle Niveaustufen offen.',
+    isHighlight: true,
+  },
+  {
+    id: 2,
+    title: 'Familien-Kreativnachmittag',
+    category: 'youth',
+    eventDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000 + 3 * 60 * 60 * 1000).toISOString(),
+    location: 'Mosaik e.V., Bahnhofstr. 20, Rüsselsheim',
+    excerpt:
+      'Gemeinsam malen, basteln und spielen für Kinder und Eltern. Ein bunter Nachmittag.',
+    isHighlight: false,
+  },
+  {
+    id: 3,
+    title: 'Interkultureller Kochabend: Rezepte aus aller Welt',
+    category: 'culture',
+    eventDate: new Date(Date.now() + 12 * 24 * 60 * 60 * 1000 + 6 * 60 * 60 * 1000).toISOString(),
+    location: 'Gemeinschaftsküche Rüsselsheim',
+    excerpt:
+      'Wir kochen zusammen traditionelle Gerichte und tauschen Geschichten aus.',
+    isHighlight: true,
+  },
+]
+
+const werteList = [
+  { Icon: HandshakeIllustIcon, label: 'Begegnung', color: 'text-brand-500', bg: 'bg-brand-50' },
+  { Icon: GlobeIllustIcon,     label: 'Vielfalt',   color: 'text-lav-500',  bg: 'bg-lav-50'  },
+  { Icon: DialogIllustIcon,    label: 'Dialog',     color: 'text-aqua-600', bg: 'bg-aqua-50' },
+  { Icon: SproutIllustIcon,    label: 'Wachstum',   color: 'text-leaf-600', bg: 'bg-leaf-50' },
+  { Icon: SolidarityIllustIcon,label: 'Solidarität',color: 'text-salmon-600',bg: 'bg-salmon-50'},
+  { Icon: CreativityIllustIcon,label: 'Kreativität',color: 'text-citrus-600',bg:'bg-citrus-50'},
+]
 
 export default async function HomePage() {
   const payload = await getPayload()
-  const [home, projects] = await Promise.all([
+  const [home, projects, eventsResult] = await Promise.all([
     payload.findGlobal({ slug: 'homepage' }),
-    payload.find({ collection: 'projects', limit: 3, sort: 'order' }),
+    payload.find({ collection: 'projects', limit: 3, sort: '-publishedDate' }),
+    payload.find({ collection: 'events', limit: 3, sort: 'eventDate' }),
   ])
 
-  const slides = (home.heroImages || [])
+  const upcomingEvents =
+    eventsResult.docs.length > 0
+      ? eventsResult.docs
+      : (initialDemoEvents as EventType[])
+
+
+  const media = (home.heroImages || [])
     .map((item) => item.image)
     .filter((img): img is Media => typeof img === 'object' && img !== null)
-    .map((img) => ({ url: img.url || '', alt: img.alt || '' }))
+  const slides = media.map((img) => ({ url: img.url || '', alt: img.alt || '' }))
+  const secondaryImage = media[1] ?? media[0] ?? null
 
   return (
     <>
-      <section className="px-4 pt-6">
-        <Container>
-          <div className="relative overflow-hidden rounded-[2.5rem]">
-            <div className="absolute inset-0">
-              <Slideshow slides={slides} />
-            </div>
-            <div className="relative flex min-h-[70vh] flex-col items-start justify-end gap-6 p-8 md:p-16">
+      {/* ── HERO ── */}
+      <section className="relative flex min-h-[calc(100vh-6rem)] items-center overflow-hidden">
+        <MosaicPattern className="pointer-events-none absolute bottom-0 right-0 w-48 select-none opacity-20 md:w-72" />
+        <Container className="relative max-w-7xl">
+          <div className="grid items-center gap-14 py-16 md:py-20 lg:grid-cols-2">
+            <div>
               {home.heroEyebrow && (
-                <span className="glass-strong inline-block rounded-full px-4 py-1.5 text-xs font-semibold uppercase tracking-wide text-white">
-                  {home.heroEyebrow}
-                </span>
+                <Animated variant="fade-up" delay={0}>
+                  <span className="mb-6 inline-flex items-center gap-2.5 rounded-full border-2 border-brand-200 bg-white px-5 py-2 text-xs font-bold uppercase tracking-[0.16em] text-brand-600">
+                    <span className="h-2.5 w-2.5 rounded-full bg-brand-400" aria-hidden />
+                    {home.heroEyebrow}
+                  </span>
+                </Animated>
               )}
-              <h1 className="max-w-2xl text-4xl font-bold leading-tight text-white md:text-6xl">
-                {home.heroTitle}
-              </h1>
+              <Animated variant="fade-up" delay={80}>
+                <h1 className="text-balance font-display text-5xl leading-[1.02] text-ocean-900 md:text-6xl xl:text-7xl">
+                  {home.heroTitle || 'Mosaik Dialog und Kultur e.V.'}
+                </h1>
+              </Animated>
               {home.heroSubtitle && (
-                <p className="max-w-xl text-lg text-white/85 md:text-xl">{home.heroSubtitle}</p>
+                <Animated variant="fade-up" delay={180}>
+                  <p className="mt-6 max-w-xl text-lg leading-relaxed text-ocean-700/90">
+                    {home.heroSubtitle}
+                  </p>
+                </Animated>
               )}
-              <div className="flex flex-wrap gap-4 pt-2">
-                <Button href="/spenden" variant="primary">
-                  Jetzt spenden <ArrowRightIcon className="h-4 w-4" />
-                </Button>
-                <Button href="/ueber-uns" variant="secondary" className="text-white">
-                  Über uns
-                </Button>
-              </div>
+              <Animated variant="fade-up" delay={260}>
+                <div className="mt-8 flex flex-wrap gap-4">
+                  <Button href="/spenden" variant="primary">
+                    Jetzt spenden <ArrowRightIcon className="h-4 w-4" />
+                  </Button>
+                  <Button href="/ueber-uns" variant="secondary">
+                    Über uns
+                  </Button>
+                </div>
+              </Animated>
             </div>
+
+
+            {/* Photo collage */}
+            <Animated variant="fade-left" delay={200}>
+              <div className="relative mx-auto w-full max-w-lg lg:max-w-none">
+                <div className="relative overflow-hidden rounded-[2.5rem] border-8 border-white shadow-[var(--shadow-card-hover)]">
+                  <div className="aspect-[4/3]">
+                    <Slideshow slides={slides} />
+                  </div>
+                </div>
+                {secondaryImage?.url && slides.length > 1 && (
+                  <div className="absolute -bottom-10 -left-4 hidden w-48 rotate-[-6deg] overflow-hidden rounded-3xl border-8 border-white shadow-[var(--shadow-card-hover)] sm:block lg:-left-10 lg:w-56">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={secondaryImage.url}
+                      alt={secondaryImage.alt || ''}
+                      className="aspect-square w-full object-cover"
+                    />
+                  </div>
+                )}
+                <div className="absolute -right-5 -top-8 hidden h-24 w-24 items-center justify-center rounded-full bg-white p-2 shadow-[var(--shadow-card)] md:flex">
+                  <Image src="/mosaik-emblem.png" alt="" width={440} height={530} className="h-full w-auto" />
+                </div>
+              </div>
+            </Animated>
           </div>
         </Container>
       </section>
 
+      <div className="mosaic-strip h-1.5 w-full" aria-hidden />
+
+      {/* ── ÜBER UNS TEASER ── Clean split layout with icon row */}
       {(home.introTitle || home.introText) && (
-        <section className="px-4 py-20">
-          <Container className="max-w-3xl text-center">
-            {home.introTitle && (
-              <h2 className="text-3xl font-bold text-ocean-900 md:text-4xl">
-                <span className="text-gradient">{home.introTitle}</span>
-              </h2>
-            )}
-            {home.introText && <p className="mt-5 text-lg leading-relaxed text-ocean-800/80">{home.introText}</p>}
+        <section className="section relative overflow-hidden">
+          <div
+            className="pointer-events-none absolute inset-0"
+            aria-hidden
+            style={{ background: 'linear-gradient(135deg, #eefaf9 0%, #faf6ef 55%, #f7f4fc 100%)' }}
+          />
+          <MosaicPattern className="pointer-events-none absolute bottom-0 right-0 w-56 select-none opacity-12" />
+
+          <Container className="relative max-w-7xl">
+            <div className="grid items-center gap-16 lg:grid-cols-2">
+
+              {/* Left — text */}
+              <div>
+                <Animated variant="fade-right">
+                  <p className="mb-4 text-xs font-bold uppercase tracking-[0.18em] text-brand-500">
+                    Über uns
+                  </p>
+                </Animated>
+                {home.introTitle && (
+                  <Animated variant="fade-right" delay={80}>
+                    <h2 className="text-balance font-display text-4xl text-ocean-900 md:text-5xl">
+                      {home.introTitle}
+                    </h2>
+                  </Animated>
+                )}
+                {home.introText && (
+                  <Animated variant="fade-right" delay={160}>
+                    <p className="mt-6 text-lg leading-relaxed text-ocean-700/90">
+                      {home.introText}
+                    </p>
+                  </Animated>
+                )}
+                <Animated variant="fade-up" delay={240}>
+                  <div className="mt-8 flex flex-wrap gap-2">
+                    {['Begegnung', 'Vielfalt', 'Dialog', 'Wachstum'].map((v, i) => {
+                      const cls = [
+                        'bg-brand-100 text-brand-700',
+                        'bg-lav-100 text-lav-700',
+                        'bg-aqua-100 text-aqua-700',
+                        'bg-leaf-100 text-leaf-700',
+                      ][i]
+                      return (
+                        <span key={v} className={`rounded-full px-4 py-1.5 text-sm font-bold ${cls}`}>{v}</span>
+                      )
+                    })}
+                  </div>
+                </Animated>
+                <Animated variant="fade-up" delay={320}>
+                  <div className="mt-8">
+                    <Link href="/ueber-uns" className="btn-glass btn-primary inline-flex">
+                      Mehr über uns <ArrowRightIcon className="h-4 w-4" />
+                    </Link>
+                  </div>
+                </Animated>
+              </div>
+
+              {/* Right — 2×3 icon grid, clean light cards */}
+              <div className="grid grid-cols-3 gap-4">
+                {werteList.map((item, i) => (
+                  <Animated key={item.label} variant="scale-up" delay={i * 70}>
+                    <div
+                      className={`flex flex-col items-center gap-3 rounded-2xl ${item.bg} p-5 shadow-sm ring-1 ring-black/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-md`}
+                    >
+                      <item.Icon className={`h-10 w-10 ${item.color}`} />
+                      <span className={`text-center text-xs font-bold ${item.color}`}>{item.label}</span>
+                    </div>
+                  </Animated>
+                ))}
+              </div>
+
+            </div>
           </Container>
         </section>
       )}
 
+      {/* ── UPCOMING EVENTS (Aktivitäten Teaser) ── */}
+      <HomeEventsSection events={upcomingEvents} />
+
+      {/* ── HIGHLIGHT CARDS ── */}
+
       {home.highlightCards && home.highlightCards.length > 0 && (
-        <section className="px-4 pb-20">
-          <Container>
-            <div className="grid gap-6 md:grid-cols-3">
+        <section className="section relative overflow-hidden bg-white">
+          <MosaicPattern className="pointer-events-none absolute bottom-0 right-0 w-48 select-none opacity-20 md:w-72" />
+          <Container className="max-w-7xl">
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {home.highlightCards.map((card, i) => {
+                const accent = accentColors[i % accentColors.length]
                 const Icon = iconMap[card.icon || 'heart']
                 const content = (
-                  <GlassCard key={i} className="group h-full p-8 transition-transform hover:-translate-y-1">
-                    <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-ocean-500 to-brand-500 text-white">
-                      <Icon className="h-7 w-7" />
-                    </div>
-                    <h3 className="mb-2 text-xl font-semibold text-ocean-900">{card.title}</h3>
-                    {card.text && <p className="text-ocean-800/75">{card.text}</p>}
-                    {card.link && (
-                      <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-brand-600">
-                        Mehr erfahren <ArrowRightIcon className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                      </span>
-                    )}
-                  </GlassCard>
+                  <Animated key={i} variant="fade-up" delay={i * 90}>
+                    <Card className="group relative h-full overflow-hidden p-8">
+                      <span className={`absolute inset-x-0 top-0 h-2 ${accent.bar}`} aria-hidden />
+                      <div className={`mb-6 flex h-14 w-14 items-center justify-center rounded-2xl ${accent.icon}`}>
+                        <Icon className="h-7 w-7" />
+                      </div>
+                      <h3 className="mb-3 font-display text-xl text-ocean-900">{card.title}</h3>
+                      {card.text && <p className="leading-relaxed text-ocean-700/85">{card.text}</p>}
+                      {card.link && (
+                        <span className={`mt-5 inline-flex items-center gap-1.5 text-sm font-bold ${accent.link}`}>
+                          Mehr erfahren{' '}
+                          <ArrowRightIcon className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                        </span>
+                      )}
+                    </Card>
+                  </Animated>
                 )
                 return card.link ? (
                   <Link key={i} href={card.link} className="block h-full">
@@ -98,33 +284,62 @@ export default async function HomePage() {
         </section>
       )}
 
+      {/* ── PROJECTS ── */}
       {projects.docs.length > 0 && (
-        <section className="px-4 pb-20">
-          <Container>
-            <div className="mb-10 flex items-end justify-between">
-              <h2 className="text-3xl font-bold text-ocean-900">
-                Unsere <span className="text-gradient">Projekte</span>
-              </h2>
-              <Link href="/projekt" className="hidden text-sm font-semibold text-brand-600 md:inline-flex items-center gap-1">
-                Alle Projekte <ArrowRightIcon className="h-4 w-4" />
-              </Link>
-            </div>
+        <section className="section relative overflow-hidden">
+          <MosaicPattern className="pointer-events-none absolute bottom-0 right-0 w-48 select-none opacity-20 md:w-72" />
+          <Container className="max-w-7xl">
+            <Animated variant="fade-up">
+              <div className="mb-12 flex flex-wrap items-end justify-between gap-6">
+                <div>
+                  <p className="mb-3 text-xs font-bold uppercase tracking-[0.18em] text-lav-500">
+                    Aktuelles
+                  </p>
+                  <h2 className="font-display text-4xl text-ocean-900 md:text-5xl">
+                    Unsere <span className="text-marker text-marker-lav">Projekte</span>
+                  </h2>
+                </div>
+                <Link
+                  href="/projekt"
+                  className="inline-flex items-center gap-1.5 text-sm font-bold text-brand-600 transition-colors hover:text-brand-500"
+                >
+                  Alle Projekte <ArrowRightIcon className="h-4 w-4" />
+                </Link>
+              </div>
+            </Animated>
             <div className="grid gap-6 md:grid-cols-3">
-              {projects.docs.map((project) => {
+              {projects.docs.map((project, i) => {
                 const image = typeof project.coverImage === 'object' ? project.coverImage : null
+                const accent = accentColors[i % accentColors.length]
                 return (
-                  <Link key={project.id} href={`/projekt/${project.slug}`}>
-                    <GlassCard className="h-full overflow-hidden transition-transform hover:-translate-y-1">
-                      {image?.url && (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img src={image.url} alt={image.alt || project.title} className="h-48 w-full object-cover" />
-                      )}
-                      <div className="p-6">
-                        <h3 className="mb-2 text-lg font-semibold text-ocean-900">{project.title}</h3>
-                        {project.excerpt && <p className="text-sm text-ocean-800/75">{project.excerpt}</p>}
-                      </div>
-                    </GlassCard>
-                  </Link>
+                  <Animated key={project.id} variant="fade-up" delay={i * 100}>
+                    <Link href={`/projekt/${project.slug}`} className="group block h-full">
+                      <Card className="h-full overflow-hidden">
+                        {image?.url && (
+                          <div className="relative overflow-hidden">
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img
+                              src={image.url}
+                              alt={image.alt || project.title}
+                              className="h-52 w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                            />
+                            <span className={`absolute inset-x-0 bottom-0 h-2 ${accent.bar}`} aria-hidden />
+                          </div>
+                        )}
+                        <div className="p-7">
+                          {project.partner && (
+                            <span className={`mb-3 inline-block rounded-full px-3 py-1 text-xs font-bold ${accent.icon}`}>
+                              {project.partner}
+                            </span>
+                          )}
+                          <h3 className="mb-2 font-display text-xl text-ocean-900">{project.title}</h3>
+                          {project.excerpt && (
+                            <p className="leading-relaxed text-ocean-700/85">{project.excerpt}</p>
+                          )}
+                        </div>
+                      </Card>
+                    </Link>
+                  </Animated>
                 )
               })}
             </div>
@@ -132,21 +347,46 @@ export default async function HomePage() {
         </section>
       )}
 
+      {/* ── CTA BAND ── */}
       {(home.ctaTitle || home.ctaText) && (
-        <section className="px-4 pb-24">
-          <Container>
-            <div className="glass-dark rounded-[2.5rem] p-10 text-center text-white md:p-16">
-              {home.ctaTitle && <h2 className="text-3xl font-bold md:text-4xl">{home.ctaTitle}</h2>}
-              {home.ctaText && <p className="mx-auto mt-4 max-w-2xl text-white/80">{home.ctaText}</p>}
-              <div className="mt-8">
+        <section className="relative overflow-hidden bg-ocean-900">
+          <MosaicPattern className="pointer-events-none absolute bottom-0 right-0 w-48 select-none opacity-20 md:w-72" />
+          <Container className="relative py-24 text-center md:py-32">
+            <Animated variant="scale-up">
+              <Image
+                src="/mosaik-emblem.png"
+                alt=""
+                width={440}
+                height={530}
+                className="mx-auto mb-8 h-20 w-auto drop-shadow-lg"
+              />
+            </Animated>
+            {home.ctaTitle && (
+              <Animated variant="fade-up" delay={120}>
+                <h2 className="text-balance font-display text-4xl text-white md:text-5xl">
+                  {home.ctaTitle}
+                </h2>
+              </Animated>
+            )}
+            {home.ctaText && (
+              <Animated variant="fade-up" delay={220}>
+                <p className="mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-white/75">
+                  {home.ctaText}
+                </p>
+              </Animated>
+            )}
+            <Animated variant="fade-up" delay={320}>
+              <div className="mt-10">
                 <Button href="/spenden">
                   Jetzt spenden <ArrowRightIcon className="h-4 w-4" />
                 </Button>
               </div>
-            </div>
+            </Animated>
           </Container>
         </section>
       )}
     </>
   )
 }
+
+

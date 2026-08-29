@@ -9,6 +9,8 @@ import { Users } from './collections/Users'
 import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
 import { Projects } from './collections/Projects'
+import { Subscribers } from './collections/Subscribers'
+import { Events } from './collections/Events'
 import { Header } from './globals/Header'
 import { Footer } from './globals/Footer'
 import { SiteSettings } from './globals/SiteSettings'
@@ -26,7 +28,9 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Pages, Projects],
+  collections: [Users, Media, Pages, Projects, Subscribers, Events],
+
+
   globals: [Header, Footer, SiteSettings, Homepage, Donation, ContactInfo],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
