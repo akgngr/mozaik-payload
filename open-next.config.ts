@@ -1,5 +1,7 @@
 import { defineCloudflareConfig } from '@opennextjs/cloudflare'
 
 export default defineCloudflareConfig({
-  // OpenNext Cloudflare config
+  external: {
+    packages: ['sharp', 'drizzle-kit', '@payloadcms/db-postgres'],
+  },
 })
