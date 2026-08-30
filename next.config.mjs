@@ -4,6 +4,7 @@ import { withPayload } from '@payloadcms/next/withPayload'
 const nextConfig = {
   serverExternalPackages: ['sharp', 'drizzle-kit', '@payloadcms/db-postgres'],
   images: {
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: 'https',
