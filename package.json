@@ -7,7 +7,7 @@
     "predev": "payload generate:types",
     "dev": "next dev",
     "build": "next build",
-    "build:worker": "vinext build",
+    "build:worker": "vinext build && mv dist/server dist/client/_worker.js",
     "deploy": "vinext-cloudflare deploy --config dist/server/wrangler.json",
     "start": "next start",
     "lint": "next lint",
