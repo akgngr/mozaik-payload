@@ -8,10 +8,9 @@ dist/
 node_modules/
 
 # generated
-src/app/(payload)/admin/importMap.js
-src/payload-types.ts
 *.tsbuildinfo
 next-env.d.ts
+
 
 # logs
 npm-debug.log*
