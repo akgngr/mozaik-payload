@@ -12,11 +12,8 @@ const nextConfig = {
       },
     ],
   },
-  turbopack: {
-    resolveAlias: {
-      '@payload-config': './src/payload.config.ts',
-    },
-  },
+  // Force webpack instead of Turbopack for OpenNext compatibility
+  turbopack: undefined,
 }
 
 export default withPayload(nextConfig, { devBundleServerPackages: false })
