@@ -8,6 +8,8 @@
     "dev": "next dev",
     "prebuild": "payload generate:types && payload generate:importmap",
     "build": "next build",
+    "build:worker": "opennextjs-cloudflare build",
+    "deploy": "opennextjs-cloudflare deploy",
     "start": "next start",
     "lint": "next lint",
     "payload": "payload",
@@ -18,6 +20,7 @@
     "seed": "payload run src/seed/index.ts"
   },
   "dependencies": {
+    "@opennextjs/cloudflare": "^1.0.0",
     "@payloadcms/db-postgres": "3.86.0",
     "@payloadcms/next": "3.86.0",
     "@payloadcms/richtext-lexical": "3.86.0",
@@ -37,8 +40,10 @@
     "@types/react": "19.2.17",
     "@types/react-dom": "19.2.3",
     "tailwindcss": "^4.1.0",
-    "typescript": "5.7.2"
+    "typescript": "5.7.2",
+    "wrangler": "^3.109.2"
   },
+
   "engines": {
     "node": "^18.20.2 || >=20.9.0"
   },
