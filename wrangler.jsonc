@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "mosaik-ruesselsheim",
+  "name": "mozaik-payload",
   "compatibility_date": "2024-12-01",
   "compatibility_flags": [
     "nodejs_compat"
@@ -9,4 +9,10 @@
     "directory": ".next",
     "binding": "ASSETS"
   }
+,
+  "main": "vinext/server/fetch-handler"
+,
+  "cache": { "enabled": true }
+,
+  "kv_namespaces": [{ "binding": "VINEXT_KV_CACHE", "id": "<your-kv-namespace-id>" }]
 }

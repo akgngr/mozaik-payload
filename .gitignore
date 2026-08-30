@@ -40,3 +40,5 @@ media/
 mosaik-mobile-restore/
 mosaik-mobile-restore-draft/
 
+.vinext/
+.wrangler/
