@@ -3,6 +3,7 @@ import { Container } from '@/components/Container'
 import { Card } from '@/components/Card'
 import { PageHero } from '@/components/PageHero'
 import { Button } from '@/components/Button'
+import { CopyButton } from '@/components/CopyButton'
 import { MosaicPattern } from '@/components/MosaicPattern'
 
 export const metadata = { title: 'Spenden' }
@@ -45,15 +46,19 @@ export default async function SpendenPage() {
                     {donation.bank.iban && (
                       <div className="flex flex-wrap items-center justify-between gap-2 py-3.5">
                         <dt className="font-medium text-ocean-800/70">IBAN</dt>
-                        <dd className="break-all font-semibold tracking-wide text-ocean-950">
-                          {donation.bank.iban}
+                        <dd className="flex min-w-0 items-center gap-2 font-semibold tracking-wide text-ocean-950">
+                          <span className="break-all">{donation.bank.iban}</span>
+                          <CopyButton value={donation.bank.iban} />
                         </dd>
                       </div>
                     )}
                     {donation.bank.bic && (
                       <div className="flex flex-wrap items-center justify-between gap-2 py-3.5">
                         <dt className="font-medium text-ocean-800/70">BIC</dt>
-                        <dd className="font-semibold text-ocean-950">{donation.bank.bic}</dd>
+                        <dd className="flex items-center gap-2 font-semibold text-ocean-950">
+                          <span>{donation.bank.bic}</span>
+                          <CopyButton value={donation.bank.bic} />
+                        </dd>
                       </div>
                     )}
                     {donation.bank.bankName && (
