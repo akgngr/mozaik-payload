@@ -97,8 +97,8 @@ export function HomeEventsSection({ events }: { events: EventType[] }) {
               }
 
               return (
-                <Animated key={ev.id} variant="fade-up" delay={i * 90}>
-                  <Card className="group relative flex h-full flex-col justify-between overflow-hidden p-7 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[var(--shadow-card-hover)]">
+                <Animated key={ev.id} variant="fade-up" delay={i * 90} className="min-w-0">
+                  <Card className="group relative flex h-full w-full flex-col justify-between overflow-hidden p-7 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[var(--shadow-card-hover)]">
                     {/* Top bar */}
                     <div className="space-y-4">
                       <div className="flex items-center justify-between gap-3">
