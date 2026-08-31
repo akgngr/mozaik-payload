@@ -467,7 +467,7 @@ export default async function HomePage() {
 
       {/* ── FAQ ── */}
       <section className="section relative overflow-hidden bg-white">
-        <MosaicPattern className="pointer-events-none absolute bottom-0 left-0 w-48 select-none opacity-15 md:w-64" />
+        <MosaicPattern className="pointer-events-none absolute bottom-0 left-0 w-48 -scale-x-100 select-none opacity-15 md:w-64" />
         <Container className="max-w-7xl">
           <div className="mx-auto max-w-3xl">
             <Animated variant="fade-up">

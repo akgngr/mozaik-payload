@@ -8,6 +8,8 @@ import { RichText } from '@/components/RichText'
 
 type Args = { params: Promise<{ slug: string }> }
 
+export const revalidate = 86400
+
 const getProject = async (slug: string) => {
   const payload = await getPayload()
   const result = await payload.find({

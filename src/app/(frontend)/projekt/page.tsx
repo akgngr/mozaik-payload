@@ -4,6 +4,8 @@ import { Container } from '@/components/Container'
 import { PageHero } from '@/components/PageHero'
 import { InfiniteProjectList } from '@/components/InfiniteProjectList'
 
+export const revalidate = 86400
+
 export const metadata = {
   title: 'Projekte',
   description:

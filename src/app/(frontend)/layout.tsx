@@ -9,7 +9,7 @@ import { organizationSchema, websiteSchema, jsonLdGraph } from '@/lib/seo'
 import { SITE_URL, SITE_NAME, SITE_DESCRIPTION, SITE_LOCALE } from '@/lib/site'
 import './globals.css'
 
-export const dynamic = 'force-dynamic'
+export const revalidate = 604800
 
 const sourceSans = Source_Sans_3({
   subsets: ['latin', 'latin-ext'],

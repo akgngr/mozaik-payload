@@ -7,6 +7,8 @@ import { EventCalendarView } from '@/components/EventCalendarView'
 import { MosaicPattern } from '@/components/MosaicPattern'
 import type { Event as EventType } from '@/payload-types'
 
+export const revalidate = 86400
+
 export const metadata: Metadata = {
   title: 'Aktivitäten & Veranstaltungskalender',
   description:
