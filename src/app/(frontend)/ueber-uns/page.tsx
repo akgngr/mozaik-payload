@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
 import { getPayload } from '@/lib/payload'
+import { getPageMetadata } from '@/components/PageContent'
 import { Container } from '@/components/Container'
 import { MosaicPattern } from '@/components/MosaicPattern'
 import { RichText } from '@/components/RichText'
@@ -18,18 +19,7 @@ import { notFound } from 'next/navigation'
 
 
 export async function generateMetadata(): Promise<Metadata> {
-  const payload = await getPayload()
-  const result = await payload.find({
-    collection: 'pages',
-    where: { slug: { equals: 'ueber-uns' } },
-    limit: 1,
-  })
-  const page = result.docs[0]
-  if (!page) return {}
-  return {
-    title: page.seo?.metaTitle || page.title,
-    description: page.seo?.metaDescription || undefined,
-  }
+  return getPageMetadata('ueber-uns')
 }
 
 // Brand values shown as colored tiles

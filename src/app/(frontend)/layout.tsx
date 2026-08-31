@@ -5,6 +5,8 @@ import { getPayload } from '@/lib/payload'
 import { Header } from '@/components/Header'
 import { Footer } from '@/components/Footer'
 import { NewsletterSection } from '@/components/NewsletterSection'
+import { organizationSchema, websiteSchema, jsonLdGraph } from '@/lib/seo'
+import { SITE_URL, SITE_NAME, SITE_DESCRIPTION, SITE_LOCALE } from '@/lib/site'
 import './globals.css'
 
 export const dynamic = 'force-dynamic'
@@ -24,21 +26,67 @@ const nunito = Nunito_Sans({
 export async function generateMetadata(): Promise<Metadata> {
   const payload = await getPayload()
   const settings = await payload.findGlobal({ slug: 'site-settings' })
+  const siteName = settings.siteName || SITE_NAME
+  const siteDescription = settings.siteDescription || SITE_DESCRIPTION
 
   return {
+    metadataBase: new URL(SITE_URL),
     title: {
-      default: settings.siteName || 'Mosaik Dialog und Kultur e.V.',
-      template: `%s | ${settings.siteName || 'Mosaik Dialog und Kultur e.V.'}`,
+      default: siteName,
+      template: `%s | ${siteName}`,
     },
-    description: settings.siteDescription || undefined,
+    description: siteDescription,
+    authors: [{ name: siteName }],
+    creator: siteName,
+    publisher: siteName,
+    category: 'Verein',
     icons: { icon: '/favicon.png' },
+    openGraph: {
+      type: 'website',
+      locale: SITE_LOCALE,
+      url: SITE_URL,
+      siteName,
+      title: siteName,
+      description: siteDescription,
+      images: [
+        {
+          url: `${SITE_URL}/mosaik-emblem.png`,
+          width: 440,
+          height: 530,
+          alt: siteName,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: siteName,
+      description: siteDescription,
+      images: [`${SITE_URL}/mosaik-emblem.png`],
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
+    },
   }
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const organization = organizationSchema()
+  const website = websiteSchema()
+
   return (
     <html lang="de" className={`${sourceSans.variable} ${nunito.variable}`}>
       <body className="font-sans antialiased">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdGraph(organization, website)) }}
+        />
         <div className="mosaic-strip h-1.5 w-full" />
         <Header />
         <main>{children}</main>

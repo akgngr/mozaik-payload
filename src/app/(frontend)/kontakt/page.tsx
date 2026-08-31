@@ -1,11 +1,21 @@
 import { getPayload } from '@/lib/payload'
+import { staticPageMetadata } from '@/lib/seo'
 import { Container } from '@/components/Container'
 import { Card } from '@/components/Card'
 import { PageHero } from '@/components/PageHero'
 import { ContactForm } from '@/components/ContactForm'
 import { ClockIcon, MailIcon, PhoneIcon, PinIcon } from '@/components/icons'
 
-export const metadata = { title: 'Kontakt' }
+export const metadata = {
+  title: 'Kontakt',
+  description:
+    'Kontaktieren Sie Mosaik Dialog und Kultur e.V. in Rüsselsheim – Telefon, E-Mail, Adresse und Öffnungszeiten auf einen Blick.',
+  ...staticPageMetadata(
+    '/kontakt',
+    'Kontakt',
+    'Kontaktieren Sie Mosaik Dialog und Kultur e.V. in Rüsselsheim – Telefon, E-Mail, Adresse und Öffnungszeiten auf einen Blick.',
+  ),
+}
 
 export default async function KontaktPage() {
   const payload = await getPayload()

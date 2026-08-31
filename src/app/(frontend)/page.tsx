@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
+import type { Metadata } from 'next'
 import { getPayload } from '@/lib/payload'
 import { Container } from '@/components/Container'
 import { Card } from '@/components/Card'
@@ -8,6 +9,9 @@ import { Slideshow } from '@/components/Slideshow'
 import { MosaicPattern } from '@/components/MosaicPattern'
 import { Animated } from '@/components/Animated'
 import { HomeEventsSection } from '@/components/HomeEventsSection'
+import { FaqAccordion, type FaqItem } from '@/components/FaqAccordion'
+import { jsonLdGraph, faqSchema, organizationSchema, websiteSchema } from '@/lib/seo'
+import { SITE_URL, SITE_NAME, SITE_DESCRIPTION, SITE_LOCALE } from '@/lib/site'
 import {
   ArrowRightIcon,
   iconMap,
@@ -19,6 +23,75 @@ import {
   CreativityIllustIcon,
 } from '@/components/icons'
 import type { Media, Event as EventType } from '@/payload-types'
+
+export async function generateMetadata(): Promise<Metadata> {
+  const payload = await getPayload()
+  const home = await payload.findGlobal({ slug: 'homepage' })
+
+  const heroTitle = home.heroTitle || SITE_NAME
+  const title = `${heroTitle} | Bildung & Integration`
+  const description = home.heroSubtitle || SITE_DESCRIPTION
+
+  return {
+    title,
+    description,
+    alternates: { canonical: '/' },
+    openGraph: {
+      type: 'website',
+      locale: SITE_LOCALE,
+      url: SITE_URL,
+      siteName: SITE_NAME,
+      title,
+      description,
+      images: [{ url: `${SITE_URL}/mosaik-emblem.png`, width: 440, height: 530, alt: title }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [`${SITE_URL}/mosaik-emblem.png`],
+    },
+  }
+}
+
+// FAQ based on the organisation's real data (no fabricated facts)
+const faqItems: FaqItem[] = [
+  {
+    question: 'Was ist Mosaik Dialog und Kultur e.V.?',
+    answer:
+      'Mosaik Dialog und Kultur ist ein eingetragener gemeinnütziger Verein mit Sitz in Rüsselsheim. Sein Ziel ist die Förderung von Bildung, Jugendarbeit und interkulturellem Dialog.',
+  },
+  {
+    question: 'Welche Angebote und Programme gibt es?',
+    answer:
+      'Der Verein bietet Sprachkurse, Nachhilfe, Sprachcafés, interkulturelle Kochabende, Familien-Kreativnachmittage, Bewerbungstrainings und Nachbarschaftsdialoge an. Das Angebot richtet sich an Kinder, Jugendliche und Erwachsene.',
+  },
+  {
+    question: 'Wo ist der Verein tätig?',
+    answer:
+      'Der Standort ist in der Bahnhofstr. 20 in 65428 Rüsselsheim. Der Wirkungskreis umfasst den Kreis Groß-Gerau und den Main-Taunus-Kreis.',
+  },
+  {
+    question: 'Wann ist das Büro geöffnet?',
+    answer:
+      'Das Büro ist von Montag bis Freitag zwischen 10:00 und 17:00 Uhr erreichbar. Am Wochenende bleibt es geschlossen.',
+  },
+  {
+    question: 'Wie kann ich den Verein unterstützen?',
+    answer:
+      'Sie können den Verein mit einer Spende unterstützen. Überweisen Sie dazu an IBAN DE10 5085 2553 0016 0896 58 (Kreissparkasse Groß-Gerau) mit dem Verwendungszweck „Spende“.',
+  },
+  {
+    question: 'Seit wann besteht der Verein?',
+    answer: 'Der Verein Mosaik Dialog und Kultur wurde im Jahr 2015 gegründet.',
+  },
+  {
+    question: 'Wie erreiche ich den Verein?',
+    answer:
+      'Erreichbar sind Sie unter der E-Mail-Adresse kontakt@mosaik-russelsheim.de oder telefonisch unter +49 179-7051273.',
+  },
+]
+
 
 // Pastel accents cycling through the brand palette
 const accentColors = [
@@ -95,6 +168,12 @@ export default async function HomePage() {
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(faqSchema(faqItems)),
+        }}
+      />
       {/* ── HERO ── */}
       <section className="relative flex min-h-[calc(100vh-6rem)] items-center overflow-hidden">
         <MosaicPattern className="pointer-events-none absolute bottom-0 right-0 w-48 select-none opacity-20 md:w-72" />
@@ -385,6 +464,35 @@ export default async function HomePage() {
           </Container>
         </section>
       )}
+
+      {/* ── FAQ ── */}
+      <section className="section relative overflow-hidden bg-white">
+        <MosaicPattern className="pointer-events-none absolute bottom-0 left-0 w-48 select-none opacity-15 md:w-64" />
+        <Container className="max-w-7xl">
+          <div className="mx-auto max-w-3xl">
+            <Animated variant="fade-up">
+              <p className="mb-3 text-center text-xs font-bold uppercase tracking-[0.18em] text-brand-500">
+                Häufige Fragen
+              </p>
+              <h2 className="text-balance text-center font-display text-4xl text-ocean-900 md:text-5xl">
+                Was macht Mosaik Dialog und Kultur e.V.?
+              </h2>
+            </Animated>
+            <Animated variant="fade-up" delay={80}>
+              <p className="mt-6 text-center text-lg leading-relaxed text-ocean-700/90">
+                Mosaik Dialog und Kultur ist ein <strong>gemeinnütziger Verein</strong> in
+                Rüsselsheim. Er fördert <strong>Bildung, Jugendarbeit und interkulturellen Dialog</strong>{' '}
+                im Kreis Groß-Gerau und im Main-Taunus-Kreis.
+              </p>
+            </Animated>
+            <Animated variant="fade-up" delay={160}>
+              <div className="mt-10">
+                <FaqAccordion items={faqItems} />
+              </div>
+            </Animated>
+          </div>
+        </Container>
+      </section>
     </>
   )
 }

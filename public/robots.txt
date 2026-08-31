@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://mosaik-russelsheim.de/sitemap-index.xml

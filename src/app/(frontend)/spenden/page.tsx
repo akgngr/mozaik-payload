@@ -1,4 +1,5 @@
 import { getPayload } from '@/lib/payload'
+import { staticPageMetadata } from '@/lib/seo'
 import { Container } from '@/components/Container'
 import { Card } from '@/components/Card'
 import { PageHero } from '@/components/PageHero'
@@ -6,7 +7,16 @@ import { Button } from '@/components/Button'
 import { CopyButton } from '@/components/CopyButton'
 import { MosaicPattern } from '@/components/MosaicPattern'
 
-export const metadata = { title: 'Spenden' }
+export const metadata = {
+  title: 'Spenden',
+  description:
+    'Unterstützen Sie Mosaik Dialog und Kultur e.V. mit Ihrer Spende. Spenden Sie per PayPal oder Banküberweisung und helfen Sie uns bei Bildung, Jugendarbeit und Integration in Rüsselsheim.',
+  ...staticPageMetadata(
+    '/spenden',
+    'Spenden',
+    'Unterstützen Sie Mosaik Dialog und Kultur e.V. mit Ihrer Spende. Spenden Sie per PayPal oder Banküberweisung und helfen Sie uns bei Bildung, Jugendarbeit und Integration in Rüsselsheim.',
+  ),
+}
 
 export default async function SpendenPage() {
   const payload = await getPayload()

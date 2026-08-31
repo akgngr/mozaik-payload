@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { getPayload } from '@/lib/payload'
+import { SITE_URL, SITE_NAME, SITE_LOCALE } from '@/lib/site'
 import { Container } from '@/components/Container'
 import { PageHero } from '@/components/PageHero'
 import { RichText } from '@/components/RichText'
@@ -21,7 +22,27 @@ export async function generateMetadata({ params }: Args): Promise<Metadata> {
   const { slug } = await params
   const project = await getProject(slug)
   if (!project) return {}
-  return { title: project.title, description: project.excerpt || undefined }
+  const title = project.title
+  const description = project.excerpt || undefined
+  const canonical = `/projekt/${slug}`
+  return {
+    title,
+    description,
+    alternates: { canonical },
+    openGraph: description
+      ? {
+          type: 'website',
+          locale: SITE_LOCALE,
+          url: `${SITE_URL}${canonical}`,
+          siteName: SITE_NAME,
+          title,
+          description,
+        }
+      : undefined,
+    twitter: description
+      ? { card: 'summary_large_image', title, description }
+      : undefined,
+  }
 }
 
 export default async function ProjectDetailPage({ params }: Args) {

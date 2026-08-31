@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { getPayload } from '@/lib/payload'
+import { staticPageMetadata } from '@/lib/seo'
 import { Container } from '@/components/Container'
 import { PageHero } from '@/components/PageHero'
 import { EventCalendarView } from '@/components/EventCalendarView'
@@ -7,9 +8,14 @@ import { MosaicPattern } from '@/components/MosaicPattern'
 import type { Event as EventType } from '@/payload-types'
 
 export const metadata: Metadata = {
-  title: 'Aktivitäten & Veranstaltungskalender | Mosaik Dialog und Kultur e.V.',
+  title: 'Aktivitäten & Veranstaltungskalender',
   description:
     'Aktuelle Termine, Sprachcafés, Kulturfeste, Workshops und Aktivitäten von Mosaik e.V. in Rüsselsheim. Mit 1-Klick-Kalendererinnerung.',
+  ...staticPageMetadata(
+    '/aktivitaet',
+    'Aktivitäten & Veranstaltungskalender',
+    'Aktuelle Termine, Sprachcafés, Kulturfeste, Workshops und Aktivitäten von Mosaik e.V. in Rüsselsheim. Mit 1-Klick-Kalendererinnerung.',
+  ),
 }
 
 // Fallback initial sample events if Payload has no events yet

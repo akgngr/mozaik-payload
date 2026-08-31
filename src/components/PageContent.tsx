@@ -1,5 +1,7 @@
 import { notFound } from 'next/navigation'
+import type { Metadata } from 'next'
 import { getPayload } from '@/lib/payload'
+import { SITE_URL, SITE_NAME, SITE_LOCALE } from '@/lib/site'
 import { Container } from './Container'
 import { PageHero } from './PageHero'
 import { RichText } from './RichText'
@@ -30,7 +32,7 @@ export const PageContent = async ({ slug }: { slug: string }) => {
   )
 }
 
-export const getPageMetadata = async (slug: string) => {
+export const getPageMetadata = async (slug: string): Promise<Metadata> => {
   const payload = await getPayload()
   const result = await payload.find({
     collection: 'pages',
@@ -39,8 +41,25 @@ export const getPageMetadata = async (slug: string) => {
   })
   const page = result.docs[0]
   if (!page) return {}
+  const title = page.seo?.metaTitle || page.title
+  const description = page.seo?.metaDescription || undefined
+  const canonical = `/${slug}`
   return {
-    title: page.seo?.metaTitle || page.title,
-    description: page.seo?.metaDescription || undefined,
+    title,
+    description,
+    alternates: { canonical },
+    openGraph: description
+      ? {
+          type: 'website',
+          locale: SITE_LOCALE,
+          url: `${SITE_URL}${canonical}`,
+          siteName: SITE_NAME,
+          title,
+          description,
+        }
+      : undefined,
+    twitter: description
+      ? { card: 'summary_large_image', title, description }
+      : undefined,
   }
 }
