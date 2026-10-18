@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { getPayload } from '@/lib/payload'
-import { staticPageMetadata } from '@/lib/seo'
+import { staticPageMetadata, eventSchema, breadcrumbSchema, jsonLdGraph } from '@/lib/seo'
 import { Container } from '@/components/Container'
 import { PageHero } from '@/components/PageHero'
 import { EventCalendarView } from '@/components/EventCalendarView'
@@ -89,8 +89,34 @@ export default async function AktivitaetPage() {
       ? result.docs
       : (initialDemoEvents as EventType[])
 
+  const eventSchemas = events.map((e) =>
+    eventSchema({
+      title: e.title,
+      description: e.excerpt || undefined,
+      startDate: e.eventDate,
+      endDate: e.endDate || undefined,
+      location: e.location || undefined,
+      imageUrl:
+        typeof e.image === 'object' && e.image !== null && 'url' in e.image
+          ? (e.image.url as string)
+          : undefined,
+    }),
+  )
+
+  const jsonLd = jsonLdGraph(
+    breadcrumbSchema([
+      { name: 'Startseite', path: '/' },
+      { name: 'Aktivitäten', path: '/aktivitaet' },
+    ]),
+    ...eventSchemas,
+  )
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <PageHero
         eyebrow="Veranstaltungskalender"
         title="Aktivitäten & Termine"

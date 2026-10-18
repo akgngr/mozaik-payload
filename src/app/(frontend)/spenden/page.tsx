@@ -1,5 +1,5 @@
 import { getPayload } from '@/lib/payload'
-import { staticPageMetadata } from '@/lib/seo'
+import { staticPageMetadata, donatePageSchema, breadcrumbSchema, jsonLdGraph } from '@/lib/seo'
 import { Container } from '@/components/Container'
 import { Card } from '@/components/Card'
 import { PageHero } from '@/components/PageHero'
@@ -22,8 +22,20 @@ export default async function SpendenPage() {
   const payload = await getPayload()
   const donation = await payload.findGlobal({ slug: 'donation' })
 
+  const jsonLd = jsonLdGraph(
+    donatePageSchema(),
+    breadcrumbSchema([
+      { name: 'Startseite', path: '/' },
+      { name: 'Spenden', path: '/spenden' },
+    ]),
+  )
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <PageHero eyebrow={donation.heroSubtitle} title={donation.heroTitle || 'Spenden'} subtitle={donation.heroText} />
 
       <section className="section">
@@ -104,7 +116,11 @@ export default async function SpendenPage() {
                   <Card key={i} className="overflow-hidden">
                     {image?.url && (
                       // eslint-disable-next-line @next/next/no-img-element
-                      <img src={image.url} alt={image.alt || card.title} className="h-48 w-full object-cover" />
+                      <img
+                        src={image.url}
+                        alt={image.alt || (card.title ? `Spendeninitiative: ${card.title}` : 'Mosaik Dialog und Kultur e.V. Spendenprojekt')}
+                        className="h-48 w-full object-cover"
+                      />
                     )}
                     <div className="p-7">
                       <h3 className="mb-2 text-xl font-semibold text-ocean-950">{card.title}</h3>

@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { getPayload } from '@/lib/payload'
 import { SITE_URL, SITE_NAME, SITE_LOCALE } from '@/lib/site'
+import { projectArticleSchema, breadcrumbSchema, jsonLdGraph } from '@/lib/seo'
 import { Container } from '@/components/Container'
 import { PageHero } from '@/components/PageHero'
 import { RichText } from '@/components/RichText'
@@ -67,8 +68,30 @@ export default async function ProjectDetailPage({ params }: Args) {
     // dedupe by media id (the same image can appear twice in the CMS list)
     .filter((img, i, all) => all.findIndex((other) => other.id === img.id) === i)
 
+  const article = projectArticleSchema({
+    title: project.title,
+    slug: project.slug,
+    excerpt: project.excerpt,
+    publishedDate: project.publishedDate,
+    updatedAt: project.updatedAt,
+    imageUrl: image?.url,
+    authorName: project.partner || undefined,
+  })
+
+  const breadcrumbs = breadcrumbSchema([
+    { name: 'Startseite', path: '/' },
+    { name: 'Projekte', path: '/projekt' },
+    { name: project.title, path: `/projekt/${project.slug}` },
+  ])
+
+  const jsonLd = jsonLdGraph(breadcrumbs, article)
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <PageHero eyebrow={project.partner} title={project.title} subtitle={project.excerpt} />
       <section className="section">
         <Container>
@@ -77,7 +100,7 @@ export default async function ProjectDetailPage({ params }: Args) {
               // eslint-disable-next-line @next/next/no-img-element
               <img
                 src={image.url}
-                alt={image.alt || project.title}
+                alt={image.alt || `Titelbild zum Projekt: ${project.title}`}
                 className="mb-10 h-80 w-full rounded-3xl border-8 border-white object-cover shadow-[var(--shadow-card)]"
               />
             )}
@@ -98,7 +121,7 @@ export default async function ProjectDetailPage({ params }: Args) {
                     <img
                       key={`${img.id ?? 'img'}-${i}`}
                       src={img.url || ''}
-                      alt={img.alt || `${project.title} – Bild ${i + 1}`}
+                      alt={img.alt || `Impression aus dem Projekt ${project.title} (Bild ${i + 1})`}
                       className={`w-full rounded-2xl object-cover shadow-[var(--shadow-card)] ${
                         gallery.length % 3 === 1 && i === gallery.length - 1
                           ? 'sm:col-span-2 aspect-[2/1]'

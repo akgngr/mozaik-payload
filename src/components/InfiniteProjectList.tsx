@@ -97,7 +97,7 @@ export function InfiniteProjectList({ initialProjects, initialHasNextPage }: Pro
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={image.url}
-                        alt={image.alt || project.title}
+                        alt={image.alt?.trim() ? image.alt : (project.title ? `Projekt: ${project.title}` : 'Mosaik Dialog und Kultur e.V. Projekt')}
                         className="h-52 w-full object-cover transition-transform duration-500 group-hover:scale-105"
                       />
                       <span

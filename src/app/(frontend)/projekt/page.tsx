@@ -1,5 +1,5 @@
 import { getPayload } from '@/lib/payload'
-import { staticPageMetadata } from '@/lib/seo'
+import { staticPageMetadata, breadcrumbSchema, webPageSchema, jsonLdGraph } from '@/lib/seo'
 import { Container } from '@/components/Container'
 import { PageHero } from '@/components/PageHero'
 import { InfiniteProjectList } from '@/components/InfiniteProjectList'
@@ -26,8 +26,25 @@ export default async function ProjektIndexPage() {
     sort: '-publishedDate',
   })
 
+  const jsonLd = jsonLdGraph(
+    webPageSchema({
+      title: 'Projekte',
+      slug: 'projekt',
+      description:
+        'Unsere laufenden Projekte und Initiativen von Mosaik Dialog und Kultur e.V. – Sprachkurse, Nachhilfe, Jugend- und Flüchtlingshilfe im Kreis Groß-Gerau.',
+    }),
+    breadcrumbSchema([
+      { name: 'Startseite', path: '/' },
+      { name: 'Projekte', path: '/projekt' },
+    ]),
+  )
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <PageHero
         eyebrow="Gemeinsam aktiv"
         title="Unsere Projekte"

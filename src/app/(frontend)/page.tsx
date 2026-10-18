@@ -224,13 +224,13 @@ export default async function HomePage() {
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={secondaryImage.url}
-                      alt={secondaryImage.alt || ''}
+                      alt={secondaryImage.alt?.trim() ? secondaryImage.alt : 'Mosaik Dialog und Kultur e.V. – Gemeinschaftliches Engagement'}
                       className="aspect-square w-full object-cover"
                     />
                   </div>
                 )}
                 <div className="absolute -right-5 -top-8 hidden h-24 w-24 items-center justify-center rounded-full bg-white p-2.5 shadow-[var(--shadow-card)] md:flex">
-                  <Image src="/mosaik-emblem.png" alt="" width={564} height={564} className="h-full w-auto object-contain" />
+                  <Image src="/mosaik-emblem.png" alt="Mosaik Dialog und Kultur e.V. Emblem" width={564} height={564} className="h-full w-auto object-contain" />
                 </div>
               </div>
             </Animated>
@@ -396,7 +396,7 @@ export default async function HomePage() {
                             {/* eslint-disable-next-line @next/next/no-img-element */}
                             <img
                               src={image.url}
-                              alt={image.alt || project.title}
+                              alt={image.alt?.trim() ? image.alt : (project.title ? `Projekt: ${project.title}` : 'Mosaik Dialog und Kultur e.V. Projekt')}
                               className="h-52 w-full object-cover transition-transform duration-500 group-hover:scale-105"
                             />
                             <span className={`absolute inset-x-0 bottom-0 h-1.5 ${accent.bar}`} aria-hidden />
@@ -431,7 +431,7 @@ export default async function HomePage() {
             <Animated variant="scale-up">
               <Image
                 src="/mosaik-emblem.png"
-                alt=""
+                alt="Mosaik Dialog und Kultur e.V. Emblem"
                 width={564}
                 height={564}
                 className="mx-auto mb-8 h-20 w-auto drop-shadow-md object-contain"

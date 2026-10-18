@@ -1,5 +1,5 @@
 import { getPayload } from '@/lib/payload'
-import { staticPageMetadata } from '@/lib/seo'
+import { staticPageMetadata, contactPageSchema, breadcrumbSchema, jsonLdGraph } from '@/lib/seo'
 import { Container } from '@/components/Container'
 import { Card } from '@/components/Card'
 import { PageHero } from '@/components/PageHero'
@@ -21,8 +21,20 @@ export default async function KontaktPage() {
   const payload = await getPayload()
   const contact = await payload.findGlobal({ slug: 'contact-info' })
 
+  const jsonLd = jsonLdGraph(
+    contactPageSchema(),
+    breadcrumbSchema([
+      { name: 'Startseite', path: '/' },
+      { name: 'Kontakt', path: '/kontakt' },
+    ]),
+  )
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <PageHero title={contact.heroTitle || 'Kontaktieren Sie uns'} subtitle={contact.heroText} />
 
       <section className="section">

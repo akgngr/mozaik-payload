@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { getPayload } from '@/lib/payload'
 import { SITE_URL, SITE_NAME, SITE_LOCALE } from '@/lib/site'
+import { breadcrumbSchema, webPageSchema, jsonLdGraph } from '@/lib/seo'
 import { Container } from './Container'
 import { PageHero } from './PageHero'
 import { RichText } from './RichText'
@@ -17,8 +18,24 @@ export const PageContent = async ({ slug }: { slug: string }) => {
   const page = result.docs[0]
   if (!page) notFound()
 
+  const jsonLd = jsonLdGraph(
+    webPageSchema({
+      title: page.title,
+      slug,
+      description: page.heroSubtitle || page.seo?.metaDescription || null,
+    }),
+    breadcrumbSchema([
+      { name: 'Startseite', path: '/' },
+      { name: page.title, path: `/${slug}` },
+    ]),
+  )
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <PageHero eyebrow={page.heroEyebrow} title={page.title} subtitle={page.heroSubtitle} />
       <section className="section">
         <Container>

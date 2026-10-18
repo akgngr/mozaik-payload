@@ -24,7 +24,7 @@ export const Slideshow = ({ slides }: { slides: Slide[] }) => {
         <Image
           key={slide.url}
           src={slide.url}
-          alt={slide.alt}
+          alt={slide.alt?.trim() ? slide.alt : `Mosaik Dialog und Kultur e.V. – Impression ${i + 1}`}
           fill
           priority={i === 0}
           sizes="(max-width: 1024px) 100vw, 50vw"

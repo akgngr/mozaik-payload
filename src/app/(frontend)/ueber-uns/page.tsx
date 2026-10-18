@@ -3,6 +3,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { getPayload } from '@/lib/payload'
 import { getPageMetadata } from '@/components/PageContent'
+import { aboutPageSchema, breadcrumbSchema, jsonLdGraph } from '@/lib/seo'
 import { Container } from '@/components/Container'
 import { MosaicPattern } from '@/components/MosaicPattern'
 import { RichText } from '@/components/RichText'
@@ -91,8 +92,20 @@ export default async function UeberUnsPage() {
   const page = result.docs[0]
   if (!page) notFound()
 
+  const jsonLd = jsonLdGraph(
+    aboutPageSchema(),
+    breadcrumbSchema([
+      { name: 'Startseite', path: '/' },
+      { name: 'Über uns', path: '/ueber-uns' },
+    ]),
+  )
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {/* ── HERO ── Clean layout */}
       <section className="relative overflow-hidden">
         {/* Subtle background */}
@@ -214,7 +227,7 @@ export default async function UeberUnsPage() {
         <Container className="relative text-center">
           <Image
             src="/mosaik-emblem.png"
-            alt="Mosaik Emblem"
+            alt="Mosaik Dialog und Kultur e.V. Emblem"
             width={564}
             height={564}
             className="mx-auto mb-8 h-20 w-auto object-contain drop-shadow-md"
