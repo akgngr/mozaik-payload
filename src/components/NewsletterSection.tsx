@@ -55,13 +55,13 @@ export function NewsletterSection() {
 
       {/* Decorative ambient gradients */}
       <div
-        className="pointer-events-none absolute -top-24 left-1/4 h-72 w-72 rounded-full opacity-40 blur-3xl"
-        style={{ background: 'radial-gradient(circle, #a8e5e2 0%, transparent 70%)' }}
+        className="pointer-events-none absolute -top-24 left-1/4 h-72 w-72 rounded-full opacity-30 blur-3xl"
+        style={{ background: 'radial-gradient(circle, rgba(1, 84, 148, 0.12) 0%, transparent 70%)' }}
         aria-hidden
       />
       <div
-        className="pointer-events-none absolute -bottom-24 right-1/4 h-72 w-72 rounded-full opacity-30 blur-3xl"
-        style={{ background: 'radial-gradient(circle, #ded2f2 0%, transparent 70%)' }}
+        className="pointer-events-none absolute -bottom-24 right-1/4 h-72 w-72 rounded-full opacity-25 blur-3xl"
+        style={{ background: 'radial-gradient(circle, rgba(251, 173, 29, 0.12) 0%, transparent 70%)' }}
         aria-hidden
       />
 
@@ -69,7 +69,7 @@ export function NewsletterSection() {
         <Animated variant="scale-up">
           <div className="relative overflow-hidden rounded-[2.5rem] bg-white p-8 md:p-14 shadow-[var(--shadow-card)] border border-ocean-100/80">
             {/* Top brand accent bar */}
-            <div className="mosaic-strip absolute inset-x-0 top-0 h-2" aria-hidden />
+            <div className="mosaic-strip absolute inset-x-0 top-0 h-1.5 opacity-80" aria-hidden />
 
             <div className="mx-auto max-w-2xl text-center">
               <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-brand-50 text-brand-600 shadow-sm">
@@ -81,7 +81,7 @@ export function NewsletterSection() {
               </span>
 
               <h2 className="text-balance font-display text-3xl font-extrabold text-ocean-900 md:text-4xl">
-                Abonnieren Sie unseren <span className="text-marker text-marker-teal">Newsletter</span>
+                Abonnieren Sie unseren <span className="text-marker">Newsletter</span>
               </h2>
 
               <p className="mt-4 text-base leading-relaxed text-ocean-700/90 md:text-lg">

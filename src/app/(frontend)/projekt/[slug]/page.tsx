@@ -82,11 +82,11 @@ export default async function ProjectDetailPage({ params }: Args) {
               />
             )}
             {(date || project.partner) && (
-              <p className="mb-8 flex flex-wrap items-center gap-3 text-sm font-bold uppercase tracking-[0.14em] text-lav-500">
+              <p className="mb-8 flex flex-wrap items-center gap-3 text-sm font-semibold uppercase tracking-[0.14em] text-ocean-600">
                 {date && <span>{date}</span>}
               </p>
             )}
-            <div className="mosaic-strip mb-10 h-1.5 w-24 rounded-full" aria-hidden />
+            <div className="mosaic-strip mb-10 h-1 w-20 rounded-full opacity-70" aria-hidden />
             <RichText data={project.content} />
 
             {gallery.length > 0 && (

@@ -19,28 +19,28 @@ const categoryConfig: Record<
 > = {
   education: {
     label: 'Sprache & Bildung',
-    badge: 'bg-brand-100 text-brand-700',
+    badge: 'bg-blue-50 text-blue-800 border border-blue-200/60',
     bg: 'bg-brand-500',
   },
   culture: {
     label: 'Kultur & Fest',
-    badge: 'bg-salmon-100 text-salmon-700',
-    bg: 'bg-salmon-400',
+    badge: 'bg-amber-50 text-amber-800 border border-amber-200/60',
+    bg: 'bg-amber-500',
   },
   youth: {
     label: 'Jugend & Familie',
-    badge: 'bg-lav-100 text-lav-700',
-    bg: 'bg-lav-500',
+    badge: 'bg-emerald-50 text-emerald-800 border border-emerald-200/60',
+    bg: 'bg-emerald-600',
   },
   dialog: {
     label: 'Dialog & Treffpunkt',
-    badge: 'bg-aqua-100 text-aqua-700',
-    bg: 'bg-aqua-500',
+    badge: 'bg-sky-50 text-sky-800 border border-sky-200/60',
+    bg: 'bg-sky-600',
   },
   workshop: {
     label: 'Workshop & Kurs',
-    badge: 'bg-citrus-100 text-citrus-800',
-    bg: 'bg-citrus-500',
+    badge: 'bg-rose-50 text-rose-800 border border-rose-200/60',
+    bg: 'bg-rose-600',
   },
 }
 
@@ -61,12 +61,12 @@ export function HomeEventsSection({ events }: { events: EventType[] }) {
                   Termine & Treffpunkte
                 </span>
                 <h2 className="text-balance font-display text-4xl text-ocean-900 md:text-5xl">
-                  Anstehende <span className="text-marker text-marker-teal">Aktivitäten</span>
+                  Anstehende <span className="text-marker">Aktivitäten</span>
                 </h2>
               </div>
               <Link
                 href="/aktivitaet"
-                className="inline-flex items-center gap-2 rounded-full border-2 border-brand-200 bg-white px-5 py-2.5 text-xs font-extrabold text-brand-600 shadow-sm transition-all hover:bg-brand-500 hover:border-brand-500 hover:text-white"
+                className="inline-flex items-center gap-2 rounded-full border border-ocean-200 bg-white px-5 py-2.5 text-xs font-bold text-ocean-800 shadow-sm transition-all hover:border-brand-500 hover:text-brand-600"
               >
                 Alle Aktivitäten anzeigen <ArrowRightIcon className="h-4 w-4" />
               </Link>
@@ -98,17 +98,17 @@ export function HomeEventsSection({ events }: { events: EventType[] }) {
 
               return (
                 <Animated key={ev.id} variant="fade-up" delay={i * 90} className="min-w-0">
-                  <Card className="group relative flex h-full w-full flex-col justify-between overflow-hidden p-7 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[var(--shadow-card-hover)]">
+                  <Card className="group relative flex h-full w-full flex-col justify-between overflow-hidden p-7 border border-ocean-100/90 transition-all duration-300 hover:-translate-y-1 hover:shadow-[var(--shadow-card-hover)] hover:border-ocean-300">
                     {/* Top bar */}
                     <div className="space-y-4">
                       <div className="flex items-center justify-between gap-3">
                         <div
-                          className={`flex h-14 w-14 flex-col items-center justify-center rounded-2xl ${catInfo.bg} text-white shadow-sm`}
+                          className="flex h-14 w-14 flex-col items-center justify-center rounded-2xl bg-ocean-900 text-white shadow-sm"
                         >
-                          <span className="text-[10px] font-bold uppercase tracking-wider opacity-90">
+                          <span className="text-[10px] font-bold uppercase tracking-wider text-amber-400">
                             {month}
                           </span>
-                          <span className="font-display text-2xl font-extrabold leading-none">
+                          <span className="font-display text-2xl font-bold leading-none">
                             {day}
                           </span>
                         </div>

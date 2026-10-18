@@ -25,11 +25,11 @@ export function organizationSchema() {
     logo: {
       '@type': 'ImageObject',
       '@id': `${SITE_URL}/#logo`,
-      url: `${SITE_URL}/mosaik-emblem.png`,
-      width: 440,
-      height: 530,
+      url: `${SITE_URL}/mosaik-logo.png`,
+      width: 1024,
+      height: 353,
     },
-    image: `${SITE_URL}/mosaik-emblem.png`,
+    image: `${SITE_URL}/mosaik-logo.png`,
     sameAs: [SITE_URL],
   }
 }

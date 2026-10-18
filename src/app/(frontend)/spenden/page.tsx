@@ -43,7 +43,7 @@ export default async function SpendenPage() {
               {donation.bank && (
                 <div className="mt-12">
                   <h3 className="mb-5 flex items-center gap-3 text-lg font-semibold text-ocean-950">
-                    <span className="mosaic-strip h-5 w-1.5 rounded-full" aria-hidden />
+                    <span className="h-5 w-1.5 rounded-full bg-brand-500" aria-hidden />
                     Bankverbindung
                   </h3>
                   <dl className="divide-y divide-ocean-100 rounded-2xl border border-ocean-100 bg-ocean-50/50 px-6 text-sm">
@@ -95,7 +95,7 @@ export default async function SpendenPage() {
         <section className="section pt-0">
           <Container>
             <h2 className="mb-12 text-center font-display text-4xl text-ocean-900 md:text-5xl">
-              Ihre <span className="text-marker text-marker-teal">Wirkung</span>
+              Ihre <span className="text-marker">Wirkung</span>
             </h2>
             <div className="grid gap-6 md:grid-cols-3">
               {donation.impactCards.map((card, i) => {

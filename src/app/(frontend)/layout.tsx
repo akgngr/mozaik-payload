@@ -50,9 +50,9 @@ export async function generateMetadata(): Promise<Metadata> {
       description: siteDescription,
       images: [
         {
-          url: `${SITE_URL}/mosaik-emblem.png`,
-          width: 440,
-          height: 530,
+          url: `${SITE_URL}/mosaik-logo.png`,
+          width: 1024,
+          height: 353,
           alt: siteName,
         },
       ],
@@ -61,7 +61,7 @@ export async function generateMetadata(): Promise<Metadata> {
       card: 'summary_large_image',
       title: siteName,
       description: siteDescription,
-      images: [`${SITE_URL}/mosaik-emblem.png`],
+      images: [`${SITE_URL}/mosaik-logo.png`],
     },
     robots: {
       index: true,
@@ -87,7 +87,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdGraph(organization, website)) }}
         />
-        <div className="mosaic-strip h-1.5 w-full" />
+        <div className="mosaic-strip h-1 w-full opacity-70" />
         <Header />
         <main>{children}</main>
         <NewsletterSection />

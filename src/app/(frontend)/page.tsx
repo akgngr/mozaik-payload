@@ -43,13 +43,13 @@ export async function generateMetadata(): Promise<Metadata> {
       siteName: SITE_NAME,
       title,
       description,
-      images: [{ url: `${SITE_URL}/mosaik-emblem.png`, width: 440, height: 530, alt: title }],
+      images: [{ url: `${SITE_URL}/mosaik-logo.png`, width: 1024, height: 353, alt: title }],
     },
     twitter: {
       card: 'summary_large_image',
       title,
       description,
-      images: [`${SITE_URL}/mosaik-emblem.png`],
+      images: [`${SITE_URL}/mosaik-logo.png`],
     },
   }
 }
@@ -93,14 +93,12 @@ const faqItems: FaqItem[] = [
 ]
 
 
-// Pastel accents cycling through the brand palette
+// Refined accents derived from the 4 logo emblem quadrants
 const accentColors = [
-  { icon: 'bg-brand-50 text-brand-600', bar: 'bg-brand-400', link: 'text-brand-600' },
-  { icon: 'bg-aqua-50 text-aqua-600', bar: 'bg-aqua-400', link: 'text-aqua-600' },
-  { icon: 'bg-lav-50 text-lav-600', bar: 'bg-lav-400', link: 'text-lav-600' },
-  { icon: 'bg-salmon-50 text-salmon-600', bar: 'bg-salmon-400', link: 'text-salmon-600' },
-  { icon: 'bg-citrus-50 text-citrus-600', bar: 'bg-citrus-400', link: 'text-citrus-600' },
-  { icon: 'bg-leaf-50 text-leaf-600', bar: 'bg-leaf-400', link: 'text-leaf-600' },
+  { icon: 'bg-blue-50 text-brand-600', bar: 'bg-brand-500', link: 'text-brand-600' },
+  { icon: 'bg-amber-50 text-amber-700', bar: 'bg-amber-500', link: 'text-amber-700' },
+  { icon: 'bg-emerald-50 text-emerald-700', bar: 'bg-emerald-600', link: 'text-emerald-700' },
+  { icon: 'bg-rose-50 text-rose-700', bar: 'bg-rose-600', link: 'text-rose-700' },
 ]
 
 // Fallback demo events if CMS is empty
@@ -138,12 +136,12 @@ const initialDemoEvents: Partial<EventType>[] = [
 ]
 
 const werteList = [
-  { Icon: HandshakeIllustIcon, label: 'Begegnung', color: 'text-brand-500', bg: 'bg-brand-50' },
-  { Icon: GlobeIllustIcon,     label: 'Vielfalt',   color: 'text-lav-500',  bg: 'bg-lav-50'  },
-  { Icon: DialogIllustIcon,    label: 'Dialog',     color: 'text-aqua-600', bg: 'bg-aqua-50' },
-  { Icon: SproutIllustIcon,    label: 'Wachstum',   color: 'text-leaf-600', bg: 'bg-leaf-50' },
-  { Icon: SolidarityIllustIcon,label: 'Solidarität',color: 'text-salmon-600',bg: 'bg-salmon-50'},
-  { Icon: CreativityIllustIcon,label: 'Kreativität',color: 'text-citrus-600',bg:'bg-citrus-50'},
+  { Icon: HandshakeIllustIcon, label: 'Begegnung', color: 'text-brand-600', iconBg: 'bg-blue-50' },
+  { Icon: GlobeIllustIcon,     label: 'Vielfalt',   color: 'text-amber-700', iconBg: 'bg-amber-50' },
+  { Icon: DialogIllustIcon,    label: 'Dialog',     color: 'text-brand-600', iconBg: 'bg-blue-50' },
+  { Icon: SproutIllustIcon,    label: 'Wachstum',   color: 'text-emerald-700', iconBg: 'bg-emerald-50' },
+  { Icon: SolidarityIllustIcon,label: 'Solidarität',color: 'text-rose-700', iconBg: 'bg-rose-50' },
+  { Icon: CreativityIllustIcon,label: 'Kreativität',color: 'text-amber-700', iconBg: 'bg-amber-50' },
 ]
 
 export default async function HomePage() {
@@ -231,8 +229,8 @@ export default async function HomePage() {
                     />
                   </div>
                 )}
-                <div className="absolute -right-5 -top-8 hidden h-24 w-24 items-center justify-center rounded-full bg-white p-2 shadow-[var(--shadow-card)] md:flex">
-                  <Image src="/mosaik-emblem.png" alt="" width={440} height={530} className="h-full w-auto" />
+                <div className="absolute -right-5 -top-8 hidden h-24 w-24 items-center justify-center rounded-full bg-white p-2.5 shadow-[var(--shadow-card)] md:flex">
+                  <Image src="/mosaik-emblem.png" alt="" width={564} height={564} className="h-full w-auto object-contain" />
                 </div>
               </div>
             </Animated>
@@ -240,7 +238,7 @@ export default async function HomePage() {
         </Container>
       </section>
 
-      <div className="mosaic-strip h-1.5 w-full" aria-hidden />
+      <div className="mosaic-strip h-1 w-full opacity-70" aria-hidden />
 
       {/* ── ÜBER UNS TEASER ── Clean split layout with icon row */}
       {(home.introTitle || home.introText) && (
@@ -248,9 +246,9 @@ export default async function HomePage() {
           <div
             className="pointer-events-none absolute inset-0"
             aria-hidden
-            style={{ background: 'linear-gradient(135deg, #eefaf9 0%, #faf6ef 55%, #f7f4fc 100%)' }}
+            style={{ background: 'linear-gradient(135deg, #f8fafc 0%, #faf9f6 50%, #f1f5f9 100%)' }}
           />
-          <MosaicPattern className="pointer-events-none absolute bottom-0 right-0 w-56 select-none opacity-12" />
+          <MosaicPattern className="pointer-events-none absolute bottom-0 right-0 w-56 select-none opacity-10" />
 
           <Container className="relative max-w-7xl">
             <div className="grid items-center gap-16 lg:grid-cols-2">
@@ -258,7 +256,7 @@ export default async function HomePage() {
               {/* Left — text */}
               <div>
                 <Animated variant="fade-right">
-                  <p className="mb-4 text-xs font-bold uppercase tracking-[0.18em] text-brand-500">
+                  <p className="mb-4 text-xs font-bold uppercase tracking-[0.18em] text-brand-600">
                     Über uns
                   </p>
                 </Animated>
@@ -277,18 +275,15 @@ export default async function HomePage() {
                   </Animated>
                 )}
                 <Animated variant="fade-up" delay={240}>
-                  <div className="mt-8 flex flex-wrap gap-2">
-                    {['Begegnung', 'Vielfalt', 'Dialog', 'Wachstum'].map((v, i) => {
-                      const cls = [
-                        'bg-brand-100 text-brand-700',
-                        'bg-lav-100 text-lav-700',
-                        'bg-aqua-100 text-aqua-700',
-                        'bg-leaf-100 text-leaf-700',
-                      ][i]
-                      return (
-                        <span key={v} className={`rounded-full px-4 py-1.5 text-sm font-bold ${cls}`}>{v}</span>
-                      )
-                    })}
+                  <div className="mt-8 flex flex-wrap gap-2.5">
+                    {['Begegnung', 'Vielfalt', 'Dialog', 'Wachstum'].map((v) => (
+                      <span
+                        key={v}
+                        className="rounded-full border border-ocean-200/80 bg-white px-4 py-1.5 text-sm font-semibold text-ocean-800 shadow-sm"
+                      >
+                        {v}
+                      </span>
+                    ))}
                   </div>
                 </Animated>
                 <Animated variant="fade-up" delay={320}>
@@ -305,10 +300,12 @@ export default async function HomePage() {
                 {werteList.map((item, i) => (
                   <Animated key={item.label} variant="scale-up" delay={i * 70}>
                     <div
-                      className={`flex flex-col items-center gap-3 rounded-2xl ${item.bg} p-5 shadow-sm ring-1 ring-black/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-md`}
+                      className="flex flex-col items-center gap-3 rounded-2xl bg-white p-5 border border-ocean-100 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md hover:border-ocean-200"
                     >
-                      <item.Icon className={`h-10 w-10 ${item.color}`} />
-                      <span className={`text-center text-xs font-bold ${item.color}`}>{item.label}</span>
+                      <div className={`flex h-12 w-12 items-center justify-center rounded-xl ${item.iconBg}`}>
+                        <item.Icon className={`h-6 w-6 ${item.color}`} />
+                      </div>
+                      <span className="text-center text-xs font-bold text-ocean-900">{item.label}</span>
                     </div>
                   </Animated>
                 ))}
@@ -326,7 +323,7 @@ export default async function HomePage() {
 
       {home.highlightCards && home.highlightCards.length > 0 && (
         <section className="section relative overflow-hidden bg-white">
-          <MosaicPattern className="pointer-events-none absolute bottom-0 right-0 w-48 select-none opacity-20 md:w-72" />
+          <MosaicPattern className="pointer-events-none absolute bottom-0 right-0 w-48 select-none opacity-15 md:w-72" />
           <Container className="max-w-7xl">
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {home.highlightCards.map((card, i) => {
@@ -334,8 +331,8 @@ export default async function HomePage() {
                 const Icon = iconMap[card.icon || 'heart']
                 const content = (
                   <Animated key={i} variant="fade-up" delay={i * 90}>
-                    <Card className="group relative h-full overflow-hidden p-8">
-                      <span className={`absolute inset-x-0 top-0 h-2 ${accent.bar}`} aria-hidden />
+                    <Card className="group relative h-full overflow-hidden p-8 border border-ocean-100/90 hover:border-ocean-300">
+                      <span className={`absolute inset-x-0 top-0 h-1.5 ${accent.bar}`} aria-hidden />
                       <div className={`mb-6 flex h-14 w-14 items-center justify-center rounded-2xl ${accent.icon}`}>
                         <Icon className="h-7 w-7" />
                       </div>
@@ -366,16 +363,16 @@ export default async function HomePage() {
       {/* ── PROJECTS ── */}
       {projects.docs.length > 0 && (
         <section className="section relative overflow-hidden">
-          <MosaicPattern className="pointer-events-none absolute bottom-0 right-0 w-48 select-none opacity-20 md:w-72" />
+          <MosaicPattern className="pointer-events-none absolute bottom-0 right-0 w-48 select-none opacity-15 md:w-72" />
           <Container className="max-w-7xl">
             <Animated variant="fade-up">
               <div className="mb-12 flex flex-wrap items-end justify-between gap-6">
                 <div>
-                  <p className="mb-3 text-xs font-bold uppercase tracking-[0.18em] text-lav-500">
+                  <p className="mb-3 text-xs font-bold uppercase tracking-[0.18em] text-brand-600">
                     Aktuelles
                   </p>
                   <h2 className="font-display text-4xl text-ocean-900 md:text-5xl">
-                    Unsere <span className="text-marker text-marker-lav">Projekte</span>
+                    Unsere <span className="text-marker">Projekte</span>
                   </h2>
                 </div>
                 <Link
@@ -393,7 +390,7 @@ export default async function HomePage() {
                 return (
                   <Animated key={project.id} variant="fade-up" delay={i * 100}>
                     <Link href={`/projekt/${project.slug}`} className="group block h-full">
-                      <Card className="h-full overflow-hidden">
+                      <Card className="h-full overflow-hidden border border-ocean-100/80">
                         {image?.url && (
                           <div className="relative overflow-hidden">
                             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -402,7 +399,7 @@ export default async function HomePage() {
                               alt={image.alt || project.title}
                               className="h-52 w-full object-cover transition-transform duration-500 group-hover:scale-105"
                             />
-                            <span className={`absolute inset-x-0 bottom-0 h-2 ${accent.bar}`} aria-hidden />
+                            <span className={`absolute inset-x-0 bottom-0 h-1.5 ${accent.bar}`} aria-hidden />
                           </div>
                         )}
                         <div className="p-7">
@@ -428,16 +425,16 @@ export default async function HomePage() {
 
       {/* ── CTA BAND ── */}
       {(home.ctaTitle || home.ctaText) && (
-        <section className="relative overflow-hidden bg-ocean-900">
-          <MosaicPattern className="pointer-events-none absolute bottom-0 right-0 w-48 select-none opacity-20 md:w-72" />
+        <section className="relative overflow-hidden bg-ocean-950">
+          <MosaicPattern className="pointer-events-none absolute bottom-0 right-0 w-48 select-none opacity-15 md:w-72" />
           <Container className="relative py-24 text-center md:py-32">
             <Animated variant="scale-up">
               <Image
                 src="/mosaik-emblem.png"
                 alt=""
-                width={440}
-                height={530}
-                className="mx-auto mb-8 h-20 w-auto drop-shadow-lg"
+                width={564}
+                height={564}
+                className="mx-auto mb-8 h-20 w-auto drop-shadow-md object-contain"
               />
             </Animated>
             {home.ctaTitle && (

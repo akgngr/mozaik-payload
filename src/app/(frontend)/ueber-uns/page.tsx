@@ -22,64 +22,63 @@ export async function generateMetadata(): Promise<Metadata> {
   return getPageMetadata('ueber-uns')
 }
 
-// Brand values shown as colored tiles
+// Brand values shown as refined cards with logo-derived accents
 const werte = [
   {
     Icon: HandshakeIllustIcon,
     label: 'Begegnung',
     text: 'Wir schaffen Räume für echte Begegnung zwischen Menschen aller Herkunft.',
-    bg: 'bg-brand-400',
-    text_color: 'text-white',
-    ring: 'ring-brand-300',
+    iconBg: 'bg-blue-50',
+    iconColor: 'text-brand-600',
+    bar: 'bg-brand-500',
   },
   {
     Icon: GlobeIllustIcon,
     label: 'Vielfalt',
     text: 'Unsere Stärke liegt in der Vielfalt der Kulturen, Sprachen und Perspektiven.',
-    bg: 'bg-lav-400',
-    text_color: 'text-white',
-    ring: 'ring-lav-300',
+    iconBg: 'bg-amber-50',
+    iconColor: 'text-amber-700',
+    bar: 'bg-amber-500',
   },
   {
     Icon: DialogIllustIcon,
     label: 'Dialog',
     text: 'Offener Austausch und gegenseitiges Zuhören sind die Basis unserer Arbeit.',
-    bg: 'bg-aqua-500',
-    text_color: 'text-white',
-    ring: 'ring-aqua-300',
+    iconBg: 'bg-blue-50',
+    iconColor: 'text-brand-600',
+    bar: 'bg-brand-500',
   },
   {
     Icon: SproutIllustIcon,
     label: 'Wachstum',
     text: 'Wir begleiten Menschen auf ihrem Weg in ein selbstbestimmtes Leben.',
-    bg: 'bg-leaf-500',
-    text_color: 'text-white',
-    ring: 'ring-leaf-300',
+    iconBg: 'bg-emerald-50',
+    iconColor: 'text-emerald-700',
+    bar: 'bg-emerald-600',
   },
   {
     Icon: SolidarityIllustIcon,
     label: 'Solidarität',
     text: 'Füreinander eintreten — besonders für Menschen in schwierigen Situationen.',
-    bg: 'bg-salmon-400',
-    text_color: 'text-white',
-    ring: 'ring-salmon-300',
+    iconBg: 'bg-rose-50',
+    iconColor: 'text-rose-700',
+    bar: 'bg-rose-600',
   },
   {
     Icon: CreativityIllustIcon,
     label: 'Kreativität',
     text: 'Kultur, Kunst und kreative Projekte verbinden Menschen über Grenzen hinweg.',
-    bg: 'bg-citrus-400',
-    text_color: 'text-ocean-900',
-    ring: 'ring-citrus-300',
+    iconBg: 'bg-amber-50',
+    iconColor: 'text-amber-700',
+    bar: 'bg-amber-500',
   },
 ]
 
-
 const stats = [
-  { value: '2015', label: 'Gegründet', color: 'text-brand-500' },
-  { value: '6', label: 'Sprachen', color: 'text-lav-500' },
-  { value: '500+', label: 'Menschen pro Jahr', color: 'text-aqua-600' },
-  { value: '∞', label: 'Herzen', color: 'text-salmon-500' },
+  { value: '2015', label: 'Gegründet', color: 'text-ocean-900' },
+  { value: '6', label: 'Sprachen', color: 'text-brand-600' },
+  { value: '500+', label: 'Menschen pro Jahr', color: 'text-amber-700' },
+  { value: '∞', label: 'Herzen', color: 'text-rose-600' },
 ]
 
 export default async function UeberUnsPage() {
@@ -94,27 +93,16 @@ export default async function UeberUnsPage() {
 
   return (
     <>
-      {/* ── HERO ── Mosaic-tile split layout */}
+      {/* ── HERO ── Clean layout */}
       <section className="relative overflow-hidden">
-        {/* Colorful diagonal background */}
+        {/* Subtle background */}
         <div
           className="pointer-events-none absolute inset-0"
           aria-hidden
           style={{
             background:
-              'linear-gradient(135deg, #eefaf9 0%, #f7f4fc 40%, #fef3f3 70%, #fff9ec 100%)',
+              'linear-gradient(135deg, #f8fafc 0%, #faf9f6 50%, #f1f5f9 100%)',
           }}
-        />
-        {/* Decorative blobs */}
-        <div
-          className="pointer-events-none absolute -top-32 -right-32 h-[500px] w-[500px] rounded-full opacity-30"
-          style={{ background: 'radial-gradient(circle, #a8e5e2 0%, transparent 70%)' }}
-          aria-hidden
-        />
-        <div
-          className="pointer-events-none absolute -bottom-24 -left-24 h-[400px] w-[400px] rounded-full opacity-25"
-          style={{ background: 'radial-gradient(circle, #ded2f2 0%, transparent 70%)' }}
-          aria-hidden
         />
 
         <Container className="relative py-24 md:py-36">
@@ -122,8 +110,8 @@ export default async function UeberUnsPage() {
             {/* Left: text */}
             <div>
               {page.heroEyebrow && (
-                <span className="mb-6 inline-flex items-center gap-2 rounded-full border-2 border-brand-200 bg-white/80 px-5 py-2 text-xs font-bold uppercase tracking-[0.16em] text-brand-600 shadow-sm backdrop-blur-sm">
-                  <span className="h-2 w-2 rounded-full bg-brand-400" aria-hidden />
+                <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-ocean-200 bg-white/90 px-5 py-2 text-xs font-bold uppercase tracking-[0.16em] text-brand-600 shadow-sm backdrop-blur-sm">
+                  <span className="h-2 w-2 rounded-full bg-brand-500" aria-hidden />
                   {page.heroEyebrow}
                 </span>
               )}
@@ -145,17 +133,13 @@ export default async function UeberUnsPage() {
               </div>
             </div>
 
-            {/* Right: colorful stats mosaic */}
+            {/* Right: stats mosaic */}
             <div className="grid grid-cols-2 gap-4">
               {stats.map((s) => (
                 <div
                   key={s.label}
-                  className="group relative overflow-hidden rounded-3xl bg-white p-8 shadow-[var(--shadow-card)] transition-transform duration-300 hover:-translate-y-1 hover:shadow-[var(--shadow-card-hover)]"
+                  className="group relative overflow-hidden rounded-3xl bg-white p-8 border border-ocean-100 shadow-[var(--shadow-card)] transition-transform duration-300 hover:-translate-y-1 hover:shadow-[var(--shadow-card-hover)]"
                 >
-                  <div
-                    className="mosaic-strip absolute inset-x-0 top-0 h-1.5 rounded-t-3xl"
-                    aria-hidden
-                  />
                   <p className={`font-display text-5xl font-extrabold ${s.color}`}>{s.value}</p>
                   <p className="mt-2 text-sm font-semibold text-ocean-600">{s.label}</p>
                 </div>
@@ -166,20 +150,20 @@ export default async function UeberUnsPage() {
       </section>
 
       {/* ── DIVIDER STRIP ── */}
-      <div className="mosaic-strip h-2 w-full" aria-hidden />
+      <div className="mosaic-strip h-1 w-full opacity-60" aria-hidden />
 
-      {/* ── MISSION ── Centered rich text on cream */}
+      {/* ── MISSION ── Centered rich text */}
       {page.content && (
         <section className="relative overflow-hidden py-24">
-          <MosaicPattern className="pointer-events-none absolute bottom-0 right-0 w-64 select-none opacity-15" />
+          <MosaicPattern className="pointer-events-none absolute bottom-0 right-0 w-64 select-none opacity-10" />
           <Container>
             <div className="mx-auto max-w-3xl">
-              <p className="mb-4 text-xs font-bold uppercase tracking-[0.18em] text-brand-500">
+              <p className="mb-4 text-xs font-bold uppercase tracking-[0.18em] text-brand-600">
                 Wer wir sind
               </p>
               <h2 className="mb-10 font-display text-4xl text-ocean-900 md:text-5xl">
                 Unsere{' '}
-                <span className="text-marker text-marker-teal">Geschichte</span>
+                <span className="text-marker">Geschichte</span>
               </h2>
               <div className="prose prose-lg prose-ocean max-w-none text-ocean-800">
                 <RichText data={page.content} />
@@ -189,72 +173,59 @@ export default async function UeberUnsPage() {
         </section>
       )}
 
-      {/* ── WERTE ── 6 colorful value cards */}
-      <section className="relative overflow-hidden py-24">
-        {/* Subtle background pattern */}
-        <div
-          className="pointer-events-none absolute inset-0 opacity-40"
-          aria-hidden
-          style={{
-            backgroundImage:
-              'radial-gradient(circle at 20% 50%, #eefaf9 0%, transparent 50%), radial-gradient(circle at 80% 20%, #f7f4fc 0%, transparent 50%)',
-          }}
-        />
+      {/* ── WERTE ── 6 refined value cards */}
+      <section className="relative overflow-hidden py-24 bg-white/60 border-t border-ocean-100/60">
         <Container className="relative max-w-7xl">
           <div className="mb-14 text-center">
-            <p className="mb-3 text-xs font-bold uppercase tracking-[0.18em] text-lav-500">
+            <p className="mb-3 text-xs font-bold uppercase tracking-[0.18em] text-brand-600">
               Was uns antreibt
             </p>
             <h2 className="font-display text-4xl text-ocean-900 md:text-5xl">
-              Unsere{' '}
-              <span className="text-marker text-marker-lav">Werte</span>
+              Unsere <span className="text-marker">Werte</span>
             </h2>
           </div>
 
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {werte.map((w, i) => (
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {werte.map((w) => (
               <div
                 key={w.label}
-                className={`group relative overflow-hidden rounded-3xl ${w.bg} p-8 shadow-lg ring-1 ${w.ring} transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl`}
-                style={{ animationDelay: `${i * 80}ms` }}
+                className="group relative overflow-hidden rounded-3xl bg-white p-8 border border-ocean-100 shadow-[var(--shadow-card)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[var(--shadow-card-hover)] hover:border-ocean-300"
               >
-                {/* Decorative circle */}
-                <div
-                  className="pointer-events-none absolute -top-8 -right-8 h-32 w-32 rounded-full bg-white/10"
-                  aria-hidden
-                />
-                <w.Icon
-                  className={`mb-4 h-14 w-14 ${w.text_color}`}
-                  aria-label={w.label}
-                />
-                <h3 className={`mb-3 font-display text-2xl font-extrabold ${w.text_color}`}>
+                <span className={`absolute inset-x-0 top-0 h-1.5 ${w.bar}`} aria-hidden />
+                <div className={`mb-5 inline-flex h-14 w-14 items-center justify-center rounded-2xl ${w.iconBg}`}>
+                  <w.Icon
+                    className={`h-7 w-7 ${w.iconColor}`}
+                    aria-label={w.label}
+                  />
+                </div>
+                <h3 className="mb-3 font-display text-2xl font-bold text-ocean-900">
                   {w.label}
                 </h3>
-                <p className={`leading-relaxed ${w.text_color} opacity-90 text-sm`}>{w.text}</p>
+                <p className="leading-relaxed text-ocean-700/85 text-sm">{w.text}</p>
               </div>
             ))}
           </div>
         </Container>
       </section>
 
-      {/* ── TAGLINE BAND ── Full-width dark strip with mosaic wordmark feel */}
+      {/* ── TAGLINE BAND ── Full-width dark strip */}
       <section className="relative overflow-hidden bg-ocean-950 py-24">
         <MosaicPattern className="pointer-events-none absolute bottom-0 right-0 w-72 select-none opacity-10" />
         <Container className="relative text-center">
           <Image
             src="/mosaik-emblem.png"
             alt="Mosaik Emblem"
-            width={440}
-            height={530}
-            className="mx-auto mb-8 h-16 w-auto drop-shadow-[0_4px_24px_rgba(64,182,179,0.4)]"
+            width={564}
+            height={564}
+            className="mx-auto mb-8 h-20 w-auto object-contain drop-shadow-md"
           />
           <p className="mx-auto max-w-2xl text-balance font-display text-3xl font-extrabold leading-snug text-white md:text-4xl">
             Ein{' '}
-            <span className="text-brand-300">Mosaik</span>{' '}
+            <span className="text-amber-400">Mosaik</span>{' '}
             aus Menschen,{' '}
-            <span className="text-lav-300">Kulturen</span>{' '}
+            <span className="text-blue-300">Kulturen</span>{' '}
             und{' '}
-            <span className="text-citrus-300">Träumen</span>
+            <span className="text-emerald-400">Träumen</span>
             {' '}— das sind wir.
           </p>
           <div className="mx-auto mt-10 flex justify-center">

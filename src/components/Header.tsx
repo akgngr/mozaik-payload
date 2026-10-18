@@ -4,9 +4,6 @@ import { getPayload } from '@/lib/payload'
 import { MobileMenu } from './MobileMenu'
 import { Container } from './Container'
 
-// Per-letter brand colors, matching the logo wordmark
-const letters = ['M', 'O', 'S', 'A', 'I', 'K']
-
 export const Header = async () => {
   const payload = await getPayload()
   const header = await payload.findGlobal({ slug: 'header' })
@@ -17,28 +14,18 @@ export const Header = async () => {
   }))
 
   return (
-    <header className="sticky top-0 z-40 border-b border-cream-dark bg-cream/90 backdrop-blur-md">
+    <header className="sticky top-0 z-40 border-b border-ocean-100/70 bg-white/95 backdrop-blur-md">
       <Container className="max-w-7xl">
         <div className="flex h-20 items-center justify-between gap-2 sm:gap-4">
-          <Link href="/" className="flex shrink-0 items-center gap-2.5 sm:gap-3">
+          <Link href="/" className="flex shrink-0 items-center py-1 group">
             <Image
-              src="/mosaik-emblem.png"
+              src="/mosaik-logo.png"
               alt="Mosaik Dialog und Kultur e.V."
-              width={440}
-              height={530}
-              className="h-14 w-auto sm:h-14 md:h-16"
+              width={1024}
+              height={353}
+              className="h-11 sm:h-12 md:h-14 w-auto object-contain transition-transform duration-200 group-hover:scale-[1.01]"
               priority
             />
-            <span className="flex flex-col leading-none">
-              <span className="wordmark font-display text-2xl sm:text-2xl tracking-wide">
-                {letters.map((l) => (
-                  <span key={l}>{l}</span>
-                ))}
-              </span>
-              <span className="mt-1 text-[10px] sm:text-[10px] font-semibold uppercase tracking-[0.16em] sm:tracking-[0.18em] text-ocean-600">
-                Dialog und Kultur e.V.
-              </span>
-            </span>
           </Link>
 
 

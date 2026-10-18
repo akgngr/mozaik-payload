@@ -5,18 +5,56 @@
   --font-sans: var(--font-source), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --font-display: var(--font-nunito), var(--font-source), sans-serif;
 
-  /* Mosaik brand palette — from the official brand guide */
-  /* Teal (primary) */
-  --color-brand-50: #eefaf9;
-  --color-brand-100: #d3f2f0;
-  --color-brand-200: #a8e5e2;
-  --color-brand-300: #74d4d0;
-  --color-brand-400: #40b6b3;
-  --color-brand-500: #2ba29f;
-  --color-brand-600: #228684;
-  --color-brand-700: #1e6b6a;
-  --color-brand-800: #1b5554;
-  --color-brand-900: #17403f;
+  /* Mosaik brand palette — derived from official logo */
+  /* Primary Brand Blue (#015494) */
+  --color-brand-50: #f0f7fc;
+  --color-brand-100: #dff0f9;
+  --color-brand-200: #bee0f4;
+  --color-brand-300: #89c7ec;
+  --color-brand-400: #4aa7e0;
+  --color-brand-500: #015494;
+  --color-brand-600: #01467c;
+  --color-brand-700: #023864;
+  --color-brand-800: #053053;
+  --color-brand-900: #072946;
+  --color-brand-950: #041a2e;
+
+  /* Logo 4-Quadrant Accents */
+  /* Amber / Gold (#fbad1d) */
+  --color-citrus-50: #fffbeb;
+  --color-citrus-100: #fef3c7;
+  --color-citrus-200: #fde68a;
+  --color-citrus-300: #fcd34d;
+  --color-citrus-400: #fbbf24;
+  --color-citrus-500: #fbad1d;
+  --color-citrus-600: #d98206;
+  --color-citrus-700: #b45f09;
+  --color-citrus-800: #92460e;
+  --color-citrus-900: #78380f;
+
+  /* Red / Coral (#e12d27) */
+  --color-salmon-50: #fef2f2;
+  --color-salmon-100: #fee2e2;
+  --color-salmon-200: #fecaca;
+  --color-salmon-300: #fca5a5;
+  --color-salmon-400: #f87171;
+  --color-salmon-500: #e12d27;
+  --color-salmon-600: #dc2626;
+  --color-salmon-700: #b91c1c;
+  --color-salmon-800: #991b1b;
+  --color-salmon-900: #7f1d1d;
+
+  /* Green / Forest (#48a23d) */
+  --color-leaf-50: #f0fdf4;
+  --color-leaf-100: #dcfce7;
+  --color-leaf-200: #bbf7d0;
+  --color-leaf-300: #86efac;
+  --color-leaf-400: #5cb851;
+  --color-leaf-500: #48a23d;
+  --color-leaf-600: #38842f;
+  --color-leaf-700: #2c6826;
+  --color-leaf-800: #255221;
+  --color-leaf-900: #20441d;
 
   /* Sky blue */
   --color-aqua-50: #f0f8fe;
@@ -30,55 +68,19 @@
   --color-aqua-800: #315274;
   --color-aqua-900: #29435e;
 
-  /* Lavender */
-  --color-lav-50: #f7f4fc;
-  --color-lav-100: #efe8f9;
-  --color-lav-200: #ded2f2;
-  --color-lav-300: #c8b3e9;
-  --color-lav-400: #b295d6;
-  --color-lav-500: #9a77c2;
-  --color-lav-600: #815fa8;
-  --color-lav-700: #684c87;
-  --color-lav-800: #523e6b;
-  --color-lav-900: #3f3053;
+  /* Lavender / Soft Slate-Purple */
+  --color-lav-50: #f8fafc;
+  --color-lav-100: #f1f5f9;
+  --color-lav-200: #e2e8f0;
+  --color-lav-300: #cbd5e1;
+  --color-lav-400: #94a3b8;
+  --color-lav-500: #64748b;
+  --color-lav-600: #475569;
+  --color-lav-700: #334155;
+  --color-lav-800: #1e293b;
+  --color-lav-900: #0f172a;
 
-  /* Salmon */
-  --color-salmon-50: #fef3f3;
-  --color-salmon-100: #fee5e6;
-  --color-salmon-200: #fdced0;
-  --color-salmon-300: #fbb6b9;
-  --color-salmon-400: #f59da1;
-  --color-salmon-500: #e97d82;
-  --color-salmon-600: #d05a61;
-  --color-salmon-700: #ad454c;
-  --color-salmon-800: #8b383e;
-  --color-salmon-900: #6c2d32;
-
-  /* Sun yellow */
-  --color-citrus-50: #fff9ec;
-  --color-citrus-100: #fff0cd;
-  --color-citrus-200: #ffe29f;
-  --color-citrus-300: #fedc85;
-  --color-citrus-400: #ffd37a;
-  --color-citrus-500: #f5bc4e;
-  --color-citrus-600: #e09d2f;
-  --color-citrus-700: #b87c24;
-  --color-citrus-800: #91621f;
-  --color-citrus-900: #714f1c;
-
-  /* Leaf green */
-  --color-leaf-50: #f4faf3;
-  --color-leaf-100: #e4f4e2;
-  --color-leaf-200: #c9e8c6;
-  --color-leaf-300: #bcdfb8;
-  --color-leaf-400: #a8d5a2;
-  --color-leaf-500: #86bd7f;
-  --color-leaf-600: #679e61;
-  --color-leaf-700: #4f7f4a;
-  --color-leaf-800: #40653d;
-  --color-leaf-900: #345032;
-
-  /* Navy (ink) */
+  /* Navy (ink / typography) */
   --color-ocean-50: #f2f5f9;
   --color-ocean-100: #e2e9f1;
   --color-ocean-200: #c5d3e3;
@@ -86,16 +88,16 @@
   --color-ocean-400: #6f8fb4;
   --color-ocean-500: #4c6f99;
   --color-ocean-600: #35567c;
-  --color-ocean-700: #2a4663;
-  --color-ocean-800: #233a52;
-  --color-ocean-900: #1e3a5f;
-  --color-ocean-950: #152942;
+  --color-ocean-700: #203e60;
+  --color-ocean-800: #142d48;
+  --color-ocean-900: #0b253a;
+  --color-ocean-950: #051624;
 
-  --color-cream: #faf6ef;
-  --color-cream-dark: #f3ecdf;
+  --color-cream: #faf9f6;
+  --color-cream-dark: #f0eeea;
 
-  --shadow-card: 0 2px 4px rgba(30, 58, 95, 0.04), 0 12px 32px rgba(30, 58, 95, 0.07);
-  --shadow-card-hover: 0 4px 8px rgba(30, 58, 95, 0.05), 0 24px 48px rgba(30, 58, 95, 0.13);
+  --shadow-card: 0 1px 3px rgba(11, 37, 58, 0.05), 0 8px 24px rgba(11, 37, 58, 0.06);
+  --shadow-card-hover: 0 4px 12px rgba(11, 37, 58, 0.08), 0 16px 36px rgba(11, 37, 58, 0.12);
 }
 
 html {
@@ -108,16 +110,14 @@ body {
   min-height: 100vh;
 }
 
-/* Six-color brand strip */
+/* Subtle, unified 4-color brand strip from the official logo emblem */
 .mosaic-strip {
   background: linear-gradient(
     90deg,
-    var(--color-brand-400) 0 16.66%,
-    var(--color-aqua-400) 16.66% 33.33%,
-    var(--color-lav-400) 33.33% 50%,
-    var(--color-salmon-400) 50% 66.66%,
-    var(--color-citrus-400) 66.66% 83.33%,
-    var(--color-leaf-400) 83.33% 100%
+    #fbad1d 0%,
+    #e12d27 33%,
+    #015494 66%,
+    #48a23d 100%
   );
 }
 
@@ -127,7 +127,7 @@ body {
   letter-spacing: -0.01em;
 }
 
-/* Friendly rounded highlight behind key words */
+/* Subtle, refined highlights behind key words */
 .text-marker {
   position: relative;
   display: inline-block;
@@ -139,68 +139,67 @@ body {
   position: absolute;
   left: -0.1em;
   right: -0.1em;
-  bottom: 0.05em;
-  height: 0.38em;
+  bottom: 0.08em;
+  height: 0.32em;
   z-index: -1;
   border-radius: 999px;
-  background: var(--color-citrus-300);
+  background: rgba(251, 173, 29, 0.35);
 }
 .text-marker-teal::after {
-  background: var(--color-brand-200);
+  background: rgba(1, 84, 148, 0.2);
 }
 .text-marker-lav::after {
-  background: var(--color-lav-200);
+  background: rgba(72, 162, 61, 0.22);
 }
 .text-marker-salmon::after {
-  background: var(--color-salmon-200);
+  background: rgba(225, 45, 39, 0.2);
 }
 
-/* Buttons — friendly pills */
+/* Buttons — modern, confident pills */
 .btn-glass {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
   border-radius: 999px;
-  padding: 0.8rem 1.9rem;
+  padding: 0.75rem 1.75rem;
   font-family: var(--font-display);
-  font-weight: 800;
+  font-weight: 700;
   font-size: 0.95rem;
   line-height: 1;
   transition: all 250ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .btn-primary {
-  background: var(--color-brand-400);
+  background: var(--color-brand-500);
   color: white;
-  box-shadow: 0 8px 24px rgba(64, 182, 179, 0.4);
+  box-shadow: 0 4px 16px rgba(1, 84, 148, 0.28);
 }
 .btn-primary:hover {
-  background: var(--color-brand-500);
+  background: var(--color-brand-600);
   transform: translateY(-2px);
-  box-shadow: 0 12px 32px rgba(64, 182, 179, 0.5);
+  box-shadow: 0 8px 24px rgba(1, 84, 148, 0.38);
 }
 
 .btn-secondary {
   background: white;
-  border: 2px solid var(--color-ocean-100);
-  color: var(--color-ocean-800);
+  border: 1.5px solid var(--color-ocean-200);
+  color: var(--color-ocean-900);
 }
 .btn-secondary:hover {
-  border-color: var(--color-brand-400);
+  border-color: var(--color-brand-500);
   color: var(--color-brand-600);
   transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(11, 37, 58, 0.08);
 }
 
-/* Section rhythm: airy, full-width bands */
+/* Section rhythm */
 .section {
-  padding-block: clamp(4.5rem, 9vw, 8rem);
+  padding-block: clamp(4.5rem, 8vw, 7rem);
 }
 
-/* Wordmark: per-letter brand colors, like the logo */
-.wordmark span:nth-child(1) { color: var(--color-brand-400); }
-.wordmark span:nth-child(2) { color: var(--color-aqua-400); }
-.wordmark span:nth-child(3) { color: var(--color-lav-400); }
-.wordmark span:nth-child(4) { color: var(--color-salmon-400); }
-.wordmark span:nth-child(5) { color: var(--color-citrus-500); }
-.wordmark span:nth-child(6) { color: var(--color-leaf-500); }
+/* Wordmark: clean unified branding, matching official logo typography */
+.wordmark {
+  color: var(--color-ocean-900);
+}
+

@@ -15,7 +15,7 @@ export const PageHero = ({
     <Container className="relative py-20 md:py-28">
       <div className="max-w-3xl">
         {eyebrow && (
-          <span className="mb-5 inline-block rounded-full border-2 border-brand-200 bg-white px-4 py-1.5 text-xs font-bold uppercase tracking-[0.16em] text-brand-600">
+          <span className="mb-5 inline-block rounded-full border border-ocean-200 bg-white px-4 py-1.5 text-xs font-bold uppercase tracking-[0.16em] text-brand-600 shadow-sm">
             {eyebrow}
           </span>
         )}
