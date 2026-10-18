@@ -1,0 +1,61 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        DATABASE_URI: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-mosaik_secure_pwd_2026}@postgres:5432/${POSTGRES_DB:-mosaik}
+        PAYLOAD_SECRET: ${PAYLOAD_SECRET:-jNYrMbKAgyxr8LVvK2sNo12weg7XdSDp}
+        NEXT_PUBLIC_SERVER_URL: ${NEXT_PUBLIC_SERVER_URL:-https://mosaik-ruesselsheim.de}
+        CLOUDINARY_CLOUD_NAME: ${CLOUDINARY_CLOUD_NAME:-xosgweuf}
+        CLOUDINARY_API_KEY: ${CLOUDINARY_API_KEY:-658575442766399}
+        CLOUDINARY_API_SECRET: ${CLOUDINARY_API_SECRET:-wk-HNCdiPqJPbFRs0DIGdW0bS2M}
+    container_name: mosaik_app
+    restart: always
+    ports:
+      - "${APP_PORT:-3000}:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - HOSTNAME=0.0.0.0
+      - DATABASE_URI=postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-mosaik_secure_pwd_2026}@postgres:5432/${POSTGRES_DB:-mosaik}
+      - PAYLOAD_SECRET=${PAYLOAD_SECRET:-jNYrMbKAgyxr8LVvK2sNo12weg7XdSDp}
+      - NEXT_PUBLIC_SERVER_URL=${NEXT_PUBLIC_SERVER_URL:-https://mosaik-ruesselsheim.de}
+      - CLOUDINARY_CLOUD_NAME=${CLOUDINARY_CLOUD_NAME:-xosgweuf}
+      - CLOUDINARY_API_KEY=${CLOUDINARY_API_KEY:-658575442766399}
+      - CLOUDINARY_API_SECRET=${CLOUDINARY_API_SECRET:-wk-HNCdiPqJPbFRs0DIGdW0bS2M}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - mosaik_network
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: mosaik_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-mosaik_secure_pwd_2026}
+      POSTGRES_DB: ${POSTGRES_DB:-mosaik}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      # Initial database dump is automatically imported on first container startup:
+      - ./neon_backup_mosaik.sql:/docker-entrypoint-initdb.d/01_neon_backup.sql:ro
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-mosaik}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - mosaik_network
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  mosaik_network:
+    driver: bridge

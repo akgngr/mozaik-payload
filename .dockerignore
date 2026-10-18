@@ -1,0 +1,17 @@
+node_modules
+.next
+.git
+.gitignore
+.env*.local
+.dev.vars
+dist
+*.log
+*.pdf
+.chrome-profile
+scripts/check-db.ts
+scripts/inspect-media.ts
+scripts/dump-neon.ts
+scripts/generate-full-backup.ts
+generate_report_pdf.py
+google_ads_musteri_raporu.html
+test.pdf
