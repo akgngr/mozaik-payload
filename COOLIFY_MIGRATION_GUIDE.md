@@ -1,114 +1,119 @@
-# Coolify Canlıya Alma & Neon Veritabanı Geçiş Rehberi
+# Coolify Canlıya Alma & Mevcut PostgreSQL Veritabanı Yükleme Rehberi
 
-Bu rehber, **Mosaik Dialog und Kultur e.V.** projesini **Coolify** üzerinde kendi sunucunuzdaki PostgreSQL ile canlıya alma ve mevcut **Neon veritabanındaki** tüm verileri sıfır kayıpla aktarma adımlarını içerir.
+Sisteminizde halihazırda çalışan bir PostgreSQL bulunduğu için yeni bir veritabanı container'ı açmaya gerek kalmadan, aynı Docker ağı üzerinden bağlantı kuracak şekilde sistem optimize edilmiştir.
 
----
-
-## 📁 Hazırlanan Dosyalar
-
-Proje dizininde Coolify için aşağıdaki dosyalar hazırlandı:
-
-1. **`neon_backup_mosaik.sql`**: Neon PostgreSQL'deki tüm şema (tablolar, enum tipleri, indexler, ilişkiler) ve tüm güncel verilerin (sayfalar, projeler, etkinlikler, medya kayıtları, kullanıcılar vb.) eksiksiz yedeği.
-2. **`Dockerfile`**: Next.js 16 ve Payload CMS 3 için optimize edilmiş, çok aşamalı (multi-stage) Debian tabanlı Docker imajı.
-3. **`docker-compose.yml`**: Hem uygulamayı (`app`) hem de PostgreSQL 16 veritabanını (`postgres`) otomatik ağ ve kalıcı disk (`volume`) ile başlatan servis tanımı.
-4. **`.dockerignore`**: Gereksiz dosyaların Docker derlemesine girmesini engelleyen filtreler.
-5. **`.env.example`**: Coolify üzerinde girilecek tüm ortam değişkenlerinin şablonu.
+Bu rehber, `.env` dosyanıza veritabanı bilgilerinizi girdikten sonra **tek bir script çalıştırarak** tüm Neon veritabanı yedeğini mevcut PostgreSQL'inize nasıl yükleyeceğinizi ve projeyi Coolify'da nasıl yayına alacağınızı açıklar.
 
 ---
 
-## 🚀 1. YÖNTEM: Coolify Docker Compose ile Tek Tıkla Canlıya Alma (Önerilen)
+## ⚡ Hızlı Özet (3 Adımda Canlıya Alma)
 
-En pratik yöntem, Coolify üzerinde projeyi **Docker Compose** olarak eklemektir. Bu sayede uygulama ve PostgreSQL aynı iç ağda (`mosaik_network`) çalışır ve yedek dosyanız (`neon_backup_mosaik.sql`) PostgreSQL ilk kez ayağa kalkarken **otomatik olarak veritabanına aktarılır**.
+1. **`.env` dosyanıza** mevcut PostgreSQL bağlantınızı (`DATABASE_URI`) yazın.
+2. **Kurulum/Yükleme scriptini çalıştırın**: `pnpm run db:restore`  
+   *(Tüm 26 tablo ve içerikleri mevcut PostgreSQL'inize sıfır hatayla yüklenir).*
+3. **Coolify'da deploy edin**. Uygulama mevcut PostgreSQL ile aynı Docker ağında (`coolify`) çalışacaktır.
 
-### Adım 1: Coolify'da Proje Oluşturma
-1. Coolify paneline giriş yapın.
-2. **Projects** > **+ New Project** yolunu izleyin.
-3. Ortamı seçin (Production) ve **+ New Resource** butonuna tıklayın.
-4. **Docker Compose Empty** veya **Git Source** seçeneğini seçin:
-   * **Source**: GitHub deponuzu (`mozaik-payload`) bağlayın.
-   * **Branch**: `main`
-   * **Build Pack**: `Docker Compose` seçin.
+---
 
-### Adım 2: Ortam Değişkenlerini (Environment Variables) Tanımlama
-Coolify panelinde uygulamanın **Environment Variables** bölümüne giderek aşağıdaki değişkenleri ekleyin:
+## 🛠️ 1. ADIM: .env Dosyasını Hazırlama
+
+Sunucunuzda proje klasöründeki `.env` (veya Coolify arayüzündeki Environment Variables) bölümüne mevcut PostgreSQL bilgilerinizi girin:
 
 ```env
-NODE_ENV=production
-PORT=3000
-HOSTNAME=0.0.0.0
-POSTGRES_USER=postgres
-POSTGRES_PASSWORD=BURAYA_GUCLU_BIR_VERITABANI_SIFRESI_YAZIN
-POSTGRES_DB=mosaik
-DATABASE_URI=postgresql://postgres:BURAYA_GUCLU_BIR_VERITABANI_SIFRESI_YAZIN@postgres:5432/mosaik
+# 1. Mevcut PostgreSQL Bağlantı Adresiniz
+# Eğer PostgreSQL aynı Coolify docker ağındaysa, container adını yazabilirsiniz:
+DATABASE_URI=postgresql://kullanici_adiniz:sifreniz@postgres_container_adi:5432/mosaik
+
+# (Eğer sunucunun ana işletim sisteminde localhost olarak çalışıyorsa:
+# DATABASE_URI=postgresql://kullanici_adiniz:sifreniz@host.docker.internal:5432/mosaik )
+
+# 2. Payload CMS Güvenlik Anahtarı
 PAYLOAD_SECRET=jNYrMbKAgyxr8LVvK2sNo12weg7XdSDp
-NEXT_PUBLIC_SERVER_URL=https://alan-adiniz.de
+
+# 3. Canlı Domain Adresiniz
+NEXT_PUBLIC_SERVER_URL=https://mosaik-ruesselsheim.de
+
+# 4. Cloudinary (Medyalar için aynen korunuyor)
 CLOUDINARY_CLOUD_NAME=xosgweuf
 CLOUDINARY_API_KEY=658575442766399
 CLOUDINARY_API_SECRET=wk-HNCdiPqJPbFRs0DIGdW0bS2M
+
+# 5. Coolify Docker Ağı
+DOCKER_NETWORK=coolify
+PORT=3000
 ```
 
-> **Önemli**: `DATABASE_URI` içerisindeki şifre ile `POSTGRES_PASSWORD` aynı olmalıdır. Host adı servis adı olan `postgres`'tir.
-
-### Adım 3: Alan Adı (Domain) Ayarı
-* Coolify servis ayarlarında `app` servisi için domain alanına alan adınızı yazın (Örn: `https://mosaik-ruesselsheim.de`).
-* Coolify (Traefik) otomatik olarak Let's Encrypt SSL sertifikasını alacaktır.
-
-### Adım 4: Deploy
-* **Deploy** butonuna tıklayın.
-* Coolify sırasıyla:
-  1. PostgreSQL 16 container'ını ayağa kaldırır.
-  2. `neon_backup_mosaik.sql` dosyasını otomatik içe aktarır.
-  3. `Dockerfile` üzerinden Next.js + Payload CMS uygulamasını derler ve yayına alır.
+> **İpucu:** Eğer PostgreSQL'inizde henüz `mosaik` veritabanı açılmadıysa, PostgreSQL içinde `CREATE DATABASE mosaik;` komutuyla veritabanını oluşturmanız yeterlidir.
 
 ---
 
-## 🗄️ 2. YÖNTEM: Coolify Standalone PostgreSQL Kullanıyorsanız (Veri Taşıma)
+## 📥 2. ADIM: Yedeği Otomatik Yükleme Scripti (`db:restore`)
 
-Eğer Coolify'da PostgreSQL'i ayrı bir veritabanı servisi ("New Resource" > "PostgreSQL") olarak açtıysanız, Neon'daki verileri doğrudan aktarmak için 2 basit yol vardır:
+`.env` dosyanızı kaydettikten sonra yedeği sunucudaki PostgreSQL'e aktarmak için hazırladığımız scripti çalıştırın:
 
-### A) Sunucu Terminalinden Doğrudan Aktarım (En Hızlısı)
-Sunucunuza SSH ile bağlanıp tek satırda Neon'dan kendi PostgreSQL'inize kopyalayabilirsiniz:
-
+### Sunucu Terminalinde (Doğrudan Node/pnpm ile):
 ```bash
-# Tek komutla Neon'dan Coolify PostgreSQL'e canlı aktarım:
-pg_dump "postgresql://neondb_owner:npg_e9pAKwh6ifHq@ep-polished-field-ast630at-pooler.c-4.eu-central-1.aws.neon.tech/neondb?sslmode=require" | psql "postgresql://postgres:SIFRE@localhost:5432/mosaik"
+pnpm run db:restore
 ```
+*(veya `node scripts/restore-db.mjs`)*
 
-### B) Hazırladığımız SQL Dosyasıyla Aktarım
-Depoda hazır bulunan `neon_backup_mosaik.sql` dosyasını sunucuda PostgreSQL container'ına basabilirsiniz:
-
+### Veya Coolify Container'ı İçinde:
+Eğer uygulamayı Coolify'da ilk kez ayağa kaldırdıysanız, Coolify container konsolundan veya sunucudan:
 ```bash
-# 1. SQL dosyasını sunucuda PostgreSQL container'ı içine aktarma:
-docker exec -i mosaik_postgres psql -U postgres -d mosaik < neon_backup_mosaik.sql
+docker exec -it mosaik_app pnpm run db:restore
 ```
 
-Bu işlem birkaç saniye içinde tüm tabloları ve 26 medyanın tamamını yeni veritabanınıza yazacaktır.
+### Script Neler Yapar?
+* `.env` dosyasındaki `DATABASE_URI` adresine otomatik bağlanır.
+* `neon_backup_mosaik.sql` dosyasındaki tüm DDL şemasını (tablolar, enum tipleri, indexler, ilişkiler) oluşturur.
+* Neon'daki tüm verileri (sayfalar, projeler, etkinlikler, Cloudinary medya kayıtları, kullanıcılar vb.) aktarır.
+* Otomatik artan ID sayaçlarını (`sequence`) günceller.
+* Yükleme bitince ekrana bir doğrulama tablosu basarak kaç adet kullanıcının, sayfanın, projenin yüklendiğini raporlar:
+
+```text
+======================================================
+🚀 Mosaik PostgreSQL Veritabanı Yükleme Aracı
+======================================================
+📡 Hedef Veritabanı: postgres@localhost:5432/mosaik
+📄 Yedek Dosyası: neon_backup_mosaik.sql (151 KB)
+⏳ Veritabanına bağlanılıyor...
+✅ Bağlantı başarılı!
+⏳ Yedek SQL komutları çalıştırılıyor (şema + tüm veriler)...
+✅ SQL yedeği başarıyla yüklendi!
+
+📊 Yüklenen Verilerin Doğrulama Özeti:
+------------------------------------------------------
+  ✓ users                : 1 kayıt
+  ✓ pages                : 7 kayıt
+  ✓ projects             : 9 kayıt
+  ✓ events               : 5 kayıt
+  ✓ media                : 26 kayıt
+  ✓ subscribers          : 0 kayıt
+  ✓ header               : 1 kayıt
+  ✓ footer               : 1 kayıt
+  ✓ homepage             : 1 kayıt
+  ✓ donation             : 1 kayıt
+  ✓ contact_info         : 1 kayıt
+------------------------------------------------------
+🎉 Kurulum ve veri aktarımı eksiksiz tamamlandı!
+```
+
+> **İpucu:** Eğer daha önce deneme yapıp tabloları sıfırlayarak temiz bir kurulum yapmak isterseniz `--clean` bayrağını ekleyebilirsiniz:
+> ```bash
+> pnpm run db:restore --clean
+> ```
 
 ---
 
-## 🔑 3. Admin Paneline Giriş ve Kontrol
+## 🐳 3. ADIM: Coolify'da Projeyi Başlatma
 
-Uygulama başarıyla ayağa kalktıktan sonra:
+1. **Coolify Paneli** > **New Resource** > **Git Source (GitHub)**.
+2. Deponuzu (`mozaik-payload`) seçin.
+3. **Build Pack**:
+   * **Dockerfile** veya **Docker Compose** seçebilirsiniz.
+   * `docker-compose.yml` dosyamız sistemdeki mevcut `coolify` ağına otomatik bağlanacak (`external: true`) şekilde optimize edilmiştir.
+4. **Environment Variables**: Yukarıdaki `.env` değişkenlerini Coolify arayüzüne yapıştırın.
+5. **Domain**: Domain kutucuğuna alan adınızı yazın (`https://mosaik-ruesselsheim.de`).
+6. **Deploy**: Deploy butonuna tıklayın.
 
-1. **Web Sitesi**: `https://alan-adiniz.de` adresinden anasayfa ve tüm alt sayfaların çalıştığını doğrulayın.
-2. **Payload Admin Paneli**: `https://alan-adiniz.de/admin` adresine gidin.
-3. Neon DB'den aktarılan mevcut kullanıcı bilgileriniz (e-posta ve şifreniz) ile doğrudan giriş yapabilirsiniz.
-4. **Medya Yüklemeleri**: Görseller Cloudinary üzerinde barındırıldığı için yeni sunucuya geçtiğinizde hiçbir görsel linki kırılmaz ve eksiksiz açılmaya devam eder.
-
----
-
-## 🛠️ Yararlı Komutlar ve Sorun Giderme
-
-* **Logları İzleme**:
-  ```bash
-  docker logs -f mosaik_app
-  docker logs -f mosaik_postgres
-  ```
-* **PostgreSQL İçine Bağlanma**:
-  ```bash
-  docker exec -it mosaik_postgres psql -U postgres -d mosaik
-  ```
-* **Yeniden Başlatma**:
-  ```bash
-  docker compose restart
-  ```
+Uygulamanız canlıya çıkacak, mevcut PostgreSQL'inize iç ağdan erişecek ve Payload Admin paneli (`https://mosaik-ruesselsheim.de/admin`) aktif olacaktır!
