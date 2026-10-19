@@ -36,7 +36,8 @@ pnpm-debug.log*
 
 # local temp / backups
 .zcode/
-media/
+/media/
+!public/media/
 mosaik-mobile-restore/
 mosaik-mobile-restore-draft/
 

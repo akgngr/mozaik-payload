@@ -7,9 +7,6 @@ services:
         DATABASE_URI: ${DATABASE_URI}
         PAYLOAD_SECRET: ${PAYLOAD_SECRET:-jNYrMbKAgyxr8LVvK2sNo12weg7XdSDp}
         NEXT_PUBLIC_SERVER_URL: ${NEXT_PUBLIC_SERVER_URL:-https://mosaik-ruesselsheim.de}
-        CLOUDINARY_CLOUD_NAME: ${CLOUDINARY_CLOUD_NAME:-xosgweuf}
-        CLOUDINARY_API_KEY: ${CLOUDINARY_API_KEY:-658575442766399}
-        CLOUDINARY_API_SECRET: ${CLOUDINARY_API_SECRET:-wk-HNCdiPqJPbFRs0DIGdW0bS2M}
     container_name: mosaik_app
     restart: always
     ports:
@@ -21,9 +18,9 @@ services:
       - DATABASE_URI=${DATABASE_URI}
       - PAYLOAD_SECRET=${PAYLOAD_SECRET:-jNYrMbKAgyxr8LVvK2sNo12weg7XdSDp}
       - NEXT_PUBLIC_SERVER_URL=${NEXT_PUBLIC_SERVER_URL:-https://mosaik-ruesselsheim.de}
-      - CLOUDINARY_CLOUD_NAME=${CLOUDINARY_CLOUD_NAME:-xosgweuf}
-      - CLOUDINARY_API_KEY=${CLOUDINARY_API_KEY:-658575442766399}
-      - CLOUDINARY_API_SECRET=${CLOUDINARY_API_SECRET:-wk-HNCdiPqJPbFRs0DIGdW0bS2M}
+    volumes:
+      # Tüm görseller ve medya dosyaları VPS üzerinde yerel diskte tutulur:
+      - ./public/media:/app/public/media
     # Hem host'taki hem de docker ağındaki PostgreSQL'e erişimi kolaylaştırır:
     extra_hosts:
       - "host.docker.internal:host-gateway"

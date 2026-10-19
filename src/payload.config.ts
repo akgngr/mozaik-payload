@@ -45,7 +45,7 @@ export default buildConfig({
   }),
   plugins: [
     payloadCloudinaryPlugin({
-      enabled: Boolean(process.env.CLOUDINARY_CLOUD_NAME && process.env.CLOUDINARY_API_KEY && process.env.CLOUDINARY_API_SECRET),
+      enabled: Boolean(process.env.USE_CLOUDINARY === 'true' && process.env.CLOUDINARY_CLOUD_NAME && process.env.CLOUDINARY_API_KEY && process.env.CLOUDINARY_API_SECRET),
       collections: {
         media: {
           disablePayloadAccessControl: true,

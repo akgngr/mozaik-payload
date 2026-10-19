@@ -77,6 +77,9 @@ COPY --from=builder /app/neon_backup_mosaik.sql ./neon_backup_mosaik.sql
 COPY --from=builder /app/next.config.mjs ./next.config.mjs
 COPY --from=builder /app/tsconfig.json ./tsconfig.json
 
+# Ensure public/media exists and is writable by node user for local uploads
+RUN mkdir -p /app/public/media && chown -R node:node /app/public/media
+
 # Use non-root node user
 USER node
 
