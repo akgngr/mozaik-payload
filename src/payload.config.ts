@@ -2,7 +2,6 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
-import { payloadCloudinaryPlugin } from '@jhb.software/payload-cloudinary-plugin'
 import { buildConfig } from 'payload'
 import sharp from 'sharp'
 
@@ -30,8 +29,6 @@ export default buildConfig({
     },
   },
   collections: [Users, Media, Pages, Projects, Subscribers, Events],
-
-
   globals: [Header, Footer, SiteSettings, Homepage, Donation, ContactInfo],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
@@ -43,23 +40,5 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URI || '',
     },
   }),
-  plugins: [
-    payloadCloudinaryPlugin({
-      enabled: Boolean(process.env.USE_CLOUDINARY === 'true' && process.env.CLOUDINARY_CLOUD_NAME && process.env.CLOUDINARY_API_KEY && process.env.CLOUDINARY_API_SECRET),
-      collections: {
-        media: {
-          disablePayloadAccessControl: true,
-        },
-      },
-      cloudName: process.env.CLOUDINARY_CLOUD_NAME || '',
-      credentials: {
-        apiKey: process.env.CLOUDINARY_API_KEY || '',
-        apiSecret: process.env.CLOUDINARY_API_SECRET || '',
-      },
-      folder: 'mosaik',
-      clientUploads: true,
-      useFilename: true,
-    }),
-  ],
   sharp,
 })

@@ -28,7 +28,6 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
   );
   
-  ALTER TABLE "media" ADD COLUMN "cloudinary_public_id" varchar;
   ALTER TABLE "payload_locked_documents_rels" ADD COLUMN "subscribers_id" integer;
   ALTER TABLE "payload_locked_documents_rels" ADD COLUMN "events_id" integer;
   ALTER TABLE "events" ADD CONSTRAINT "events_image_id_media_id_fk" FOREIGN KEY ("image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
@@ -56,7 +55,6 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   
   DROP INDEX "payload_locked_documents_rels_subscribers_id_idx";
   DROP INDEX "payload_locked_documents_rels_events_id_idx";
-  ALTER TABLE "media" DROP COLUMN "cloudinary_public_id";
   ALTER TABLE "payload_locked_documents_rels" DROP COLUMN "subscribers_id";
   ALTER TABLE "payload_locked_documents_rels" DROP COLUMN "events_id";
   DROP TYPE "public"."enum_subscribers_status";

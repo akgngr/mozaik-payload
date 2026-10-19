@@ -228,12 +228,6 @@
           "primaryKey": true,
           "notNull": true
         },
-        "cloudinary_public_id": {
-          "name": "cloudinary_public_id",
-          "type": "varchar",
-          "primaryKey": false,
-          "notNull": false
-        },
         "alt": {
           "name": "alt",
           "type": "varchar",
