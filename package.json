@@ -25,6 +25,7 @@
     "deploy:vinext": "vinext-cloudflare deploy --config dist/server/wrangler.json"
   },
   "dependencies": {
+    "@jhb.software/payload-cloudinary-plugin": "^0.5.0",
     "@payloadcms/db-postgres": "3.91.0",
     "@payloadcms/next": "3.91.0",
     "@payloadcms/plugin-cloud-storage": "3.91.0",

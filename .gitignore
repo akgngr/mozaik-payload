@@ -37,9 +37,13 @@ pnpm-debug.log*
 # local temp / backups
 .zcode/
 /media/
-!public/media/
 mosaik-mobile-restore/
 mosaik-mobile-restore-draft/
 
 .vinext/
 .wrangler/
+.chrome-profile/
+.zcode/
+.vinext/
+.uv-cache/
+.pnpm-store/
