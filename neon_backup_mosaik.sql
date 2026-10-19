@@ -408,11 +408,10 @@ CREATE TYPE "public"."enum_subscribers_status" AS ENUM('active', 'unsubscribed')
 -- =========================================================================
 
 
--- Data for "payload_migrations" (4 rows)
+-- Data for "payload_migrations" (3 rows)
 INSERT INTO "payload_migrations" ("id", "name", "batch", "updated_at", "created_at") VALUES (1, '20260712_195239', '1', '2026-07-12T19:52:46.485Z', '2026-07-12T19:52:46.482Z') ON CONFLICT DO NOTHING;
 INSERT INTO "payload_migrations" ("id", "name", "batch", "updated_at", "created_at") VALUES (3, '20260828_143656', '1', '2026-08-30T19:46:30.383Z', '2026-08-30T19:46:30.383Z') ON CONFLICT DO NOTHING;
 INSERT INTO "payload_migrations" ("id", "name", "batch", "updated_at", "created_at") VALUES (4, '20260830_193325', '1', '2026-08-30T19:46:30.438Z', '2026-08-30T19:46:30.438Z') ON CONFLICT DO NOTHING;
-INSERT INTO "payload_migrations" ("id", "name", "batch", "updated_at", "created_at") VALUES (2, 'dev', '-1', '2026-10-18T15:12:09.000Z', '2026-07-12T19:53:34.355Z') ON CONFLICT DO NOTHING;
 
 -- Data for "users" (1 rows)
 INSERT INTO "users" ("id", "name", "updated_at", "created_at", "email", "reset_password_token", "reset_password_expiration", "reset_password_requested_at", "salt", "hash", "login_attempts", "lock_until") VALUES (1, 'Abdulkadir', '2026-08-28T18:01:15.214Z', '2026-07-12T20:02:56.058Z', 'hi@akgngr.com', NULL, NULL, NULL, 'f37aa068341faa9a0d950000d363091e3ed9ba3d2569e154a847574c40af2915', 'de0caf599a734f131c101533d746cd8559e94b7e02eea818ad2d65765e55bdac70f9728afa238eb7ef803d3a49f796626409523f9625c37a3d393693cedf54ef5df3fa9778384f10d5684dd3e73930cd620ad8793bcfa7e5472b34b76c6929b3d7da8c77354be2ee5fdb07baed0be8a245abf95b84b342abda9032d1dd8c0d0c893ec3ce816cf19af26056402abc425c33b783b31d346f7d0ace364b3eeef67b41dfeb025cceeee0cfa3cd78285fe37e001af6c60e0ebad7641fbf1a41c7927902b5ad8e8be920899166c4828c17c18918e7f86203d573da2d1fd2046d315b0beccc700f7850cf44c2f3173b7e37f2ba92ed67df1f68d5dede4d9d3b0b29b28c8291109156ee4068dba139ef4677a68170cff94096a2e19a7fe1a80af9032361ba9d075eff0616e7399c8bd098bdc6a8a90614cf66452c0565efcc7883d87cbf0de6f7d33416bf88b6b1ec25913f65a44dcad8314151b49e0e4d082efc94182098a2a2c05ab10ebe01750d9ff81caf3e701cb106e7bd20c653f171e5a0f7f729719bf409e204413616b909cf4dc1834424ec44edd39ee439a40fc9eef37b2846eb6702e1f271dcae3f2e469cf88586ab57881bfbaf42669711e2ea605839c3fde696206cab960d19d934fcd962230cf190fee4127d63c6603eaec08a2255415703c26e790df51167467f92e3ffa23d17f61132e64a480d68afb4bfc2ff4a9179', '0', NULL) ON CONFLICT DO NOTHING;
