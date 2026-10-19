@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Erstehilfe - Google Ads & GA4 Müşteri Denetim Raporu</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: #f8fafc;
+      color: #1e293b;
+      line-height: 1.5;
+      padding: 30px;
+    }
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      background: #ffffff;
+      padding: 40px 50px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      border: 1px solid #e2e8f0;
+    }
+    .header {
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 25px;
+      margin-bottom: 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      border-radius: 6px;
+      background: #fef3c7;
+      color: #92400e;
+      margin-bottom: 8px;
+    }
+    h1 {
+      font-size: 24px;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 6px;
+    }
+    .meta {
+      font-size: 13px;
+      color: #64748b;
+    }
+    .meta strong {
+      color: #334155;
+    }
+    h2 {
+      font-size: 16px;
+      font-weight: 700;
+      color: #0f172a;
+      margin-top: 30px;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+    .kpi-card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 16px;
+    }
+    .kpi-title {
+      font-size: 12px;
+      color: #64748b;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .kpi-value {
+      font-size: 20px;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 4px;
+    }
+    .kpi-sub {
+      font-size: 11px;
+      color: #059669;
+      font-weight: 600;
+    }
+    .kpi-sub.neutral {
+      color: #64748b;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      margin-bottom: 25px;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    th {
+      background: #0f172a;
+      color: #ffffff;
+      text-align: left;
+      padding: 12px 14px;
+      font-weight: 600;
+      font-size: 12px;
+    }
+    td {
+      padding: 12px 14px;
+      border-bottom: 1px solid #e2e8f0;
+      vertical-align: top;
+    }
+    tr:nth-child(even) td {
+      background: #f8fafc;
+    }
+    .danger {
+      color: #dc2626;
+      font-weight: 600;
+    }
+    .success {
+      color: #16a34a;
+      font-weight: 600;
+    }
+    .tag {
+      display: inline-block;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .tag-danger {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+    .tag-warning {
+      background: #fef3c7;
+      color: #92400e;
+    }
+    .tag-info {
+      background: #e0f2fe;
+      color: #075985;
+    }
+    .callout {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-left: 4px solid #16a34a;
+      padding: 16px 20px;
+      border-radius: 6px;
+      margin-bottom: 30px;
+    }
+    .callout h3 {
+      font-size: 14px;
+      color: #166534;
+      margin-bottom: 8px;
+    }
+    .callout ul {
+      margin-left: 20px;
+      font-size: 13px;
+      color: #14532d;
+    }
+    .callout li {
+      margin-bottom: 4px;
+    }
+    .roadmap-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin-bottom: 12px;
+      border-left: 4px solid #3b82f6;
+    }
+    .roadmap-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #1e3a8a;
+      margin-bottom: 4px;
+    }
+    .roadmap-desc {
+      font-size: 12px;
+      color: #475569;
+    }
+    .approval-box {
+      background: #f8fafc;
+      border: 2px dashed #cbd5e1;
+      padding: 25px;
+      border-radius: 8px;
+      margin-top: 30px;
+    }
+    .checkbox-item {
+      margin-bottom: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #334155;
+    }
+    .sign-row {
+      margin-top: 25px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      color: #475569;
+    }
+    @media print {
+      body {
+        padding: 0;
+        background: #fff;
+      }
+      .container {
+        border: none;
+        box-shadow: none;
+        padding: 20px;
+        max-width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div>
+        <span class="badge">Müşteri Raporu & Onay Dokümanı</span>
+        <h1>Google Ads & GA4 Hesap Denetim Raporu</h1>
+        <div class="meta">
+          <strong>Hesap Adı:</strong> Erstehilfe (ID: 866-355-2364) &nbsp;|&nbsp; 
+          <strong>Tarih Aralığı:</strong> Son 30 Gün &nbsp;|&nbsp; 
+          <strong>Durum:</strong> İyileştirme Öncesi Müşteri Onayı
+        </div>
+      </div>
+    </div>
+
+    <!-- KPI Cards -->
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-title">Toplam Reklam Harcaması</div>
+        <div class="kpi-value">€4.903,24</div>
+        <div class="kpi-sub neutral">PMax: %80 | Search: %20</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">Toplam Dönüşüm Hacmi</div>
+        <div class="kpi-value">175,54 Adet</div>
+        <div class="kpi-sub">GA4: 155 Net Rezervasyon</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">Ortalama Sipariş / CPA</div>
+        <div class="kpi-value">€27,93</div>
+        <div class="kpi-sub">Search: €24,00 | PMax: €29,15</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">Google Ads ROAS</div>
+        <div class="kpi-value">1,49x</div>
+        <div class="kpi-sub">Search: 1,92x (En Yüksek)</div>
+      </div>
+    </div>
+
+    <!-- Core Problems Table -->
+    <h2>1. Tespit Edilen Kritik Hesap Sorunları Tablosu</h2>
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 30px;">#</th>
+          <th style="width: 140px;">Tespit Edilen Sorun</th>
+          <th style="width: 170px;">Mevcut Durum / Kanıt Metriği</th>
+          <th style="width: 160px;">Olumsuz Etki / İsraf</th>
+          <th>Önerilen Çözüm & Aksiyon</th>
+          <th style="width: 80px;">Öncelik</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>1</strong></td>
+          <td><strong>Coğrafi Hedefleme Sızıntısı</strong></td>
+          <td>Arama harcamasının <strong>%63'ü (€625)</strong> "Area of Interest" (ilgi alanı) olarak harcandı.</td>
+          <td><span class="danger">Hamburg, Berlin, Münih</span> ve yurtdışından kursa gelemeyecek kullanıcılardan boşa tıklama alındı.</td>
+          <td>Konum seçeneği <strong>"Yalnızca bu konumdaki kişiler" (Presence Only)</strong> yapılacak. Hannover + 20km sınırlandırılacak.</td>
+          <td><span class="tag tag-danger">Kritik</span></td>
+        </tr>
+        <tr>
+          <td><strong>2</strong></td>
+          <td><strong>Bütçe Dengesizliği & Search Kısıtı</strong></td>
+          <td>Bütçenin <strong>%80'i (€3.907)</strong> PMax'e akarken, Search sadece <strong>€996</strong> bütçe alıyor.</td>
+          <td>Daha karlı ve düşük maliyetli (<strong>CPA €24 vs €29</strong>) Search kampanyası bütçesizlikten büyüyemiyor.</td>
+          <td>Search payı %20'den <strong>%45-50'ye</strong> çıkarılacak. PMax'e Target CPA (€26) tavanı konularak israf durdurulacak.</td>
+          <td><span class="tag tag-danger">Kritik</span></td>
+        </tr>
+        <tr>
+          <td><strong>3</strong></td>
+          <td><strong>Eksik Anahtar Kelime Kapsamı</strong></td>
+          <td>Search kampanyasında <strong>sadece 2 anahtar kelime</strong> aktif durumda.</td>
+          <td>Ehliyet (Führerschein), hafta sonu ve şirket talepleri kontrolsüzce pahalı PMax'e kayıyor.</td>
+          <td>4 yeni tematik grup açılacak: <em>Führerschein, Termine, Betriebliche Ersthelfer, English Course</em>.</td>
+          <td><span class="tag tag-warning">Yüksek</span></td>
+        </tr>
+        <tr>
+          <td><strong>4</strong></td>
+          <td><strong>Masaüstü (Desktop) CPA Kaybı</strong></td>
+          <td>Mobilde CPA <strong>€21-28</strong> iken, Masaüstünde <strong>€39-41</strong> (%80 daha pahalı).</td>
+          <td>Masaüstü tıklamaları rezervasyona zor dönüyor, bütçeyi tüketiyor.</td>
+          <td>Masaüstü cihaz teklif ayarlaması (Device Bid Adjustment) <strong>-%25 ile -%30</strong> düşürülecek.</td>
+          <td><span class="tag tag-warning">Yüksek</span></td>
+        </tr>
+        <tr>
+          <td><strong>5</strong></td>
+          <td><strong>Negatif Kelime Eksikliği</strong></td>
+          <td>Arama terimlerinde uzak şehirler (Nienburg, Leer vb.) ve rakipler yer alıyor.</td>
+          <td>Kursa gelmeyecek aramalar tıklama başına <strong>~€2,50</strong> maliyet oluşturuyor.</td>
+          <td>Hesap düzeyinde negatif anahtar kelime listesi yüklenerek ilgisiz aramalar engellenecek.</td>
+          <td><span class="tag tag-warning">Yüksek</span></td>
+        </tr>
+        <tr>
+          <td><strong>6</strong></td>
+          <td><strong>Tıklama - Oturum Kaybı (%71 Fark)</strong></td>
+          <td>Google Ads <strong>1.948 tıklama</strong> bildirirken, GA4'te yalnızca <strong>558 oturum</strong> görünüyor.</td>
+          <td>Müşterilerin çerez reddi veya mobil açılış yavaşlığı nedeniyle verisi eksik kalıyor.</td>
+          <td>Consent Mode v2 ve mobil sayfa hızı denetlenecek, PMax'teki yanlış tıklamalar elenecek.</td>
+          <td><span class="tag tag-info">Orta</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Monthly Budget Optimization -->
+    <h2>2. Önerilen Aylık Bütçe Optimizasyon Modeli</h2>
+    <p style="font-size: 13px; color: #64748b; margin-bottom: 15px;">
+      Mevcut aylık toplam harcama artırılmadan, bütçenin doğru kanallara yeniden tahsis edilmesi hedeflenmiştir.
+    </p>
+    <table>
+      <thead>
+        <tr>
+          <th>Kampanya / Kanal Türü</th>
+          <th>Mevcut Bütçe</th>
+          <th>Önerilen Yeni Bütçe</th>
+          <th>Hedef CPA</th>
+          <th>Stratejik Odak & Görev</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Google Search (Arama Ağı)</strong></td>
+          <td>€996 / ay (%20)</td>
+          <td><strong class="success">€2.250 / ay (%47)</strong></td>
+          <td>€20,00 - €22,00</td>
+          <td>Yüksek niyetli aramalar (Ehliyet, Şirket, Hafta Sonu)</td>
+        </tr>
+        <tr>
+          <td><strong>Performance Max (PMax)</strong></td>
+          <td>€3.907 / ay (%80)</td>
+          <td><strong style="color: #0284c7;">€2.000 / ay (%42)</strong></td>
+          <td>€25,00 - €26,00</td>
+          <td>Sıkılaştırılmış hedefleme, sadece yerel ve yüksek dönüşen yerleşimler</td>
+        </tr>
+        <tr>
+          <td><strong>Dinamik Yeniden Pazarlama (Retargeting)</strong></td>
+          <td>€0 (%0)</td>
+          <td><strong class="success">€500 / ay (%11)</strong></td>
+          <td>€16,00 - €18,00</td>
+          <td>Takvimde tarih seçip ödemeyi tamamlamayan %50 kitleyi geri kazanma</td>
+        </tr>
+        <tr style="background: #f1f5f9; font-weight: 700;">
+          <td>TOPLAM AYLIK BÜTÇE</td>
+          <td>€4.903 / ay</td>
+          <td><strong class="success">€4.750 / ay</strong></td>
+          <td>€21,50 (Ortalama)</td>
+          <td>+%25 - %35 Daha Fazla Rezervasyon (Tahmini 215-230 rezervasyon)</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Callout Gains -->
+    <div class="callout">
+      <h3>Beklenen Finansal ve Operasyonel Kazanımlar:</h3>
+      <ul>
+        <li><strong>Daha Fazla Rezervasyon:</strong> Reklam bütçesi artırılmadan (hatta ~€150 tasarrufla) aylık rezervasyon sayısı <strong>175'ten 215 - 230 adede</strong> çıkacaktır.</li>
+        <li><strong>Düşen Rezervasyon Başı Maliyet (CPA):</strong> Ortalama CPA <strong>€27,93'ten ~€21,50'ye</strong> düşecektir.</li>
+        <li><strong>Bütçe İsrafının Önlenmesi:</strong> Şehir dışına ve masaüstünde boşa giden <strong>aylık ~€800 - €1.000</strong> gereksiz maliyet tamamen kurtarılacaktır.</li>
+      </ul>
+    </div>
+
+    <!-- Implementation Roadmap -->
+    <h2>3. Adım Adım Uygulama Yol Haritası</h2>
+    <div class="roadmap-card" style="border-left-color: #ef4444;">
+      <div class="roadmap-title">FAZ 1: Acil Koruma & İsraf Önleme (Onay Alındığı Gün)</div>
+      <div class="roadmap-desc">Konum ayarını "Presence Only" yapma, negatif anahtar kelime listesini uygulama ve masaüstü teklif kırmasını (-%25) devreye alma.</div>
+    </div>
+    <div class="roadmap-card" style="border-left-color: #f59e0b;">
+      <div class="roadmap-title">FAZ 2: Bütçe Dengelenmesi & Arama Mimarisi (1. Hafta)</div>
+      <div class="roadmap-desc">Search bütçesini kademeli olarak artırma, 4 yeni reklam grubunu açma, PMax kampanyasına Target CPA sınırı tanımlama.</div>
+    </div>
+    <div class="roadmap-card" style="border-left-color: #10b981;">
+      <div class="roadmap-title">FAZ 3: Teknik Entegrasyon & Terk Edenleri Geri Kazanma (2. Hafta)</div>
+      <div class="roadmap-desc">Consent Mode v2 kontrolü, takvimde tarih seçip bırakan %50'lik kitleye yönelik yeniden pazarlama kampanyasını başlatma.</div>
+    </div>
+
+    
+    </div>
+  </div>
+</body>
+</html>
