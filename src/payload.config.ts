@@ -17,6 +17,7 @@ import { SiteSettings } from './globals/SiteSettings'
 import { Homepage } from './globals/Homepage'
 import { Donation } from './globals/Donation'
 import { ContactInfo } from './globals/ContactInfo'
+import { migrations } from './migrations'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -39,6 +40,7 @@ export default buildConfig({
     pool: {
       connectionString: process.env.DATABASE_URI || '',
     },
+    prodMigrations: migrations,
   }),
   sharp,
 })
