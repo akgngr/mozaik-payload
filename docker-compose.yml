@@ -35,7 +35,7 @@ services:
       POSTGRES_USER: '${POSTGRES_USER}'
       POSTGRES_PASSWORD: '${POSTGRES_PASSWORD}'
     volumes:
-      - 'dolibarr_postgres_data:/var/lib/postgresql/data'
+      - 'mosaik_postgres_data:/var/lib/postgresql/data'
     healthcheck:
       test:
         - CMD-SHELL
@@ -48,8 +48,8 @@ services:
       - app_network
 
 volumes:
-  dolibarr_postgres_data:
-    name: dolibarr_postgres_data
+  mosaik_postgres_data:
+    name: mosaik_postgres_data
 
 networks:
   app_network:

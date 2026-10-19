@@ -19,7 +19,7 @@ Bu proje, üçüncü taraf servis bağımlılıkları (Neon ve Cloudinary) tamam
    - `POSTGRES_DB`, `POSTGRES_USER`, `POSTGRES_PASSWORD`
    - `PAYLOAD_SECRET`, `NEXT_PUBLIC_SERVER_URL`
 2. **Coolify'da Deploy Edin**:
-   - `docker-compose.yml` dosyasında `app` ve `db` (Postgres 16 + `dolibarr_postgres_data` volume) tanımlıdır.
+   - `docker-compose.yml` dosyasında `app` ve `db` (Postgres 16 + `mosaik_postgres_data` volume) tanımlıdır.
    - Build sırasında veritabanı bağlantısı gerekmez; Next.js derlemesi hatasız tamamlanır.
 3. **Yedeği Veritabanına Yükleyin**:
    - `docker exec -it mosaik_app pnpm run db:restore`
