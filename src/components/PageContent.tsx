@@ -8,15 +8,28 @@ import { PageHero } from './PageHero'
 import { RichText } from './RichText'
 
 export const PageContent = async ({ slug }: { slug: string }) => {
-  const payload = await getPayload()
-  const result = await payload.find({
-    collection: 'pages',
-    where: { slug: { equals: slug } },
-    limit: 1,
-  })
+  let page: any = null
 
-  const page = result.docs[0]
-  if (!page) notFound()
+  try {
+    const payload = await getPayload()
+    const result = await payload.find({
+      collection: 'pages',
+      where: { slug: { equals: slug } },
+      limit: 1,
+    })
+    page = result.docs[0]
+  } catch {
+    // Database unreachable during build or downtime fallback
+  }
+
+  if (!page) {
+    page = {
+      title: slug.charAt(0).toUpperCase() + slug.slice(1),
+      heroEyebrow: 'Mosaik Dialog und Kultur e.V.',
+      heroSubtitle: '',
+      content: null,
+    }
+  }
 
   const jsonLd = jsonLdGraph(
     webPageSchema({
@@ -41,7 +54,7 @@ export const PageContent = async ({ slug }: { slug: string }) => {
         <Container>
           <div className="mx-auto max-w-3xl">
             <div className="mosaic-strip mb-10 h-1 w-24 rounded-full" aria-hidden />
-            <RichText data={page.content} />
+            {page.content && <RichText data={page.content} />}
           </div>
         </Container>
       </section>
@@ -50,14 +63,27 @@ export const PageContent = async ({ slug }: { slug: string }) => {
 }
 
 export const getPageMetadata = async (slug: string): Promise<Metadata> => {
-  const payload = await getPayload()
-  const result = await payload.find({
-    collection: 'pages',
-    where: { slug: { equals: slug } },
-    limit: 1,
-  })
-  const page = result.docs[0]
-  if (!page) return {}
+  let page: any = null
+
+  try {
+    const payload = await getPayload()
+    const result = await payload.find({
+      collection: 'pages',
+      where: { slug: { equals: slug } },
+      limit: 1,
+    })
+    page = result.docs[0]
+  } catch {
+    // Database unreachable during build or downtime fallback
+  }
+
+  if (!page) {
+    return {
+      title: `${slug.charAt(0).toUpperCase() + slug.slice(1)} | ${SITE_NAME}`,
+      alternates: { canonical: `/${slug}` },
+    }
+  }
+
   const title = page.seo?.metaTitle || page.title
   const description = page.seo?.metaDescription || undefined
   const canonical = `/${slug}`

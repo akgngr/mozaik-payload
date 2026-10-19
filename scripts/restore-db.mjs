@@ -56,12 +56,20 @@ function loadEnv() {
 
 loadEnv()
 
-const databaseUri = process.env.DATABASE_URI
+let databaseUri = process.env.DATABASE_URI
+
+// Eğer doğrudan DATABASE_URI yoksa, POSTGRES_* ortam değişkenlerinden otomatik oluştur
+if (!databaseUri && process.env.POSTGRES_DB && process.env.POSTGRES_USER && process.env.POSTGRES_PASSWORD) {
+  const host = process.env.POSTGRES_HOST || 'localhost'
+  const port = process.env.POSTGRES_PORT || '5432'
+  databaseUri = `postgresql://${process.env.POSTGRES_USER}:${process.env.POSTGRES_PASSWORD}@${host}:${port}/${process.env.POSTGRES_DB}`
+}
 
 if (!databaseUri) {
-  console.error('\n❌ HATA: DATABASE_URI ortam değişkeni bulunamadı!')
-  console.error('Lütfen .env dosyanıza geçerli bir bağlantı adresi ekleyin:')
-  console.error('Örnek: DATABASE_URI=postgresql://postgres:sifreniz@localhost:5432/mosaik\n')
+  console.error('\n❌ HATA: DATABASE_URI veya POSTGRES_* ortam değişkenleri bulunamadı!')
+  console.error('Lütfen .env dosyanıza geçerli veritabanı bilgilerini ekleyin:')
+  console.error('Örnek 1: DATABASE_URI=postgresql://postgres:sifreniz@localhost:5432/mosaik')
+  console.error('Örnek 2: POSTGRES_DB=mosaik, POSTGRES_USER=postgres, POSTGRES_PASSWORD=sifreniz\n')
   process.exit(1)
 }
 

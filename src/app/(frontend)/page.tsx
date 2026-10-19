@@ -24,13 +24,22 @@ import {
 } from '@/components/icons'
 import type { Media, Event as EventType } from '@/payload-types'
 
-export async function generateMetadata(): Promise<Metadata> {
-  const payload = await getPayload()
-  const home = await payload.findGlobal({ slug: 'homepage' })
+export const dynamic = 'force-dynamic'
 
-  const heroTitle = home.heroTitle || SITE_NAME
+export async function generateMetadata(): Promise<Metadata> {
+  let heroTitle = SITE_NAME
+  let description = SITE_DESCRIPTION
+
+  try {
+    const payload = await getPayload()
+    const home = await payload.findGlobal({ slug: 'homepage' })
+    if (home?.heroTitle) heroTitle = home.heroTitle
+    if (home?.heroSubtitle) description = home.heroSubtitle
+  } catch {
+    // Build time or database unreachable fallback
+  }
+
   const title = `${heroTitle} | Bildung & Integration`
-  const description = home.heroSubtitle || SITE_DESCRIPTION
 
   return {
     title,
@@ -145,23 +154,33 @@ const werteList = [
 ]
 
 export default async function HomePage() {
-  const payload = await getPayload()
-  const [home, projects, eventsResult] = await Promise.all([
-    payload.findGlobal({ slug: 'homepage' }),
-    payload.find({ collection: 'projects', limit: 3, sort: '-publishedDate' }),
-    payload.find({ collection: 'events', limit: 3, sort: 'eventDate' }),
-  ])
+  let home: any = {}
+  let projects: any = { docs: [] }
+  let eventsResult: any = { docs: [] }
+
+  try {
+    const payload = await getPayload()
+    const [h, p, e] = await Promise.all([
+      payload.findGlobal({ slug: 'homepage' }),
+      payload.find({ collection: 'projects', limit: 3, sort: '-publishedDate' }),
+      payload.find({ collection: 'events', limit: 3, sort: 'eventDate' }),
+    ])
+    home = h
+    projects = p
+    eventsResult = e
+  } catch {
+    // Database unreachable during build or downtime fallback
+  }
 
   const upcomingEvents =
-    eventsResult.docs.length > 0
+    eventsResult?.docs?.length > 0
       ? eventsResult.docs
       : (initialDemoEvents as EventType[])
 
-
-  const media = (home.heroImages || [])
-    .map((item) => item.image)
-    .filter((img): img is Media => typeof img === 'object' && img !== null)
-  const slides = media.map((img) => ({ url: img.url || '', alt: img.alt || '' }))
+  const media = (home?.heroImages || [])
+    .map((item: any) => item.image)
+    .filter((img: any): img is Media => typeof img === 'object' && img !== null)
+  const slides = media.map((img: any) => ({ url: img.url || '', alt: img.alt || '' }))
   const secondaryImage = media[1] ?? media[0] ?? null
 
   return (

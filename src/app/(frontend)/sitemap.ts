@@ -18,28 +18,34 @@ const staticRoutes = [
 ]
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const payload = await getPayload()
+  let projectUrls: any[] = []
+  let pageUrls: any[] = []
 
-  const [projects, pages] = await Promise.all([
-    payload.find({ collection: 'projects', limit: 500 }),
-    payload.find({ collection: 'pages', where: { slug: { not_equals: 'ueber-uns' } }, limit: 500 }),
-  ])
+  try {
+    const payload = await getPayload()
+    const [projects, pages] = await Promise.all([
+      payload.find({ collection: 'projects', limit: 500 }),
+      payload.find({ collection: 'pages', where: { slug: { not_equals: 'ueber-uns' } }, limit: 500 }),
+    ])
 
-  const projectUrls = projects.docs.map((project) => ({
-    url: `${SITE_URL}/projekt/${project.slug}`,
-    lastModified: new Date(project.updatedAt),
-    changeFrequency: 'monthly' as const,
-    priority: 0.6,
-  }))
-
-  const pageUrls = pages.docs
-    .filter((page) => page.slug)
-    .map((page) => ({
-      url: `${SITE_URL}/${page.slug}`,
-      lastModified: new Date(page.updatedAt),
+    projectUrls = projects.docs.map((project) => ({
+      url: `${SITE_URL}/projekt/${project.slug}`,
+      lastModified: new Date(project.updatedAt),
       changeFrequency: 'monthly' as const,
       priority: 0.6,
     }))
+
+    pageUrls = pages.docs
+      .filter((page) => page.slug)
+      .map((page) => ({
+        url: `${SITE_URL}/${page.slug}`,
+        lastModified: new Date(page.updatedAt),
+        changeFrequency: 'monthly' as const,
+        priority: 0.6,
+      }))
+  } catch {
+    // Database unreachable during build or downtime fallback
+  }
 
   const staticUrls = staticRoutes.map((route) => ({
     url: `${SITE_URL}${route.path}`,

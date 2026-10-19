@@ -9,16 +9,20 @@ import { RichText } from '@/components/RichText'
 
 type Args = { params: Promise<{ slug: string }> }
 
-export const revalidate = 86400
+export const dynamic = 'force-dynamic'
 
 const getProject = async (slug: string) => {
-  const payload = await getPayload()
-  const result = await payload.find({
-    collection: 'projects',
-    where: { slug: { equals: slug } },
-    limit: 1,
-  })
-  return result.docs[0] || null
+  try {
+    const payload = await getPayload()
+    const result = await payload.find({
+      collection: 'projects',
+      where: { slug: { equals: slug } },
+      limit: 1,
+    })
+    return result.docs[0] || null
+  } catch {
+    return null
+  }
 }
 
 export async function generateMetadata({ params }: Args): Promise<Metadata> {

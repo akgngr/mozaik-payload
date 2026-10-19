@@ -17,9 +17,16 @@ export const metadata = {
   ),
 }
 
+export const dynamic = 'force-dynamic'
+
 export default async function KontaktPage() {
-  const payload = await getPayload()
-  const contact = await payload.findGlobal({ slug: 'contact-info' })
+  let contact: any = {}
+  try {
+    const payload = await getPayload()
+    contact = (await payload.findGlobal({ slug: 'contact-info' })) || {}
+  } catch {
+    // Veritabanı derleme sırasında erişilemezse boş obje ile devam et
+  }
 
   const jsonLd = jsonLdGraph(
     contactPageSchema(),

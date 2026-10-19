@@ -9,7 +9,7 @@ import { organizationSchema, websiteSchema, jsonLdGraph } from '@/lib/seo'
 import { SITE_URL, SITE_NAME, SITE_DESCRIPTION, SITE_LOCALE } from '@/lib/site'
 import './globals.css'
 
-export const revalidate = 604800
+export const dynamic = 'force-dynamic'
 
 const sourceSans = Source_Sans_3({
   subsets: ['latin', 'latin-ext'],
@@ -24,10 +24,16 @@ const nunito = Nunito_Sans({
 })
 
 export async function generateMetadata(): Promise<Metadata> {
-  const payload = await getPayload()
-  const settings = await payload.findGlobal({ slug: 'site-settings' })
-  const siteName = settings.siteName || SITE_NAME
-  const siteDescription = settings.siteDescription || SITE_DESCRIPTION
+  let siteName = SITE_NAME
+  let siteDescription = SITE_DESCRIPTION
+  try {
+    const payload = await getPayload()
+    const settings = await payload.findGlobal({ slug: 'site-settings' })
+    if (settings?.siteName) siteName = settings.siteName
+    if (settings?.siteDescription) siteDescription = settings.siteDescription
+  } catch {
+    // Veritabanı bağlantısı derleme (build) sırasında henüz aktif değilse varsayılan değerleri kullan
+  }
 
   return {
     metadataBase: new URL(SITE_URL),

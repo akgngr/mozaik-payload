@@ -19,6 +19,8 @@ import {
 import { notFound } from 'next/navigation'
 
 
+export const dynamic = 'force-dynamic'
+
 export async function generateMetadata(): Promise<Metadata> {
   return getPageMetadata('ueber-uns')
 }
@@ -83,14 +85,28 @@ const stats = [
 ]
 
 export default async function UeberUnsPage() {
-  const payload = await getPayload()
-  const result = await payload.find({
-    collection: 'pages',
-    where: { slug: { equals: 'ueber-uns' } },
-    limit: 1,
-  })
-  const page = result.docs[0]
-  if (!page) notFound()
+  let page: any = null
+
+  try {
+    const payload = await getPayload()
+    const result = await payload.find({
+      collection: 'pages',
+      where: { slug: { equals: 'ueber-uns' } },
+      limit: 1,
+    })
+    page = result.docs[0]
+  } catch {
+    // Database unreachable during build or downtime fallback
+  }
+
+  if (!page) {
+    page = {
+      title: 'Über uns',
+      heroEyebrow: 'Gemeinschaft & Kultur',
+      heroSubtitle: 'Mosaik Dialog und Kultur e.V.',
+      content: null,
+    }
+  }
 
   const jsonLd = jsonLdGraph(
     aboutPageSchema(),

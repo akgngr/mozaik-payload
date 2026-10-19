@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import { PageContent, getPageMetadata } from '@/components/PageContent'
 
+export const dynamic = 'force-dynamic'
+
 export async function generateMetadata(): Promise<Metadata> {
   return getPageMetadata('datenschutzerklarung')
 }

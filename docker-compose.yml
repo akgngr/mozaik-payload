@@ -4,28 +4,52 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
-        DATABASE_URI: ${DATABASE_URI}
+        DATABASE_URI: ${DATABASE_URI:-postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}}
         PAYLOAD_SECRET: ${PAYLOAD_SECRET:-jNYrMbKAgyxr8LVvK2sNo12weg7XdSDp}
         NEXT_PUBLIC_SERVER_URL: ${NEXT_PUBLIC_SERVER_URL:-https://mosaik-ruesselsheim.de}
     container_name: mosaik_app
     restart: always
+    depends_on:
+      db:
+        condition: service_healthy
     ports:
       - "${PORT:-3000}:3000"
     environment:
       - NODE_ENV=production
       - PORT=3000
       - HOSTNAME=0.0.0.0
-      - DATABASE_URI=${DATABASE_URI}
+      - DATABASE_URI=${DATABASE_URI:-postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}}
       - PAYLOAD_SECRET=${PAYLOAD_SECRET:-jNYrMbKAgyxr8LVvK2sNo12weg7XdSDp}
       - NEXT_PUBLIC_SERVER_URL=${NEXT_PUBLIC_SERVER_URL:-https://mosaik-ruesselsheim.de}
     volumes:
       # Tüm görseller ve medya dosyaları VPS üzerinde yerel diskte tutulur:
       - ./public/media:/app/public/media
-    # Hem host'taki hem de docker ağındaki PostgreSQL'e erişimi kolaylaştırır:
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
     networks:
       - app_network
+
+  db:
+    image: 'postgres:16'
+    restart: always
+    environment:
+      POSTGRES_DB: '${POSTGRES_DB}'
+      POSTGRES_USER: '${POSTGRES_USER}'
+      POSTGRES_PASSWORD: '${POSTGRES_PASSWORD}'
+    volumes:
+      - 'dolibarr_postgres_data:/var/lib/postgresql/data'
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - 'pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}'
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - app_network
+
+volumes:
+  dolibarr_postgres_data:
+    name: dolibarr_postgres_data
 
 networks:
   app_network:

@@ -7,7 +7,7 @@ import { EventCalendarView } from '@/components/EventCalendarView'
 import { MosaicPattern } from '@/components/MosaicPattern'
 import type { Event as EventType } from '@/payload-types'
 
-export const revalidate = 86400
+export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: 'Aktivitäten & Veranstaltungskalender',
@@ -75,19 +75,24 @@ const initialDemoEvents: Partial<EventType>[] = [
 ]
 
 export default async function AktivitaetPage() {
-  const payload = await getPayload()
-  const result = await payload.find({
-    collection: 'events',
-    limit: 9,
-    page: 1,
-    sort: 'eventDate',
-  })
+  let events = initialDemoEvents as EventType[]
+  let hasNextPage = false
 
-  // Use CMS events, fallback to demo events if empty
-  const events =
-    result.docs.length > 0
-      ? result.docs
-      : (initialDemoEvents as EventType[])
+  try {
+    const payload = await getPayload()
+    const result = await payload.find({
+      collection: 'events',
+      limit: 9,
+      page: 1,
+      sort: 'eventDate',
+    })
+    if (result.docs.length > 0) {
+      events = result.docs
+      hasNextPage = Boolean(result.hasNextPage)
+    }
+  } catch {
+    // Veritabanı bağlantısı derleme sırasında yoksa demo etkinlikleri kullan
+  }
 
   const eventSchemas = events.map((e) =>
     eventSchema({
@@ -128,7 +133,7 @@ export default async function AktivitaetPage() {
         <Container>
           <EventCalendarView
             initialEvents={events}
-            initialHasNextPage={Boolean(result.hasNextPage)}
+            initialHasNextPage={hasNextPage}
           />
         </Container>
       </section>

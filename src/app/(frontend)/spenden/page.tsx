@@ -7,6 +7,8 @@ import { Button } from '@/components/Button'
 import { CopyButton } from '@/components/CopyButton'
 import { MosaicPattern } from '@/components/MosaicPattern'
 
+export const dynamic = 'force-dynamic'
+
 export const metadata = {
   title: 'Spenden',
   description:
@@ -19,8 +21,18 @@ export const metadata = {
 }
 
 export default async function SpendenPage() {
-  const payload = await getPayload()
-  const donation = await payload.findGlobal({ slug: 'donation' })
+  let donation: any = {
+    heroTitle: 'Spenden',
+    heroSubtitle: 'Unterstützen Sie uns',
+    heroText: 'Ihre Spende hilft uns, wichtige Bildungs- und Integrationsprojekte in Rüsselsheim umzusetzen.',
+  }
+
+  try {
+    const payload = await getPayload()
+    donation = await payload.findGlobal({ slug: 'donation' })
+  } catch {
+    // Database unreachable during build or downtime fallback
+  }
 
   const jsonLd = jsonLdGraph(
     donatePageSchema(),

@@ -4,7 +4,7 @@ import { Container } from '@/components/Container'
 import { PageHero } from '@/components/PageHero'
 import { InfiniteProjectList } from '@/components/InfiniteProjectList'
 
-export const revalidate = 86400
+export const dynamic = 'force-dynamic'
 
 export const metadata = {
   title: 'Projekte',
@@ -18,13 +18,19 @@ export const metadata = {
 }
 
 export default async function ProjektIndexPage() {
-  const payload = await getPayload()
-  const result = await payload.find({
-    collection: 'projects',
-    limit: 9,
-    page: 1,
-    sort: '-publishedDate',
-  })
+  let result: any = { docs: [], hasNextPage: false }
+
+  try {
+    const payload = await getPayload()
+    result = await payload.find({
+      collection: 'projects',
+      limit: 9,
+      page: 1,
+      sort: '-publishedDate',
+    })
+  } catch {
+    // Database unreachable during build or downtime fallback
+  }
 
   const jsonLd = jsonLdGraph(
     webPageSchema({
