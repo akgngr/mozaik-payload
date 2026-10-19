@@ -122,7 +122,7 @@ export default async function SpendenPage() {
               Ihre <span className="text-marker">Wirkung</span>
             </h2>
             <div className="grid gap-6 md:grid-cols-3">
-              {donation.impactCards.map((card, i) => {
+              {donation.impactCards.map((card: any, i: number) => {
                 const image = typeof card.image === 'object' ? card.image : null
                 return (
                   <Card key={i} className="overflow-hidden">

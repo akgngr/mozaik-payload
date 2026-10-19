@@ -345,7 +345,7 @@ export default async function HomePage() {
           <MosaicPattern className="pointer-events-none absolute bottom-0 right-0 w-48 select-none opacity-15 md:w-72" />
           <Container className="max-w-7xl">
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-              {home.highlightCards.map((card, i) => {
+              {home.highlightCards.map((card: any, i: number) => {
                 const accent = accentColors[i % accentColors.length]
                 const Icon = iconMap[card.icon || 'heart']
                 const content = (
@@ -403,7 +403,7 @@ export default async function HomePage() {
               </div>
             </Animated>
             <div className="grid gap-6 md:grid-cols-3">
-              {projects.docs.map((project, i) => {
+              {projects.docs.map((project: any, i: number) => {
                 const image = typeof project.coverImage === 'object' ? project.coverImage : null
                 const accent = accentColors[i % accentColors.length]
                 return (
