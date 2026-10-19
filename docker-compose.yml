@@ -17,6 +17,14 @@ services:
       DATABASE_URI: postgresql://${POSTGRES_USER:?Set POSTGRES_USER}/${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD}@${POSTGRES_HOST:?Set POSTGRES_HOST}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:?Set POSTGRES_DB}
       PAYLOAD_SECRET: ${PAYLOAD_SECRET:-jNYrMbKAgyxr8LVvK2sNo12weg7XdSDp}
       NEXT_PUBLIC_SERVER_URL: ${NEXT_PUBLIC_SERVER_URL:-https://mosaik-ruesselsheim.de}
+      SMTP_HOST: ${SMTP_HOST:-}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASS: ${SMTP_PASS:-}
+      SMTP_SECURE: ${SMTP_SECURE:-false}
+      SMTP_FROM_ADDRESS: ${SMTP_FROM_ADDRESS:-info@mosaik-ruesselsheim.de}
+      SMTP_FROM_NAME: ${SMTP_FROM_NAME:-Mosaik Dialog und Kultur e.V.}
+      SMTP_TO_ADDRESS: ${SMTP_TO_ADDRESS:-info@mosaik-ruesselsheim.de}
     volumes:
       # Tüm görseller ve medya dosyaları VPS üzerinde yerel diskte tutulur:
       - ./public/media:/app/public/media

@@ -1,26 +1,26 @@
-import type { Metadata } from 'next'
-import React from 'react'
-import { Nunito_Sans, Source_Sans_3 } from 'next/font/google'
-import { getPayload } from '@/lib/payload'
-import { Header } from '@/components/Header'
-import { Footer } from '@/components/Footer'
-import { NewsletterSection } from '@/components/NewsletterSection'
-import { organizationSchema, websiteSchema, jsonLdGraph } from '@/lib/seo'
-import { SITE_URL, SITE_NAME, SITE_DESCRIPTION, SITE_LOCALE } from '@/lib/site'
-import './globals.css'
+import type { Metadata } from "next"
+import React from "react"
+import { Nunito_Sans, Source_Sans_3 } from "next/font/google"
+import { getPayload } from "@/lib/payload"
+import { Header } from "@/components/Header"
+import { Footer } from "@/components/Footer"
+import { NewsletterSection } from "@/components/NewsletterSection"
+import { organizationSchema, websiteSchema, jsonLdGraph } from "@/lib/seo"
+import { SITE_URL, SITE_NAME, SITE_DESCRIPTION, SITE_LOCALE } from "@/lib/site"
+import "./globals.css"
 
-export const dynamic = 'force-dynamic'
+export const dynamic = "force-dynamic"
 
 const sourceSans = Source_Sans_3({
-  subsets: ['latin', 'latin-ext'],
-  variable: '--font-source',
-  display: 'swap',
+  subsets: ["latin", "latin-ext"],
+  variable: "--font-source",
+  display: "swap",
 })
 
 const nunito = Nunito_Sans({
-  subsets: ['latin', 'latin-ext'],
-  variable: '--font-nunito',
-  display: 'swap',
+  subsets: ["latin", "latin-ext"],
+  variable: "--font-nunito",
+  display: "swap",
 })
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -28,7 +28,7 @@ export async function generateMetadata(): Promise<Metadata> {
   let siteDescription = SITE_DESCRIPTION
   try {
     const payload = await getPayload()
-    const settings = await payload.findGlobal({ slug: 'site-settings' })
+    const settings = await payload.findGlobal({ slug: "site-settings" })
     if (settings?.siteName) siteName = settings.siteName
     if (settings?.siteDescription) siteDescription = settings.siteDescription
   } catch {
@@ -45,10 +45,10 @@ export async function generateMetadata(): Promise<Metadata> {
     authors: [{ name: siteName }],
     creator: siteName,
     publisher: siteName,
-    category: 'Verein',
-    icons: { icon: '/favicon.png' },
+    category: "Verein",
+    icons: { icon: "/favicon.png" },
     openGraph: {
-      type: 'website',
+      type: "website",
       locale: SITE_LOCALE,
       url: SITE_URL,
       siteName,
@@ -64,7 +64,7 @@ export async function generateMetadata(): Promise<Metadata> {
       ],
     },
     twitter: {
-      card: 'summary_large_image',
+      card: "summary_large_image",
       title: siteName,
       description: siteDescription,
       images: [`${SITE_URL}/mosaik-logo.png`],
@@ -75,23 +75,33 @@ export async function generateMetadata(): Promise<Metadata> {
       googleBot: {
         index: true,
         follow: true,
-        'max-image-preview': 'large',
-        'max-snippet': -1,
+        "max-image-preview": "large",
+        "max-snippet": -1,
       },
     },
   }
 }
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
   const organization = organizationSchema()
   const website = websiteSchema()
 
   return (
-    <html lang="de" className={`${sourceSans.variable} ${nunito.variable}`}>
+    <html
+      lang="de"
+      data-scroll-behavior="smooth"
+      className={`${sourceSans.variable} ${nunito.variable}`}
+    >
       <body className="font-sans antialiased">
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdGraph(organization, website)) }}
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(jsonLdGraph(organization, website)),
+          }}
         />
         <div className="mosaic-strip h-1 w-full opacity-70" />
         <Header />
@@ -102,5 +112,3 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     </html>
   )
 }
-
-
