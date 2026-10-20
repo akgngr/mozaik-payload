@@ -60,7 +60,7 @@ export async function POST(req: Request) {
       'Contact form email submission started',
     )
 
-    await payload.sendEmail({
+    const smtpResult: unknown = await payload.sendEmail({
       to: targetEmail,
       replyTo: `${name} <${email}>`,
       subject: emailSubject,
@@ -115,6 +115,15 @@ export async function POST(req: Request) {
     })
 
     payload.logger.info(
+      {
+        to: targetEmail,
+        recipientSource,
+        ...getSmtpResponseDetails(smtpResult),
+      },
+      'SMTP response for contact form email',
+    )
+
+    payload.logger.info(
       { to: targetEmail, recipientSource },
       'Contact form email submission completed',
     )
@@ -130,6 +139,7 @@ export async function POST(req: Request) {
       recipientSource,
       smtpHost: process.env.SMTP_HOST || '(not configured)',
       smtpPort: process.env.SMTP_PORT || '587',
+      ...getSmtpResponseDetails(error),
     })
     return NextResponse.json(
       {
@@ -140,6 +150,27 @@ export async function POST(req: Request) {
       { status: 500 },
     )
   }
+}
+
+function getSmtpResponseDetails(value: unknown): Record<string, string | number> {
+  if (typeof value !== 'object' || value === null) {
+    return {}
+  }
+
+  const details: Record<string, string | number> = {}
+  const response = 'response' in value ? value.response : undefined
+  const responseCode = 'responseCode' in value ? value.responseCode : undefined
+  const messageId = 'messageId' in value ? value.messageId : undefined
+  const code = 'code' in value ? value.code : undefined
+  const command = 'command' in value ? value.command : undefined
+
+  if (typeof response === 'string') details.response = response
+  if (typeof responseCode === 'number') details.responseCode = responseCode
+  if (typeof messageId === 'string') details.messageId = messageId
+  if (typeof code === 'string') details.code = code
+  if (typeof command === 'string') details.command = command
+
+  return details
 }
 
 function escapeHtml(str: string): string {
