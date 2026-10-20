@@ -2,6 +2,9 @@ import { NextResponse } from 'next/server'
 import { getPayload } from '@/lib/payload'
 
 export async function POST(req: Request) {
+  let targetEmail: string | undefined
+  let recipientSource: string | undefined
+
   try {
     const { name, email, subject, message } = await req.json()
 
@@ -23,18 +26,39 @@ export async function POST(req: Request) {
 
     const payload = await getPayload()
 
-    // Hedef alıcı: ContactInfo globalinde tanımlı e-posta veya ortam değişkeni
-    let targetEmail = process.env.SMTP_TO_ADDRESS || process.env.SMTP_USER || process.env.SMTP_FROM_ADDRESS || 'info@mosaik-ruesselsheim.de'
-    try {
-      const contactInfo = await payload.findGlobal({ slug: 'contact-info' })
-      if (contactInfo?.email) {
-        targetEmail = contactInfo.email
+    targetEmail = process.env.SMTP_TO_ADDRESS
+    recipientSource = targetEmail ? 'SMTP_TO_ADDRESS' : undefined
+    if (!targetEmail) {
+      try {
+        const contactInfo = await payload.findGlobal({ slug: 'contact-info' })
+        targetEmail = contactInfo?.email || undefined
+        recipientSource = targetEmail ? 'contact-info global' : undefined
+      } catch (error) {
+        payload.logger.warn({ err: error }, 'Could not load contact email from global config')
       }
-    } catch {
-      // Global bulunamazsa varsayılan targetEmail kullanılır
+    }
+    if (!targetEmail) {
+      targetEmail = process.env.SMTP_USER || process.env.SMTP_FROM_ADDRESS || 'info@mosaik-ruesselsheim.de'
+      recipientSource = process.env.SMTP_USER
+        ? 'SMTP_USER fallback'
+        : process.env.SMTP_FROM_ADDRESS
+          ? 'SMTP_FROM_ADDRESS fallback'
+          : 'hardcoded fallback'
     }
 
     const emailSubject = `[Website Kontakt] ${subject || 'Neue Anfrage'}: ${name}`
+
+    payload.logger.info(
+      {
+        to: targetEmail,
+        recipientSource,
+        smtpHost: process.env.SMTP_HOST || '(not configured)',
+        smtpPort: process.env.SMTP_PORT || '587',
+        smtpSecure: process.env.SMTP_SECURE === 'true' || process.env.SMTP_PORT === '465',
+        from: process.env.SMTP_FROM_ADDRESS || '(Payload default)',
+      },
+      'Contact form email submission started',
+    )
 
     await payload.sendEmail({
       to: targetEmail,
@@ -90,12 +114,23 @@ export async function POST(req: Request) {
       `,
     })
 
+    payload.logger.info(
+      { to: targetEmail, recipientSource },
+      'Contact form email submission completed',
+    )
+
     return NextResponse.json({
       success: true,
       message: 'Vielen Dank! Ihre Nachricht wurde erfolgreich gesendet.',
     })
   } catch (error: any) {
-    console.error('Contact form send email error:', error)
+    console.error('Contact form send email error:', {
+      error,
+      to: targetEmail,
+      recipientSource,
+      smtpHost: process.env.SMTP_HOST || '(not configured)',
+      smtpPort: process.env.SMTP_PORT || '587',
+    })
     return NextResponse.json(
       {
         error:
