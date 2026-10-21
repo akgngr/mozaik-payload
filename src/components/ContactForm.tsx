@@ -23,6 +23,7 @@ export const ContactForm = ({ email }: { email: string }) => {
       email: formData.get('email') as string,
       subject: formData.get('subject') as string,
       message: formData.get('message') as string,
+      copyToSender: formData.get('copyToSender') === 'on',
     }
 
     try {
@@ -40,7 +41,9 @@ export const ContactForm = ({ email }: { email: string }) => {
         throw new Error(result.error || 'Fehler beim Senden der Nachricht.')
       }
 
-      setSuccess(result.message || 'Vielen Dank! Ihre Nachricht wurde erfolgreich gesendet.')
+      setSuccess(
+        result.message || 'Vielen Dank! Ihre Nachricht wurde erfolgreich gesendet.',
+      )
       form.reset()
     } catch (err: any) {
       console.error('Contact submission error:', err)
@@ -85,6 +88,15 @@ export const ContactForm = ({ email }: { email: string }) => {
         </label>
         <input id="email" name="email" type="email" required disabled={loading} className={inputClass} />
       </div>
+      <label className="flex items-start gap-3 text-sm text-ocean-800">
+        <input
+          name="copyToSender"
+          type="checkbox"
+          disabled={loading}
+          className="mt-1 size-4 accent-aqua-600"
+        />
+        <span>Eine Kopie meiner Nachricht an meine E-Mail-Adresse senden</span>
+      </label>
       <div>
         <label className="mb-2 block text-sm font-medium text-ocean-800" htmlFor="subject">
           Betreff

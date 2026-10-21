@@ -25,6 +25,8 @@ services:
       SMTP_FROM_ADDRESS: ${SMTP_FROM_ADDRESS:-info@mosaik-ruesselsheim.de}
       SMTP_FROM_NAME: ${SMTP_FROM_NAME:-Mosaik Dialog und Kultur e.V.}
       SMTP_TO_ADDRESS: ${SMTP_TO_ADDRESS:-info@mosaik-ruesselsheim.de}
+      MAILJET_API_KEY: ${MAILJET_API_KEY:-}
+      MAILJET_API_SECRET: ${MAILJET_API_SECRET:-}
     volumes:
       # Tüm görseller ve medya dosyaları VPS üzerinde yerel diskte tutulur:
       - ./public/media:/app/public/media
