@@ -65,7 +65,7 @@ export const Events: CollectionConfig = {
     {
       name: 'location',
       type: 'text',
-      defaultValue: 'Mosaik e.V., Bahnhofstr. 20, 65428 Rüsselsheim',
+      defaultValue: 'Mosaik e.V., Bahnhofstraße 20, 65428 Rüsselsheim',
       label: 'Veranstaltungsort',
     },
     {

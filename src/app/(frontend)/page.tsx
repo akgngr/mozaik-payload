@@ -78,7 +78,7 @@ const faqItems: FaqItem[] = [
   {
     question: 'Wo ist der Verein tätig?',
     answer:
-      'Der Standort ist in der Bahnhofstr. 20 in 65428 Rüsselsheim. Der Wirkungskreis umfasst den Kreis Groß-Gerau und den Main-Taunus-Kreis.',
+      'Der Standort ist in der Bahnhofstraße 20 in 65428 Rüsselsheim. Der Wirkungskreis umfasst den Kreis Groß-Gerau und den Main-Taunus-Kreis.',
   },
   {
     question: 'Wann ist das Büro geöffnet?',
@@ -110,14 +110,21 @@ const accentColors = [
   { icon: 'bg-rose-50 text-rose-700', bar: 'bg-rose-600', link: 'text-rose-700' },
 ]
 
+function makeCleanEventDate(daysAhead: number, hours: number, minutes: number = 0): string {
+  const d = new Date()
+  d.setDate(d.getDate() + daysAhead)
+  d.setHours(hours, minutes, 0, 0)
+  return d.toISOString()
+}
+
 // Fallback demo events if CMS is empty
 const initialDemoEvents: Partial<EventType>[] = [
   {
     id: 1,
     title: 'Interkulturelles Sprachcafé',
     category: 'education',
-    eventDate: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000 + 4 * 60 * 60 * 1000).toISOString(),
-    location: 'Mosaik Begegnungszentrum, Bahnhofstr. 20, Rüsselsheim',
+    eventDate: makeCleanEventDate(3, 15, 0),
+    location: 'Mosaik Begegnungszentrum, Bahnhofstraße 20, Rüsselsheim',
     excerpt:
       'Zwangloses Deutsch sprechen bei Kaffee, Tee und Gebäck. Für alle Niveaustufen offen.',
     isHighlight: true,
@@ -126,8 +133,8 @@ const initialDemoEvents: Partial<EventType>[] = [
     id: 2,
     title: 'Familien-Kreativnachmittag',
     category: 'youth',
-    eventDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000 + 3 * 60 * 60 * 1000).toISOString(),
-    location: 'Mosaik e.V., Bahnhofstr. 20, Rüsselsheim',
+    eventDate: makeCleanEventDate(7, 14, 0),
+    location: 'Mosaik e.V., Bahnhofstraße 20, Rüsselsheim',
     excerpt:
       'Gemeinsam malen, basteln und spielen für Kinder und Eltern. Ein bunter Nachmittag.',
     isHighlight: false,
@@ -136,7 +143,7 @@ const initialDemoEvents: Partial<EventType>[] = [
     id: 3,
     title: 'Interkultureller Kochabend: Rezepte aus aller Welt',
     category: 'culture',
-    eventDate: new Date(Date.now() + 12 * 24 * 60 * 60 * 1000 + 6 * 60 * 60 * 1000).toISOString(),
+    eventDate: makeCleanEventDate(12, 18, 0),
     location: 'Gemeinschaftsküche Rüsselsheim',
     excerpt:
       'Wir kochen zusammen traditionelle Gerichte und tauschen Geschichten aus.',
@@ -160,10 +167,20 @@ export default async function HomePage() {
 
   try {
     const payload = await getPayload()
+    const nowIso = new Date().toISOString()
     const [h, p, e] = await Promise.all([
       payload.findGlobal({ slug: 'homepage' }),
       payload.find({ collection: 'projects', limit: 3, sort: '-publishedDate' }),
-      payload.find({ collection: 'events', limit: 3, sort: 'eventDate' }),
+      payload.find({
+        collection: 'events',
+        limit: 3,
+        sort: 'eventDate',
+        where: {
+          eventDate: {
+            greater_than_equal: nowIso,
+          },
+        },
+      }),
     ])
     home = h
     projects = p
@@ -282,14 +299,16 @@ export default async function HomePage() {
                 {home.introTitle && (
                   <Animated variant="fade-right" delay={80}>
                     <h2 className="text-balance font-display text-4xl text-ocean-900 md:text-5xl">
-                      {home.introTitle}
+                      {home.introTitle === 'Über Uns' ? 'Über uns' : home.introTitle}
                     </h2>
                   </Animated>
                 )}
                 {home.introText && (
                   <Animated variant="fade-right" delay={160}>
                     <p className="mt-6 text-lg leading-relaxed text-ocean-700/90">
-                      {home.introText}
+                      {home.introText
+                        .replace('dem Main-Taunus-Kreis', 'den Main-Taunus-Kreis')
+                        .replace('umfasst jedoch den Kreis', 'umfasst den Kreis')}
                     </p>
                   </Animated>
                 )}

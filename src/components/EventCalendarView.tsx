@@ -373,6 +373,7 @@ export function EventCalendarView({ initialEvents, initialHasNextPage }: Props) 
           const dateObj = new Date(ev.eventDate)
           const day = dateObj.getDate()
           const month = dateObj.toLocaleDateString('de-DE', { month: 'short' })
+          const year = dateObj.getFullYear()
           const time = dateObj.toLocaleTimeString('de-DE', {
             hour: '2-digit',
             minute: '2-digit',
@@ -402,10 +403,10 @@ export function EventCalendarView({ initialEvents, initialHasNextPage }: Props) 
                     <div
                       className={`flex h-20 w-20 flex-shrink-0 flex-col items-center justify-center rounded-2xl ${catInfo.bg} text-white shadow-md`}
                     >
-                      <span className="text-xs font-bold uppercase tracking-wider opacity-90">
-                        {month}
+                      <span className="text-[10px] font-bold uppercase tracking-wider opacity-90">
+                        {month} {year}
                       </span>
-                      <span className="font-display text-3xl font-extrabold leading-none">
+                      <span className="font-display text-2xl font-extrabold leading-none">
                         {day}
                       </span>
                     </div>
@@ -440,7 +441,7 @@ export function EventCalendarView({ initialEvents, initialHasNextPage }: Props) 
                         <div className="flex items-center gap-1.5">
                           <ClockIcon className="h-4 w-4 text-brand-500" />
                           <span>
-                            {weekday}, {time} Uhr
+                            {weekday}, {day}. {month} {year} &bull; {time} Uhr
                           </span>
                         </div>
                         {ev.location && (

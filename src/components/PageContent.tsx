@@ -31,15 +31,17 @@ export const PageContent = async ({ slug }: { slug: string }) => {
     }
   }
 
+  const pageTitle = page.title === 'Über Uns' ? 'Über uns' : page.title
+
   const jsonLd = jsonLdGraph(
     webPageSchema({
-      title: page.title,
+      title: pageTitle,
       slug,
       description: page.heroSubtitle || page.seo?.metaDescription || null,
     }),
     breadcrumbSchema([
       { name: 'Startseite', path: '/' },
-      { name: page.title, path: `/${slug}` },
+      { name: pageTitle, path: `/${slug}` },
     ]),
   )
 
@@ -49,7 +51,7 @@ export const PageContent = async ({ slug }: { slug: string }) => {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <PageHero eyebrow={page.heroEyebrow} title={page.title} subtitle={page.heroSubtitle} />
+      <PageHero eyebrow={page.heroEyebrow} title={pageTitle} subtitle={page.heroSubtitle} />
       <section className="section">
         <Container>
           <div className="mx-auto max-w-3xl">

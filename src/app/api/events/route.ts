@@ -11,7 +11,12 @@ export async function GET(req: Request) {
 
     const payload = await getPayload()
 
-    const whereClause: Record<string, any> = {}
+    const showPast = searchParams.get('past') === 'true'
+    const whereClause: Record<string, any> = {
+      eventDate: showPast
+        ? { less_than: new Date().toISOString() }
+        : { greater_than_equal: new Date().toISOString() },
+    }
 
     if (category && category !== 'all') {
       whereClause.category = { equals: category }

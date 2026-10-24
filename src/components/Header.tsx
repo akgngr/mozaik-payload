@@ -21,10 +21,17 @@ export const Header = async () => {
     // fallback if database is not available
   }
 
-  const navItems = (header?.navItems || []).map((item) => ({
-    label: item.label === 'Home' ? 'Startseite' : item.label,
-    url: item.url,
-  }))
+  const navItems = (header?.navItems || []).map((item) => {
+    let label = item.label
+    if (label === 'Home') label = 'Startseite'
+    if (label === 'Über Uns') label = 'Über uns'
+    if (label === 'Projekt') label = 'Projekte'
+    if (label === 'Aktivität') label = 'Aktivitäten'
+    return {
+      label,
+      url: item.url,
+    }
+  })
 
   const logoUrl =
     (typeof siteSettings?.logo === 'object' && siteSettings.logo?.url) ||

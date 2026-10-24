@@ -79,6 +79,7 @@ export function HomeEventsSection({ events }: { events: EventType[] }) {
               const dateObj = new Date(ev.eventDate)
               const day = dateObj.getDate()
               const month = dateObj.toLocaleDateString('de-DE', { month: 'short' })
+              const year = dateObj.getFullYear()
               const time = dateObj.toLocaleTimeString('de-DE', {
                 hour: '2-digit',
                 minute: '2-digit',
@@ -103,10 +104,10 @@ export function HomeEventsSection({ events }: { events: EventType[] }) {
                     <div className="space-y-4">
                       <div className="flex items-center justify-between gap-3">
                         <div
-                          className="flex h-14 w-14 flex-col items-center justify-center rounded-2xl bg-ocean-900 text-white shadow-sm"
+                          className="flex h-16 w-16 flex-col items-center justify-center rounded-2xl bg-ocean-900 text-white shadow-sm"
                         >
                           <span className="text-[10px] font-bold uppercase tracking-wider text-amber-400">
-                            {month}
+                            {month} {year}
                           </span>
                           <span className="font-display text-2xl font-bold leading-none">
                             {day}
@@ -139,7 +140,7 @@ export function HomeEventsSection({ events }: { events: EventType[] }) {
                         <div className="flex items-center gap-1.5">
                           <ClockIcon className="h-3.5 w-3.5 text-brand-500" />
                           <span>
-                            {weekday}., {time} Uhr
+                            {weekday}., {day}. {month} {year} &bull; {time} Uhr
                           </span>
                         </div>
                         {ev.location && (
@@ -204,6 +205,7 @@ export function HomeEventsSection({ events }: { events: EventType[] }) {
                   weekday: 'long',
                   day: 'numeric',
                   month: 'long',
+                  year: 'numeric',
                 })}
               </p>
             </div>

@@ -5,7 +5,7 @@ export const SITE_DESCRIPTION =
   'Gemeinnütziger Verein für Bildung, Jugendarbeit und interkulturellen Dialog in Rüsselsheim. Sprachkurse, Nachhilfe, Sprachcafés und Flüchtlingshilfe im Kreis Groß-Gerau und Main-Taunus-Kreis.'
 export const SITE_LOCALE = 'de_DE'
 export const SITE_ADDRESS = {
-  streetAddress: 'Bahnhofstr. 20',
+  streetAddress: 'Bahnhofstraße 20',
   postalCode: '65428',
   addressLocality: 'Rüsselsheim',
   addressCountry: 'DE',

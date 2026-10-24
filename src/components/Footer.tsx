@@ -74,13 +74,19 @@ export const Footer = async () => {
           <div className="md:col-span-3">
             <h3 className="mb-5 font-display text-lg text-white">Offiziell</h3>
             <ul className="space-y-3 text-sm text-white/70">
-              {(footer?.links || []).map((link) => (
-                <li key={link.url}>
-                  <Link href={link.url} className="transition-colors hover:text-brand-300">
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
+              {(footer?.links || []).map((link) => {
+                let label = link.label
+                if (label === 'Über Uns') label = 'Über uns'
+                if (label === 'Projekt') label = 'Projekte'
+                if (label === 'Aktivität') label = 'Aktivitäten'
+                return (
+                  <li key={link.url}>
+                    <Link href={link.url} className="transition-colors hover:text-brand-300">
+                      {label}
+                    </Link>
+                  </li>
+                )
+              })}
             </ul>
           </div>
 

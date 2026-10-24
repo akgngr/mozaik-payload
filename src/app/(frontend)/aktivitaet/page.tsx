@@ -20,14 +20,21 @@ export const metadata: Metadata = {
   ),
 }
 
+function makeCleanEventDate(daysAhead: number, hours: number, minutes: number = 0): string {
+  const d = new Date()
+  d.setDate(d.getDate() + daysAhead)
+  d.setHours(hours, minutes, 0, 0)
+  return d.toISOString()
+}
+
 // Fallback initial sample events if Payload has no events yet
 const initialDemoEvents: Partial<EventType>[] = [
   {
     id: 1,
     title: 'Interkulturelles Sprachcafé',
     category: 'education',
-    eventDate: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000 + 4 * 60 * 60 * 1000).toISOString(),
-    location: 'Mosaik Begegnungszentrum, Bahnhofstr. 20, Rüsselsheim',
+    eventDate: makeCleanEventDate(3, 15, 0),
+    location: 'Mosaik Begegnungszentrum, Bahnhofstraße 20, Rüsselsheim',
     excerpt:
       'Zwangloses Deutsch sprechen bei Kaffee, Tee und Gebäck. Für alle Niveaustufen offen. Keine Anmeldung erforderlich.',
     isHighlight: true,
@@ -36,8 +43,8 @@ const initialDemoEvents: Partial<EventType>[] = [
     id: 2,
     title: 'Familien-Kreativnachmittag',
     category: 'youth',
-    eventDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000 + 3 * 60 * 60 * 1000).toISOString(),
-    location: 'Mosaik e.V., Bahnhofstr. 20, Rüsselsheim',
+    eventDate: makeCleanEventDate(7, 14, 0),
+    location: 'Mosaik e.V., Bahnhofstraße 20, Rüsselsheim',
     excerpt:
       'Gemeinsam malen, basteln und spielen für Kinder und Eltern. Ein bunter Nachmittag für die ganze Familie.',
     isHighlight: false,
@@ -46,7 +53,7 @@ const initialDemoEvents: Partial<EventType>[] = [
     id: 3,
     title: 'Interkultureller Kochabend: Rezepte aus aller Welt',
     category: 'culture',
-    eventDate: new Date(Date.now() + 12 * 24 * 60 * 60 * 1000 + 6 * 60 * 60 * 1000).toISOString(),
+    eventDate: makeCleanEventDate(12, 18, 0),
     location: 'Gemeinschaftsküche Rüsselsheim',
     excerpt:
       'Wir kochen zusammen traditionelle Gerichte aus verschiedenen Kulturkreisen und tauschen Geschichten aus.',
@@ -56,7 +63,7 @@ const initialDemoEvents: Partial<EventType>[] = [
     id: 4,
     title: 'Bewerbungstraining & Lebenslauf-Check für Jugendliche',
     category: 'workshop',
-    eventDate: new Date(Date.now() + 16 * 24 * 60 * 60 * 1000 + 2 * 60 * 60 * 1000).toISOString(),
+    eventDate: makeCleanEventDate(16, 16, 0),
     location: 'Mosaik e.V. Seminarraum',
     excerpt:
       'Tipps und praktische Übungen für Praktikums- und Ausbildungsplatzbewerbungen mit erfahrenen Mentoren.',
@@ -66,7 +73,7 @@ const initialDemoEvents: Partial<EventType>[] = [
     id: 5,
     title: 'Nachbarschafts-Dialog: Zusammenleben im Quartier',
     category: 'dialog',
-    eventDate: new Date(Date.now() + 22 * 24 * 60 * 60 * 1000 + 5 * 60 * 60 * 1000).toISOString(),
+    eventDate: makeCleanEventDate(22, 17, 0),
     location: 'Bürgerhaus Rüsselsheim',
     excerpt:
       'Ein offener Austausch über Gemeinschaftsprojekte, Ideen und Initiativen für ein lebendiges Miteinander.',
@@ -85,6 +92,11 @@ export default async function AktivitaetPage() {
       limit: 9,
       page: 1,
       sort: 'eventDate',
+      where: {
+        eventDate: {
+          greater_than_equal: new Date().toISOString(),
+        },
+      },
     })
     if (result.docs.length > 0) {
       events = result.docs
