@@ -47,6 +47,7 @@ export default buildConfig({
     ? nodemailerAdapter({
         defaultFromAddress: process.env.SMTP_FROM_ADDRESS || 'info@mosaik-ruesselsheim.de',
         defaultFromName: process.env.SMTP_FROM_NAME || 'Mosaik Dialog und Kultur e.V.',
+        skipVerify: true,
         transportOptions: {
           host: process.env.SMTP_HOST,
           port: Number(process.env.SMTP_PORT || 587),

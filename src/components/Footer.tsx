@@ -2,6 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import type { ReactElement } from 'react'
 import { getPayload } from '@/lib/payload'
+import type { Footer as FooterType, SiteSetting } from '@/payload-types'
 import { Container } from './Container'
 import { MosaicPattern } from './MosaicPattern'
 import { FacebookIcon, InstagramIcon, MailIcon, PhoneIcon, PinIcon, TwitterIcon, YoutubeIcon } from './icons'
@@ -14,8 +15,36 @@ const socialIcons: Record<string, (props: { className?: string }) => ReactElemen
 }
 
 export const Footer = async () => {
-  const payload = await getPayload()
-  const footer = await payload.findGlobal({ slug: 'footer' })
+  let footer: FooterType | null = null
+  let siteSettings: SiteSetting | null = null
+
+  try {
+    const payload = await getPayload()
+    const [f, s] = await Promise.all([
+      payload.findGlobal({ slug: 'footer' }),
+      payload.findGlobal({ slug: 'site-settings' }),
+    ])
+    footer = f
+    siteSettings = s
+  } catch {
+    // fallback if database is not available
+  }
+
+  const logoLightUrl =
+    (typeof siteSettings?.logoLight === 'object' && siteSettings.logoLight?.url) ||
+    (typeof siteSettings?.logo === 'object' && siteSettings.logo?.url) ||
+    '/mosaik-logo-light.png'
+  const logoAlt =
+    (typeof siteSettings?.logoLight === 'object' && siteSettings.logoLight?.alt) ||
+    (typeof siteSettings?.logo === 'object' && siteSettings.logo?.alt) ||
+    siteSettings?.siteName ||
+    'Mosaik Dialog und Kultur e.V.'
+  const logoWidth =
+    (typeof siteSettings?.logoLight === 'object' && siteSettings.logoLight?.width) ||
+    1024
+  const logoHeight =
+    (typeof siteSettings?.logoLight === 'object' && siteSettings.logoLight?.height) ||
+    353
 
   return (
     <footer className="relative overflow-hidden bg-ocean-950 text-white">
@@ -26,15 +55,15 @@ export const Footer = async () => {
           <div className="md:col-span-5">
             <div className="mb-6 flex items-center">
               <Image
-                src="/mosaik-logo-light.png"
-                alt="Mosaik Dialog und Kultur e.V."
-                width={1024}
-                height={353}
+                src={logoLightUrl}
+                alt={logoAlt}
+                width={logoWidth}
+                height={logoHeight}
                 className="h-12 sm:h-14 w-auto object-contain"
               />
             </div>
-            <p className="max-w-md leading-relaxed text-white/70">{footer.aboutText}</p>
-            {footer.officeHours && (
+            <p className="max-w-md leading-relaxed text-white/70">{footer?.aboutText}</p>
+            {footer?.officeHours && (
               <div className="mt-8">
                 <h3 className="mb-2 font-display text-base font-bold text-amber-400">Bürozeiten</h3>
                 <p className="text-sm text-white/70">{footer.officeHours}</p>
@@ -45,7 +74,7 @@ export const Footer = async () => {
           <div className="md:col-span-3">
             <h3 className="mb-5 font-display text-lg text-white">Offiziell</h3>
             <ul className="space-y-3 text-sm text-white/70">
-              {(footer.links || []).map((link) => (
+              {(footer?.links || []).map((link) => (
                 <li key={link.url}>
                   <Link href={link.url} className="transition-colors hover:text-brand-300">
                     {link.label}
@@ -58,24 +87,24 @@ export const Footer = async () => {
           <div className="md:col-span-4">
             <h3 className="mb-5 font-display text-lg text-white">Kontakt</h3>
             <ul className="space-y-4 text-sm text-white/70">
-              {footer.phone && (
+              {footer?.phone && (
                 <li className="flex items-center gap-3">
                   <PhoneIcon className="h-4 w-4 shrink-0 text-blue-300" /> {footer.phone}
                 </li>
               )}
-              {footer.email && (
+              {footer?.email && (
                 <li className="flex items-center gap-3">
                   <MailIcon className="h-4 w-4 shrink-0 text-blue-300" /> {footer.email}
                 </li>
               )}
-              {footer.address && (
+              {footer?.address && (
                 <li className="flex items-start gap-3">
                   <PinIcon className="mt-0.5 h-4 w-4 shrink-0 text-blue-300" /> {footer.address}
                 </li>
               )}
             </ul>
             <div className="mt-8 flex gap-3">
-              {(footer.socialLinks || []).map((social) => {
+              {(footer?.socialLinks || []).map((social) => {
                 const Icon = socialIcons[social.platform]
                 if (!Icon) return null
                 return (

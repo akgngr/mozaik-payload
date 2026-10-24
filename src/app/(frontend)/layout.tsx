@@ -26,11 +26,26 @@ const nunito = Nunito_Sans({
 export async function generateMetadata(): Promise<Metadata> {
   let siteName = SITE_NAME
   let siteDescription = SITE_DESCRIPTION
+  let iconUrl = "/favicon.png"
+  let logoUrl = `${SITE_URL}/mosaik-logo.png`
+  let seoImageUrl = `${SITE_URL}/mosaik-logo.png`
+
   try {
     const payload = await getPayload()
     const settings = await payload.findGlobal({ slug: "site-settings" })
     if (settings?.siteName) siteName = settings.siteName
     if (settings?.siteDescription) siteDescription = settings.siteDescription
+    if (typeof settings?.siteIcon === "object" && settings.siteIcon?.url) {
+      iconUrl = settings.siteIcon.url
+    }
+    if (typeof settings?.logo === "object" && settings.logo?.url) {
+      logoUrl = settings.logo.url
+    }
+    if (typeof settings?.defaultSeoImage === "object" && settings.defaultSeoImage?.url) {
+      seoImageUrl = settings.defaultSeoImage.url
+    } else {
+      seoImageUrl = logoUrl
+    }
   } catch {
     // Veritabanı bağlantısı derleme (build) sırasında henüz aktif değilse varsayılan değerleri kullan
   }
@@ -46,7 +61,11 @@ export async function generateMetadata(): Promise<Metadata> {
     creator: siteName,
     publisher: siteName,
     category: "Verein",
-    icons: { icon: "/favicon.png" },
+    icons: {
+      icon: iconUrl,
+      shortcut: iconUrl,
+      apple: iconUrl,
+    },
     openGraph: {
       type: "website",
       locale: SITE_LOCALE,
@@ -56,7 +75,7 @@ export async function generateMetadata(): Promise<Metadata> {
       description: siteDescription,
       images: [
         {
-          url: `${SITE_URL}/mosaik-logo.png`,
+          url: seoImageUrl,
           width: 1024,
           height: 353,
           alt: siteName,
@@ -67,7 +86,7 @@ export async function generateMetadata(): Promise<Metadata> {
       card: "summary_large_image",
       title: siteName,
       description: siteDescription,
-      images: [`${SITE_URL}/mosaik-logo.png`],
+      images: [seoImageUrl],
     },
     robots: {
       index: true,

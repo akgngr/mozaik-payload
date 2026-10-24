@@ -657,8 +657,23 @@ export interface Footer {
  */
 export interface SiteSetting {
   id: number;
+  /**
+   * Hauptlogo für den Header und helle Bereiche (Standard: /mosaik-logo.png).
+   */
+  logo?: (number | null) | Media;
+  /**
+   * Helles/weißes Logo für den Footer und dunkle Flächen (Standard: /mosaik-logo-light.png).
+   */
+  logoLight?: (number | null) | Media;
+  /**
+   * Icon für den Browser-Tab (Favicon, z.B. 32x32 oder 512x512 PNG, ICO oder SVG).
+   */
+  siteIcon?: (number | null) | Media;
   siteName?: string | null;
   siteDescription?: string | null;
+  /**
+   * Vorschaubild für Social-Media-Links (OpenGraph / Twitter).
+   */
   defaultSeoImage?: (number | null) | Media;
   updatedAt?: string | null;
   createdAt?: string | null;
@@ -794,6 +809,9 @@ export interface FooterSelect<T extends boolean = true> {
  * via the `definition` "site-settings_select".
  */
 export interface SiteSettingsSelect<T extends boolean = true> {
+  logo?: T;
+  logoLight?: T;
+  siteIcon?: T;
   siteName?: T;
   siteDescription?: T;
   defaultSeoImage?: T;

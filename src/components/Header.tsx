@@ -1,17 +1,44 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { getPayload } from '@/lib/payload'
+import type { Header as HeaderType, SiteSetting } from '@/payload-types'
 import { MobileMenu } from './MobileMenu'
 import { Container } from './Container'
 
 export const Header = async () => {
-  const payload = await getPayload()
-  const header = await payload.findGlobal({ slug: 'header' })
+  let header: HeaderType | null = null
+  let siteSettings: SiteSetting | null = null
 
-  const navItems = (header.navItems || []).map((item) => ({
+  try {
+    const payload = await getPayload()
+    const [h, s] = await Promise.all([
+      payload.findGlobal({ slug: 'header' }),
+      payload.findGlobal({ slug: 'site-settings' }),
+    ])
+    header = h
+    siteSettings = s
+  } catch {
+    // fallback if database is not available
+  }
+
+  const navItems = (header?.navItems || []).map((item) => ({
     label: item.label === 'Home' ? 'Startseite' : item.label,
     url: item.url,
   }))
+
+  const logoUrl =
+    (typeof siteSettings?.logo === 'object' && siteSettings.logo?.url) ||
+    '/mosaik-logo.png'
+  const logoAlt =
+    (typeof siteSettings?.logo === 'object' && siteSettings.logo?.alt) ||
+    siteSettings?.siteName ||
+    'Mosaik Dialog und Kultur e.V.'
+  const logoWidth =
+    (typeof siteSettings?.logo === 'object' && siteSettings.logo?.width) ||
+    1024
+  const logoHeight =
+    (typeof siteSettings?.logo === 'object' && siteSettings.logo?.height) ||
+    353
 
   return (
     <header className="sticky top-0 z-40 border-b border-ocean-100/70 bg-white/95 backdrop-blur-md">
@@ -19,10 +46,10 @@ export const Header = async () => {
         <div className="flex h-20 items-center justify-between gap-2 sm:gap-4">
           <Link href="/" className="flex shrink-0 items-center py-1 group">
             <Image
-              src="/mosaik-logo.png"
-              alt="Mosaik Dialog und Kultur e.V."
-              width={1024}
-              height={353}
+              src={logoUrl}
+              alt={logoAlt}
+              width={logoWidth}
+              height={logoHeight}
               className="h-11 sm:h-12 md:h-14 w-auto object-contain transition-transform duration-200 group-hover:scale-[1.01]"
               priority
             />
@@ -43,14 +70,14 @@ export const Header = async () => {
                 </li>
               ))}
             </ul>
-            {header.ctaUrl && (
+            {header?.ctaUrl && (
               <Link href={header.ctaUrl} className="btn-glass btn-primary px-6 py-3">
-                {header.ctaLabel}
+                {header.ctaLabel || 'Spenden'}
               </Link>
             )}
           </nav>
 
-          <MobileMenu navItems={navItems} ctaLabel={header.ctaLabel} ctaUrl={header.ctaUrl} />
+          <MobileMenu navItems={navItems} ctaLabel={header?.ctaLabel} ctaUrl={header?.ctaUrl} />
         </div>
       </Container>
     </header>
